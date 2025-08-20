@@ -31,7 +31,7 @@ classifiers = [
 ]
 requires-python = ">=3.7"
 dependencies = [
-    "typing-extensions>=4.0.0; python_version<'3.8'",
+    "typing-extensions>=4.0.0; python_version<'3.8'", "jsonrpc>=3.0.1,<4", "aiohttp>=3.12.15,<4", "pydantic>=2.11.7,<3",
 ]
 
 [project.optional-dependencies]
@@ -85,6 +85,10 @@ addopts = "-v --cov=cascadeur_client --cov-report=term-missing"
 [tool.pixi.workspace]
 channels = ["conda-forge"]
 platforms = ["win-64"]
+
+[tool.pixi.dependencies]
+# Pin Python version explicitly (avoids ambiguity warning)
+python = "==3.11.0"
 
 [tool.pixi.pypi-dependencies]
 cascadeur-py-client = { path = ".", editable = true }

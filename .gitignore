@@ -142,3 +142,5 @@ Thumbs.db
 # Cascadeur specific
 *.casc
 *.backup
+# pixi environments
+.pixi

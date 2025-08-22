@@ -1,18 +1,63 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.SettingMode.html
-html_file: d30d25c6129c0f5f1b7d6e0bb30212f3.html
-module: csc.model.SettingMode
----
+[CLEAN]
+<!-- Cleaned by batch script 2025-08-22 23:35 | Original: ad0aa005 -->
 
-# csc.model.SettingMode 
+# csc.model.SettingMode
 
-> Setting::Mode enum
-> This enumerates the basic types of data.
-> Static, Animation
+**Module:** `csc.model.SettingMode`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.model.SettingMode.html)
 
-Setting::Mode enum This enumerates the basic types of data.
-Static, Animation Members:
-> Static
-> Animation
+## Overview
 
-Static Animation Methods __init__ (self, value) Attributes Animation Static name value
+Setting::Mode enum. This enumerates the basic types of data: Static, Animation.
+
+## Class Definition
+
+```python
+class csc.model.SettingMode
+```
+
+Enumeration representing basic data types.
+
+## Constructor
+
+### `__init__(self, value) -> None`
+
+Initializes the enum with a given value.
+
+**Parameters:**
+- `value` (unknown): Enum value to initialize with.
+
+**Returns:**
+- None
+
+## Methods
+
+No additional methods documented.
+
+## Attributes
+
+- `Animation`: Enum member.
+- `Static`: Enum member.
+- `name`: Enum member name.
+- `value`: Enum member value.
+
+## Usage Example
+
+```python
+import csc.model as model
+
+# Practical usage example
+mode = model.SettingMode('Static')
+current_name = mode.name
+current_value = mode.value
+```
+
+## Usage Notes
+
+- Use `Static` for non-animated data.
+- Use `Animation` for animated data.
+- Access `name` and `value` for enum metadata.
+
+## See Also
+
+- Other enums and settings within `csc.model`

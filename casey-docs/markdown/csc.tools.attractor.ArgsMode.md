@@ -1,20 +1,65 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.tools.attractor.ArgsMode.html
-html_file: 511a12f4523c81379fb21023231602f6.html
-module: csc.tools.attractor.ArgsMode
----
+[CLEAN]
+<!-- Cleaned by batch script 2025-08-22 23:40 | Original: d8deee93 -->
 
-# csc.tools.attractor.ArgsMode 
+# csc.tools.attractor.ArgsMode
 
-> attractor::Mode enum
-> Previous, Next, Inertial, InverseInertial, Average, Interpolation
+**Module:** `csc.tools.attractor.ArgsMode`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.tools.attractor.ArgsMode.html)
 
-attractor::Mode enum Previous, Next, Inertial, InverseInertial, Average, Interpolation Members:
-> Previous
-> Next
-> Inertial
-> InverseInertial
-> Average
-> Interpolation
+## Overview
 
-Previous Next Inertial InverseInertial Average Interpolation Methods __init__ (self, value) Attributes Average Inertial Interpolation InverseInertial Next Previous name value
+Enum representing attractor modes: Previous, Next, Inertial, InverseInertial, Average, and Interpolation.
+
+## Class Definition
+
+```python
+class csc.tools.attractor.ArgsMode
+```
+
+Enumeration of attractor modes.
+
+## Constructor
+
+### `__init__(value) -> None`
+
+Initializes the enum with a specific value.
+
+**Parameters:**
+- `value` (Any): Enum value to initialize the instance.
+
+**Returns:**
+- None
+
+## Methods
+
+No additional methods documented beyond standard enum behavior.
+
+## Attributes
+
+- `Previous`
+- `Next`
+- `Inertial`
+- `InverseInertial`
+- `Average`
+- `Interpolation`
+- `name`
+- `value`
+
+## Usage Example
+
+```python
+from csc.tools.attractor import ArgsMode
+
+# Practical usage example
+mode = ArgsMode.Previous
+print(mode.name, mode.value)
+```
+
+## Usage Notes
+
+- Use the provided enum members to specify attractor modes.
+- `name` returns the enum member name; `value` returns its underlying value.
+
+## See Also
+
+- Other attractor-related tools and enums in `csc.tools.attractor`

@@ -1,0 +1,19 @@
+# API Keys and Credentials - NEVER commit these!
+.api_key
+*.api_key
+api_key.txt
+credentials.txt
+config.ini
+.env
+.env.local
+
+# State and temporary files
+ps_batch_state.json
+clean_state.json
+*.backup.json
+progress.log
+
+# Test outputs
+test_output/
+temp/
+tmp/

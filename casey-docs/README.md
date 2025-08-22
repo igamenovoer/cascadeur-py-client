@@ -1,0 +1,1 @@
+cascadeur API documentation is hosted at https://cascadeur.com/python-api/, here is a crawled version.

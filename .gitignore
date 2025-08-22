@@ -144,3 +144,5 @@ Thumbs.db
 *.backup
 # pixi environments
 .pixi
+
+tmp/

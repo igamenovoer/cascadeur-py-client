@@ -1,0 +1,1077 @@
+{
+  "total_files": 214,
+  "success_count": 210,
+  "failed_count": 4,
+  "results": [
+    {
+      "module": "csc.domain.assets.AssetsManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.assets.AssetsManager.md"
+    },
+    {
+      "module": "csc.domain.assets.FigureVertex",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.assets.FigureVertex.md"
+    },
+    {
+      "module": "csc.domain.assets.Mesh",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.assets.Mesh.md"
+    },
+    {
+      "module": "csc.layers.index.CellIndex",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.index.CellIndex.md"
+    },
+    {
+      "module": "csc.domain.assets.MeshDependency",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.assets.MeshDependency.md"
+    },
+    {
+      "module": "csc.domain.assets.Triangle",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.assets.Triangle.md"
+    },
+    {
+      "module": "csc.layers.index.FramesInterval",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.index.FramesInterval.md"
+    },
+    {
+      "module": "csc.layers.index.IndicesContainer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.index.IndicesContainer.md"
+    },
+    {
+      "module": "csc.layers.index.FramesIndices",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.index.FramesIndices.md"
+    },
+    {
+      "module": "csc.layers.index.RectIndicesContainer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.index.RectIndicesContainer.md"
+    },
+    {
+      "module": "csc.layers.layer.Cell",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Cell.md"
+    },
+    {
+      "module": "csc.layers.layer.Common",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Common.md"
+    },
+    {
+      "module": "csc.layers.layer.Interpolation",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Interpolation.md"
+    },
+    {
+      "module": "csc.layers.layer.Fixation",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Fixation.md"
+    },
+    {
+      "module": "csc.layers.layer.IkFk",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.IkFk.md"
+    },
+    {
+      "module": "csc",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.md"
+    },
+    {
+      "module": "csc.layers.layer.Interval",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Interval.md"
+    },
+    {
+      "module": "csc.layers.layer.Section",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Section.md"
+    },
+    {
+      "module": "csc.layers.layer.Key",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Key.md"
+    },
+    {
+      "module": "csc.layers.layer.Tangents",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.layer.Tangents.md"
+    },
+    {
+      "module": "csc.Direction",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.Direction.md"
+    },
+    {
+      "module": "csc.DirectionValue",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.DirectionValue.md"
+    },
+    {
+      "module": "csc.Guid",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.Guid.md"
+    },
+    {
+      "module": "csc.SystemVariables",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.SystemVariables.md"
+    },
+    {
+      "module": "csc.Version",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.Version.md"
+    },
+    {
+      "module": "csc.app.Analytics",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.Analytics.md"
+    },
+    {
+      "module": "csc.app.ActionManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.ActionManager.md"
+    },
+    {
+      "module": "csc.app.Application",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.Application.md"
+    },
+    {
+      "module": "csc.app.DataSourceManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.DataSourceManager.md"
+    },
+    {
+      "module": "csc.app.ProjectLoader",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.ProjectLoader.md"
+    },
+    {
+      "module": "csc.app.CascadeurTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.CascadeurTool.md"
+    },
+    {
+      "module": "csc.app.SceneManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.SceneManager.md"
+    },
+    {
+      "module": "csc.app.SettingsManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.SettingsManager.md"
+    },
+    {
+      "module": "csc.app.SceneTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.SceneTool.md"
+    },
+    {
+      "module": "csc.app.SimpleStatusInformer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.SimpleStatusInformer.md"
+    },
+    {
+      "module": "csc.app.StatusManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.StatusManager.md"
+    },
+    {
+      "module": "csc.app.ToolsManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.app.ToolsManager.md"
+    },
+    {
+      "module": "csc.domain.AssetId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.AssetId.md"
+    },
+    {
+      "module": "csc.domain.Asset",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Asset.md"
+    },
+    {
+      "module": "csc.domain.FrameActionOnChange",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.FrameActionOnChange.md"
+    },
+    {
+      "module": "csc.domain.IMessageHandler",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.IMessageHandler.md"
+    },
+    {
+      "module": "csc.domain.IntervalActionOnChange",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.IntervalActionOnChange.md"
+    },
+    {
+      "module": "csc.domain.LocalInterpolator",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.LocalInterpolator.md"
+    },
+    {
+      "module": "csc.domain.Pivot",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Pivot.md"
+    },
+    {
+      "module": "csc.domain.ProcessorsStorage",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.ProcessorsStorage.md"
+    },
+    {
+      "module": "csc.domain.SceneUpdater",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.SceneUpdater.md"
+    },
+    {
+      "module": "csc.domain.Scene",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Scene.md"
+    },
+    {
+      "module": "csc.domain.Select",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Select.md"
+    },
+    {
+      "module": "csc.domain.Selection",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Selection.md"
+    },
+    {
+      "module": "csc.domain.Selector",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Selector.md"
+    },
+    {
+      "module": "csc.domain.SelectorFilter",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.SelectorFilter.md"
+    },
+    {
+      "module": "csc.domain.SelectorMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.SelectorMode.md"
+    },
+    {
+      "module": "csc.domain.Session",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Session.md"
+    },
+    {
+      "module": "csc.domain.StatePivot",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.StatePivot.md"
+    },
+    {
+      "module": "csc.domain.Tool_object_id",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.domain.Tool_object_id.md"
+    },
+    {
+      "module": "csc.external.fbx.ExtraDatas",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.external.fbx.ExtraDatas.md"
+    },
+    {
+      "module": "csc.external.fbx.FbxDatas",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.external.fbx.FbxDatas.md"
+    },
+    {
+      "module": "csc.fbx.FbxSceneLoader",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.fbx.FbxSceneLoader.md"
+    },
+    {
+      "module": "csc.fbx.FbxLoader",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.fbx.FbxLoader.md"
+    },
+    {
+      "module": "csc.fbx.FbxSettings",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.fbx.FbxSettings.md"
+    },
+    {
+      "module": "csc.fbx.FbxSettingsAxis",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.fbx.FbxSettingsAxis.md"
+    },
+    {
+      "module": "csc.layers.Cycle",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Cycle.md"
+    },
+    {
+      "module": "csc.fbx.FbxSettingsMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.fbx.FbxSettingsMode.md"
+    },
+    {
+      "module": "csc.layers.CyclesEditor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.CyclesEditor.md"
+    },
+    {
+      "module": "csc.layers.CyclesViewer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.CyclesViewer.md"
+    },
+    {
+      "module": "csc.layers.Header",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Header.md"
+    },
+    {
+      "module": "csc.layers.Editor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Editor.md"
+    },
+    {
+      "module": "csc.layers.Folder",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Folder.md"
+    },
+    {
+      "module": "csc.layers.ItemVariant",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.ItemVariant.md"
+    },
+    {
+      "module": "csc.layers.Layer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Layer.md"
+    },
+    {
+      "module": "csc.layers.Layers",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Layers.md"
+    },
+    {
+      "module": "csc.layers.LayersContainer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.LayersContainer.md"
+    },
+    {
+      "module": "csc.layers.LayersSelectionChanger",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.LayersSelectionChanger.md"
+    },
+    {
+      "module": "csc.layers.UserLabelData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.UserLabelData.md"
+    },
+    {
+      "module": "csc.layers.Selector",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Selector.md"
+    },
+    {
+      "module": "csc.layers.Viewer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.layers.Viewer.md"
+    },
+    {
+      "module": "csc.math.OrthogonalTransform",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.OrthogonalTransform.md"
+    },
+    {
+      "module": "csc.math.Quaternion",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.Quaternion.md"
+    },
+    {
+      "module": "csc.math.Rotation",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.Rotation.md"
+    },
+    {
+      "module": "csc.math.ScaledTransform",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.ScaledTransform.md"
+    },
+    {
+      "module": "csc.math.SizesInterval",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.SizesInterval.md"
+    },
+    {
+      "module": "csc.math.basic_transform_from_triangle",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.basic_transform_from_triangle.md"
+    },
+    {
+      "module": "csc.math.Triangle",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.Triangle.md"
+    },
+    {
+      "module": "csc.math.euler_angles_to_quaternion_x_y_z",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.euler_angles_to_quaternion_x_y_z.md"
+    },
+    {
+      "module": "csc.math.get_m3f_diag",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.get_m3f_diag.md"
+    },
+    {
+      "module": "csc.math.inverse_transform_point",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.inverse_transform_point.md"
+    },
+    {
+      "module": "csc.math.modify_position_by_matrix",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.modify_position_by_matrix.md"
+    },
+    {
+      "module": "csc.math.project_point_on_basic_line",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.project_point_on_basic_line.md"
+    },
+    {
+      "module": "csc.math.transform_point",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.transform_point.md"
+    },
+    {
+      "module": "csc.math.transforms_difference",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.math.transforms_difference.md"
+    },
+    {
+      "module": "csc.model.BehaviourEditor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.BehaviourEditor.md"
+    },
+    {
+      "module": "csc.model.BehaviourId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.BehaviourId.md"
+    },
+    {
+      "module": "csc.model.BehaviourViewer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.BehaviourViewer.md"
+    },
+    {
+      "module": "csc.model.ClusterEditor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.ClusterEditor.md"
+    },
+    {
+      "module": "csc.model.ClusterViewer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.ClusterViewer.md"
+    },
+    {
+      "module": "csc.model.ClustersEdge",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.ClustersEdge.md"
+    },
+    {
+      "module": "csc.model.CustomSelectionPolicy",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.CustomSelectionPolicy.md"
+    },
+    {
+      "module": "csc.model.Data",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.Data.md"
+    },
+    {
+      "module": "csc.model.DataId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.DataId.md"
+    },
+    {
+      "module": "csc.model.DataEditor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.DataEditor.md"
+    },
+    {
+      "module": "csc.model.DataMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.DataMode.md"
+    },
+    {
+      "module": "csc.model.DataViewer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.DataViewer.md"
+    },
+    {
+      "module": "csc.model.DescriptionTerm",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.DescriptionTerm.md"
+    },
+    {
+      "module": "csc.model.HyperedgeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.HyperedgeId.md"
+    },
+    {
+      "module": "csc.model.LerpMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.LerpMode.md"
+    },
+    {
+      "module": "csc.model.ModelEditor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.ModelEditor.md"
+    },
+    {
+      "module": "csc.model.ModelViewer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.ModelViewer.md"
+    },
+    {
+      "module": "csc.model.ObjectId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.ObjectId.md"
+    },
+    {
+      "module": "csc.model.PathName",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.PathName.md"
+    },
+    {
+      "module": "csc.model.PropertyType",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.PropertyType.md"
+    },
+    {
+      "module": "csc.model.Setting",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.Setting.md"
+    },
+    {
+      "module": "csc.model.SettingFunctionId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.SettingFunctionId.md"
+    },
+    {
+      "module": "csc.model.SettingId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.SettingId.md"
+    },
+    {
+      "module": "csc.model.SettingMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.model.SettingMode.md"
+    },
+    {
+      "module": "csc.parts.Buffer",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.parts.Buffer.md"
+    },
+    {
+      "module": "csc.parts.GroupInfo",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.parts.GroupInfo.md"
+    },
+    {
+      "module": "csc.parts.Info",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.parts.Info.md"
+    },
+    {
+      "module": "csc.parts.SceneClipboard",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.parts.SceneClipboard.md"
+    },
+    {
+      "module": "csc.parts.Type",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.parts.Type.md"
+    },
+    {
+      "module": "csc.physics.PosMass",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.physics.PosMass.md"
+    },
+    {
+      "module": "csc.physics.inertia_tensor",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.physics.inertia_tensor.md"
+    },
+    {
+      "module": "csc.rig.AddElementData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.rig.AddElementData.md"
+    },
+    {
+      "module": "csc.rig.QrtData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.rig.QrtData.md"
+    },
+    {
+      "module": "csc.rig.BoneProperty",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.rig.BoneProperty.md"
+    },
+    {
+      "module": "csc.rig.TwistBoneProperty",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.rig.TwistBoneProperty.md"
+    },
+    {
+      "module": "csc.rig.TwistProperty",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.rig.TwistProperty.md"
+    },
+    {
+      "module": "csc.tools.ActivateDeactivate",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.ActivateDeactivate.md"
+    },
+    {
+      "module": "csc.tools.AnimationPointsTypes",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.AnimationPointsTypes.md"
+    },
+    {
+      "module": "csc.tools.AnimationUnbakingTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.AnimationUnbakingTool.md"
+    },
+    {
+      "module": "csc.tools.AttractorTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.AttractorTool.md"
+    },
+    {
+      "module": "csc.tools.AutoPhysicTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.AutoPhysicTool.md"
+    },
+    {
+      "module": "csc.tools.AutoPosingTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.AutoPosingTool.md"
+    },
+    {
+      "module": "csc.tools.BallisticTrajectory",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.BallisticTrajectory.md"
+    },
+    {
+      "module": "csc.tools.CollisionInfoForPoint",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.CollisionInfoForPoint.md"
+    },
+    {
+      "module": "csc.tools.DataKey",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.DataKey.md"
+    },
+    {
+      "module": "csc.tools.JointData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.JointData.md"
+    },
+    {
+      "module": "csc.tools.MirrorTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.MirrorTool.md"
+    },
+    {
+      "module": "csc.tools.ObjectKey",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.ObjectKey.md"
+    },
+    {
+      "module": "csc.tools.RenderParameters",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.RenderParameters.md"
+    },
+    {
+      "module": "csc.tools.RenderToFile",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.RenderToFile.md"
+    },
+    {
+      "module": "csc.tools.RiggingModeTool",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.RiggingModeTool.md"
+    },
+    {
+      "module": "csc.tools.SelectionGroups",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.SelectionGroups.md"
+    },
+    {
+      "module": "csc.tools.Trajectory",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.Trajectory.md"
+    },
+    {
+      "module": "csc.tools.attractor.Args",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.Args.md"
+    },
+    {
+      "module": "csc.tools.attractor.ArgsMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.ArgsMode.md"
+    },
+    {
+      "module": "csc.tools.attractor.AttractorGeneralSettings",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.AttractorGeneralSettings.md"
+    },
+    {
+      "module": "csc.tools.attractor.GSAxisFlag",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.GSAxisFlag.md"
+    },
+    {
+      "module": "csc.tools.attractor.GSAxisIndex",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.GSAxisIndex.md"
+    },
+    {
+      "module": "csc.tools.attractor.GSPhysicsType",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.GSPhysicsType.md"
+    },
+    {
+      "module": "csc.tools.attractor.GSRotationAxis",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.GSRotationAxis.md"
+    },
+    {
+      "module": "csc.tools.attractor.SpaceMode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.SpaceMode.md"
+    },
+    {
+      "module": "csc.tools.attractor.attract",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.attractor.attract.md"
+    },
+    {
+      "module": "csc.tools.mirror.Core",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.mirror.Core.md"
+    },
+    {
+      "module": "csc.tools.selection.Core",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.selection.Core.md"
+    },
+    {
+      "module": "csc.tools.selection.Group",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.selection.Group.md"
+    },
+    {
+      "module": "csc.tools.selection.Mode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.tools.selection.Mode.md"
+    },
+    {
+      "module": "csc.update.ActivityAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ActivityAttribute.md"
+    },
+    {
+      "module": "csc.update.ActualityAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ActualityAttributeId.md"
+    },
+    {
+      "module": "csc.update.ActualityAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ActualityAttribute.md"
+    },
+    {
+      "module": "csc.update.Connection",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.Connection.md"
+    },
+    {
+      "module": "csc.update.ConstantDataAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantDataAttribute.md"
+    },
+    {
+      "module": "csc.update.ConstantDatas",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantDatas.md"
+    },
+    {
+      "module": "csc.update.ConstantDataAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantDataAttributeId.md"
+    },
+    {
+      "module": "csc.update.ConstantDatasId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantDatasId.md"
+    },
+    {
+      "module": "csc.update.ConstantSettingAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantSettingAttribute.md"
+    },
+    {
+      "module": "csc.update.ConstantSettings",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantSettings.md"
+    },
+    {
+      "module": "csc.update.ConstantSettingAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantSettingAttributeId.md"
+    },
+    {
+      "module": "csc.update.ConstantSettingsId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ConstantSettingsId.md"
+    },
+    {
+      "module": "csc.update.ExternalProperties",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ExternalProperties.md"
+    },
+    {
+      "module": "csc.update.ExternalPropertiesId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ExternalPropertiesId.md"
+    },
+    {
+      "module": "csc.update.ExternalProperty",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ExternalProperty.md"
+    },
+    {
+      "module": "csc.update.ExternalPropertyAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ExternalPropertyAttribute.md"
+    },
+    {
+      "module": "csc.update.ExternalPropertyAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ExternalPropertyAttributeId.md"
+    },
+    {
+      "module": "csc.update.GroupAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.GroupAttributeId.md"
+    },
+    {
+      "module": "csc.update.Group",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.Group.md"
+    },
+    {
+      "module": "csc.update.GroupId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.GroupId.md"
+    },
+    {
+      "module": "csc.update.HierarchyUpdate",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.HierarchyUpdate.md"
+    },
+    {
+      "module": "csc.update.InterfaceAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.InterfaceAttribute.md"
+    },
+    {
+      "module": "csc.update.InterfaceAttributeSide",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.InterfaceAttributeSide.md"
+    },
+    {
+      "module": "csc.update.InterfaceId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.InterfaceId.md"
+    },
+    {
+      "module": "csc.update.InterfaceNode",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.InterfaceNode.md"
+    },
+    {
+      "module": "csc.update.Node",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.Node.md"
+    },
+    {
+      "module": "csc.update.NodeAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.NodeAttribute.md"
+    },
+    {
+      "module": "csc.update.Object",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.Object.md"
+    },
+    {
+      "module": "csc.update.ObjectGroup",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.ObjectGroup.md"
+    },
+    {
+      "module": "csc.update.RegularDataAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.RegularDataAttribute.md"
+    },
+    {
+      "module": "csc.update.RegularData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.RegularData.md"
+    },
+    {
+      "module": "csc.update.RegularDataAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.RegularDataAttributeId.md"
+    },
+    {
+      "module": "csc.update.RegularFunctionAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.RegularFunctionAttribute.md"
+    },
+    {
+      "module": "csc.update.RegularFunction",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.RegularFunction.md"
+    },
+    {
+      "module": "csc.update.RegularFunctionAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.RegularFunctionAttributeId.md"
+    },
+    {
+      "module": "csc.update.SettingData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.SettingData.md"
+    },
+    {
+      "module": "csc.update.SettingDataAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.SettingDataAttribute.md"
+    },
+    {
+      "module": "csc.update.SettingFunction",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.SettingFunction.md"
+    },
+    {
+      "module": "csc.update.SettingFunctionAttribute",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.SettingFunctionAttribute.md"
+    },
+    {
+      "module": "csc.update.SettingFunctionAttributeId",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.SettingFunctionAttributeId.md"
+    },
+    {
+      "module": "csc.update.Update",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.Update.md"
+    },
+    {
+      "module": "csc.view.AnimationBoundary",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.AnimationBoundary.md"
+    },
+    {
+      "module": "csc.update.UpdateGroup",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.update.UpdateGroup.md"
+    },
+    {
+      "module": "csc.view.Camera",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.Camera.md"
+    },
+    {
+      "module": "csc.view.DialogButton",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.DialogButton.md"
+    },
+    {
+      "module": "csc.view.CameraType",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.CameraType.md"
+    },
+    {
+      "module": "csc.view.DialogManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.DialogManager.md"
+    },
+    {
+      "module": "csc.view.FileDialogManager",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.FileDialogManager.md"
+    },
+    {
+      "module": "csc.view.Scene",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.Scene.md"
+    },
+    {
+      "module": "csc.view.SphericalCameraStruct",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.SphericalCameraStruct.md"
+    },
+    {
+      "module": "csc.view.StandardButton",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.StandardButton.md"
+    },
+    {
+      "module": "csc.view.Viewport",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.Viewport.md"
+    },
+    {
+      "module": "csc.view.ViewportDomain",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.ViewportDomain.md"
+    },
+    {
+      "module": "csc.view.camera_utils.CameraData",
+      "success": true,
+      "markdown_file": "D:\\code\\cascadeur-py-client\\casey-docs\\markdown\\csc.view.camera_utils.CameraData.md"
+    },
+    {
+      "module": "search",
+      "success": false,
+      "markdown_file": null
+    },
+    {
+      "module": "py-modindex",
+      "success": false,
+      "markdown_file": null
+    },
+    {
+      "module": "genindex",
+      "success": false,
+      "markdown_file": null
+    },
+    {
+      "module": "index",
+      "success": false,
+      "markdown_file": null
+    }
+  ]
+}

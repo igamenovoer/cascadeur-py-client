@@ -4,33 +4,17 @@ html_file: f6376f4091dee583bf54663ab10e990c.html
 module: csc.update.ConstantDatasId
 ---
 
-# csc.update.ConstantDatasId[??](#csc-update-constantdatasid "Permalink to this heading")
+# csc.update.ConstantDatasId 
 
-*class* csc.update.ConstantDatasId[??](#csc.update.ConstantDatasId "Permalink to this definition")
-:   ConstantDatasId is a guid based id.
-    It is always equal to the group id, where the constant will be used.
+ConstantDatasId is a guid based id.
+It is always equal to the group id, where the constant will be used. Overloaded function.
+1. __init__(self: csc.update.ConstantDatasId, arg0: csc.update.GroupId) -> None
+2. __init__(self: csc.update.ConstantDatasId, arg0: str) -> None
+3. __init__(self: csc.update.ConstantDatasId) -> None
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#csc.update.ConstantDatasId.__init__ "Permalink to this definition")
-    :   Overloaded function.
+__init__(self: csc.update.ConstantDatasId, arg0: csc.update.GroupId) -> None __init__(self: csc.update.ConstantDatasId, arg0: str) -> None __init__(self: csc.update.ConstantDatasId) -> None Methods __init__ (*args, **kwargs) Overloaded function. Overloaded function.
+1. __init__(self: csc.update.ConstantDatasId, arg0: csc.update.GroupId) -> None
+2. __init__(self: csc.update.ConstantDatasId, arg0: str) -> None
+3. __init__(self: csc.update.ConstantDatasId) -> None
 
-        1. \_\_init\_\_(self: csc.update.ConstantDatasId, arg0: csc.update.GroupId) -> None
-        2. \_\_init\_\_(self: csc.update.ConstantDatasId, arg0: str) -> None
-        3. \_\_init\_\_(self: csc.update.ConstantDatasId) -> None
-
-    
-**Methods:**
-
-    |  |  |
-    | --- | --- |
-    | [`__init__`](../csc.html#csc.update.ConstantDatasId.__init__ "csc.update.ConstantDatasId.__init__")(\*args,??\*\*kwargs) | Overloaded function. |
-
-    \_\_annotations\_\_ *= {}*[??](#csc.update.ConstantDatasId.__annotations__ "Permalink to this definition")
-
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#id0 "Permalink to this definition")
-    :   Overloaded function.
-
-        1. \_\_init\_\_(self: csc.update.ConstantDatasId, arg0: csc.update.GroupId) -> None
-        2. \_\_init\_\_(self: csc.update.ConstantDatasId, arg0: str) -> None
-        3. \_\_init\_\_(self: csc.update.ConstantDatasId) -> None
-
-    \_\_module\_\_ *= 'csc.update'*[??](#csc.update.ConstantDatasId.__module__ "Permalink to this definition")
+__init__(self: csc.update.ConstantDatasId, arg0: csc.update.GroupId) -> None __init__(self: csc.update.ConstantDatasId, arg0: str) -> None __init__(self: csc.update.ConstantDatasId) -> None

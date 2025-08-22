@@ -1,31 +1,72 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.app.CascadeurTool.html
-html_file: 7652a4f3a0347da2c45f94af339961d7.html
-module: csc.app.CascadeurTool
----
+[CLEAN]
 
-# csc.app.CascadeurTool[??](#csc-app-cascadeurtool "Permalink to this heading")
+# csc.app.CascadeurTool
 
-*class* csc.app.CascadeurTool[??](#csc.app.CascadeurTool "Permalink to this definition")
-:   CascadeurTool class
+**Module:** `csc.app.CascadeurTool`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.app.CascadeurTool.html)
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#csc.app.CascadeurTool.__init__ "Permalink to this definition")
+## Overview
 
-    
-**Methods:**
+The `CascadeurTool` class represents a tool within the Cascadeur application. It provides functionality for accessing tool information and creating scene-specific tool editors.
 
-    |  |  |
-    | --- | --- |
-    | [`__init__`](../csc.html#csc.app.CascadeurTool.__init__ "csc.app.CascadeurTool.__init__")(\*args,??\*\*kwargs) |  |
-    | [`editor`](../csc.html#csc.app.CascadeurTool.editor "csc.app.CascadeurTool.editor")(self,??arg0) |  |
-    | [`name`](../csc.html#csc.app.CascadeurTool.name "csc.app.CascadeurTool.name")(self) |  |
+## Class Definition
 
-    \_\_annotations\_\_ *= {}*[??](#csc.app.CascadeurTool.__annotations__ "Permalink to this definition")
+```python
+class csc.app.CascadeurTool
+```
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#id0 "Permalink to this definition")
+The CascadeurTool class serves as a base class for tools that can be used within the Cascadeur environment.
 
-    \_\_module\_\_ *= 'csc.app'*[??](#csc.app.CascadeurTool.__module__ "Permalink to this definition")
+## Constructor
 
-    editor(*self: [csc.app.CascadeurTool](../csc.html#csc.app.CascadeurTool "csc.app.CascadeurTool")*, *arg0: [csc.view.Scene](../csc.html#csc.view.Scene "csc.view.Scene")*)  [csc.app.SceneTool](../csc.html#csc.app.SceneTool "csc.app.SceneTool")[??](#csc.app.CascadeurTool.editor "Permalink to this definition")
+### `__init__(*args, **kwargs)`
 
-    name(*self: [csc.app.CascadeurTool](../csc.html#csc.app.CascadeurTool "csc.app.CascadeurTool")*)  [str](https://docs.python.org/3/library/stdtypes.html#str "(in Python v3.13)")[??](#csc.app.CascadeurTool.name "Permalink to this definition")
+Initializes a new CascadeurTool instance.
+
+**Parameters:**
+- `*args`: Variable length argument list
+- `**kwargs`: Arbitrary keyword arguments
+
+## Methods
+
+### `name(self) -> str`
+
+Gets the name of the tool.
+
+**Returns:**
+- str: The name of the tool
+
+### `editor(self, scene: csc.view.Scene) -> csc.app.SceneTool`
+
+Creates a scene-specific editor for this tool.
+
+**Parameters:**
+- `scene` (csc.view.Scene): The scene for which to create the tool editor
+
+**Returns:**
+- csc.app.SceneTool: A scene tool editor instance for this tool
+
+## Usage Example
+
+```python
+import csc.app
+import csc.view
+
+# Assuming you have a CascadeurTool instance
+tool = csc.app.CascadeurTool()
+
+# Get the tool's name
+tool_name = tool.name()
+print(f"Tool name: {tool_name}")
+
+# Create a scene editor for this tool (assuming you have a scene)
+scene = csc.view.Scene()
+scene_tool = tool.editor(scene)
+```
+
+## Usage Notes
+
+- The CascadeurTool class represents the abstract concept of a tool in Cascadeur
+- Use the `name()` method to identify the tool
+- The `editor()` method creates a scene-specific instance that can actually perform operations on a scene
+- Each tool can have different editors depending on the scene context

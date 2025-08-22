@@ -1,52 +1,120 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.app.Application.html
-html_file: 0782609889b6b9daf10fa2234287c95f.html
-module: csc.app.Application
----
+[CLEAN]
 
-# csc.app.Application[??](#csc-app-application "Permalink to this heading")
+# csc.app.Application
 
-*class* csc.app.Application[??](#csc.app.Application "Permalink to this definition")
-:   Application class
+**Module:** `csc.app.Application`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.app.Application.html)
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#csc.app.Application.__init__ "Permalink to this definition")
+## Overview
 
-    
-**Methods:**
+The `Application` class serves as the main entry point for interacting with the Cascadeur application. It provides access to various managers and components that control different aspects of the application functionality.
 
-    |  |  |
-    | --- | --- |
-    | [`__init__`](../csc.html#csc.app.Application.__init__ "csc.app.Application.__init__")(\*args,??\*\*kwargs) |  |
-    | [`current_scene`](../csc.html#csc.app.Application.current_scene "csc.app.Application.current_scene")(self) |  |
-    | [`get_action_manager`](../csc.html#csc.app.Application.get_action_manager "csc.app.Application.get_action_manager")(self) |  |
-    | [`get_data_source_manager`](../csc.html#csc.app.Application.get_data_source_manager "csc.app.Application.get_data_source_manager")(self) |  |
-    | [`get_file_dialog_manager`](../csc.html#csc.app.Application.get_file_dialog_manager "csc.app.Application.get_file_dialog_manager")(self) |  |
-    | [`get_scene_clipboard`](../csc.html#csc.app.Application.get_scene_clipboard "csc.app.Application.get_scene_clipboard")(self) |  |
-    | [`get_scene_manager`](../csc.html#csc.app.Application.get_scene_manager "csc.app.Application.get_scene_manager")(self) |  |
-    | [`get_setting_manager`](../csc.html#csc.app.Application.get_setting_manager "csc.app.Application.get_setting_manager")(self) |  |
-    | [`get_status_manager`](../csc.html#csc.app.Application.get_status_manager "csc.app.Application.get_status_manager")(self) |  |
-    | [`get_tools_manager`](../csc.html#csc.app.Application.get_tools_manager "csc.app.Application.get_tools_manager")(self) |  |
+## Class Definition
 
-    \_\_annotations\_\_ *= {}*[??](#csc.app.Application.__annotations__ "Permalink to this definition")
+```python
+class csc.app.Application
+```
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#id0 "Permalink to this definition")
+The Application class acts as a central hub for accessing Cascadeur's core systems and managers.
 
-    \_\_module\_\_ *= 'csc.app'*[??](#csc.app.Application.__module__ "Permalink to this definition")
+## Constructor
 
-    current\_scene(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.current_scene "Permalink to this definition")
+### `__init__(*args, **kwargs)`
 
-    get\_action\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_action_manager "Permalink to this definition")
+Initializes a new Application instance.
 
-    get\_data\_source\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_data_source_manager "Permalink to this definition")
+**Parameters:**
+- `*args`: Variable length argument list
+- `**kwargs`: Arbitrary keyword arguments
 
-    get\_file\_dialog\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_file_dialog_manager "Permalink to this definition")
+## Methods
 
-    get\_scene\_clipboard(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_scene_clipboard "Permalink to this definition")
+### `current_scene(self) -> Scene`
 
-    get\_scene\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_scene_manager "Permalink to this definition")
+Gets the currently active scene in the application.
 
-    get\_setting\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_setting_manager "Permalink to this definition")
+**Returns:**
+- Scene: The current scene object
 
-    get\_status\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_status_manager "Permalink to this definition")
+### `get_action_manager(self) -> ActionManager`
 
-    get\_tools\_manager(*self: [csc.app.Application](../csc.html#csc.app.Application "csc.app.Application")*)  [object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)")[??](#csc.app.Application.get_tools_manager "Permalink to this definition")
+Retrieves the action manager for executing application actions.
+
+**Returns:**
+- ActionManager: The application's action manager instance
+
+### `get_data_source_manager(self) -> DataSourceManager`
+
+Gets the data source manager for handling data sources.
+
+**Returns:**
+- DataSourceManager: The data source manager instance
+
+### `get_file_dialog_manager(self) -> FileDialogManager`
+
+Retrieves the file dialog manager for file operations.
+
+**Returns:**
+- FileDialogManager: The file dialog manager instance
+
+### `get_scene_clipboard(self) -> SceneClipboard`
+
+Gets the scene clipboard for copy/paste operations.
+
+**Returns:**
+- SceneClipboard: The scene clipboard instance
+
+### `get_scene_manager(self) -> SceneManager`
+
+Retrieves the scene manager for scene operations.
+
+**Returns:**
+- SceneManager: The scene manager instance
+
+### `get_setting_manager(self) -> SettingsManager`
+
+Gets the settings manager for application configuration.
+
+**Returns:**
+- SettingsManager: The settings manager instance
+
+### `get_status_manager(self) -> StatusManager`
+
+Retrieves the status manager for application status and notifications.
+
+**Returns:**
+- StatusManager: The status manager instance
+
+### `get_tools_manager(self) -> ToolsManager`
+
+Gets the tools manager for accessing application tools.
+
+**Returns:**
+- ToolsManager: The tools manager instance
+
+## Usage Example
+
+```python
+import csc.app
+
+# Create an application instance
+app = csc.app.Application()
+
+# Get the current scene
+scene = app.current_scene()
+
+# Access various managers
+action_manager = app.get_action_manager()
+scene_manager = app.get_scene_manager()
+tools_manager = app.get_tools_manager()
+
+# Use the managers to perform operations
+action_manager.call_action("some_action")
+```
+
+## Usage Notes
+
+- The Application class is the primary interface for accessing Cascadeur's functionality
+- All manager methods return specific manager instances that provide specialized functionality
+- This class follows a manager pattern where different aspects of the application are handled by dedicated manager classes
+- The Application instance serves as a factory for accessing these managers

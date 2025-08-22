@@ -1,28 +1,57 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.app.ActionManager.html
-html_file: 7481937a7d6434e44876fb48cc8ff253.html
-module: csc.app.ActionManager
----
+[CLEAN]
 
-# csc.app.ActionManager[??](#csc-app-actionmanager "Permalink to this heading")
+# csc.app.ActionManager
 
-*class* csc.app.ActionManager[??](#csc.app.ActionManager "Permalink to this definition")
-:   ActionManager class
+**Module:** `csc.app.ActionManager`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.app.ActionManager.html)
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#csc.app.ActionManager.__init__ "Permalink to this definition")
+## Overview
 
-    
-**Methods:**
+The `ActionManager` class provides functionality for managing and executing actions within the Cascadeur application.
 
-    |  |  |
-    | --- | --- |
-    | [`__init__`](../csc.html#csc.app.ActionManager.__init__ "csc.app.ActionManager.__init__")(\*args,??\*\*kwargs) |  |
-    | [`call_action`](../csc.html#csc.app.ActionManager.call_action "csc.app.ActionManager.call_action")(self,??arg0) |  |
+## Class Definition
 
-    \_\_annotations\_\_ *= {}*[??](#csc.app.ActionManager.__annotations__ "Permalink to this definition")
+```python
+class csc.app.ActionManager
+```
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#id0 "Permalink to this definition")
+The ActionManager class is responsible for handling action execution in the Cascadeur environment.
 
-    \_\_module\_\_ *= 'csc.app'*[??](#csc.app.ActionManager.__module__ "Permalink to this definition")
+## Constructor
 
-    call\_action(*self: [csc.app.ActionManager](../csc.html#csc.app.ActionManager "csc.app.ActionManager")*, *arg0: [str](https://docs.python.org/3/library/stdtypes.html#str "(in Python v3.13)")*)  [None](https://docs.python.org/3/library/constants.html#None "(in Python v3.13)")[??](#csc.app.ActionManager.call_action "Permalink to this definition")
+### `__init__(*args, **kwargs)`
+
+Initializes a new ActionManager instance.
+
+**Parameters:**
+- `*args`: Variable length argument list
+- `**kwargs`: Arbitrary keyword arguments
+
+## Methods
+
+### `call_action(action_name: str) -> None`
+
+Executes a specified action by name.
+
+**Parameters:**
+- `action_name` (str): The name of the action to execute
+
+**Returns:**
+- None
+
+**Example:**
+```python
+import csc.app
+
+# Create an ActionManager instance
+action_manager = csc.app.ActionManager()
+
+# Call an action by name
+action_manager.call_action("some_action_name")
+```
+
+## Usage Notes
+
+- The ActionManager is part of the Cascadeur Python API application layer
+- It provides a programmatic way to trigger actions that would normally be executed through the Cascadeur UI
+- Action names are strings that correspond to internal Cascadeur commands

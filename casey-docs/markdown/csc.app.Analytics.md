@@ -1,28 +1,52 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.app.Analytics.html
-html_file: 5987b03c83a44d08685f5335db428d0b.html
-module: csc.app.Analytics
----
+[CLEAN]
 
-# csc.app.Analytics[??](#csc-app-analytics "Permalink to this heading")
+# csc.app.Analytics
 
-*class* csc.app.Analytics[??](#csc.app.Analytics "Permalink to this definition")
-:   Analytics class
+**Module:** `csc.app.Analytics`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.app.Analytics.html)
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#csc.app.Analytics.__init__ "Permalink to this definition")
+## Overview
 
-    
-**Methods:**
+The `Analytics` class provides functionality for sending analytics events from within the Cascadeur application. This class is used to track user actions and behavior for analytics purposes.
 
-    |  |  |
-    | --- | --- |
-    | [`__init__`](../csc.html#csc.app.Analytics.__init__ "csc.app.Analytics.__init__")(\*args,??\*\*kwargs) |  |
-    | [`send_action`](../csc.html#csc.app.Analytics.send_action "csc.app.Analytics.send_action")(type[,??key,??label]) |  |
+## Class Definition
 
-    \_\_annotations\_\_ *= {}*[??](#csc.app.Analytics.__annotations__ "Permalink to this definition")
+```python
+class csc.app.Analytics
+```
 
-    \_\_init\_\_(*\*args*, *\*\*kwargs*)[??](#id0 "Permalink to this definition")
+## Methods
 
-    \_\_module\_\_ *= 'csc.app'*[??](#csc.app.Analytics.__module__ "Permalink to this definition")
+### `send_action(type: str, key: str = '', label: str = '') -> None` (static)
 
-    *static* send\_action(*type: [str](https://docs.python.org/3/library/stdtypes.html#str "(in Python v3.13)")*, *key: [str](https://docs.python.org/3/library/stdtypes.html#str "(in Python v3.13)") = ''*, *label: [str](https://docs.python.org/3/library/stdtypes.html#str "(in Python v3.13)") = ''*)  [None](https://docs.python.org/3/library/constants.html#None "(in Python v3.13)")[??](#csc.app.Analytics.send_action "Permalink to this definition")
+Sends an analytics action event.
+
+**Parameters:**
+- `type` (str): The type of action being tracked
+- `key` (str, optional): Optional key parameter for additional context. Defaults to empty string
+- `label` (str, optional): Optional label for the action. Defaults to empty string
+
+**Returns:**
+- None
+
+**Example:**
+```python
+import csc.app
+
+# Send a basic analytics event
+csc.app.Analytics.send_action("user_action")
+
+# Send an analytics event with additional context
+csc.app.Analytics.send_action(
+    type="tool_usage", 
+    key="animation_tool", 
+    label="physics_simulation"
+)
+```
+
+## Usage Notes
+
+- This is a static method, so you don't need to instantiate the Analytics class
+- Analytics events are used internally by Cascadeur to understand user behavior
+- The `type` parameter is required, while `key` and `label` are optional
+- All parameters should be strings

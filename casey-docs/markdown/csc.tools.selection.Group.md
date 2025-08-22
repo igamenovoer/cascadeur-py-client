@@ -1,21 +1,79 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.tools.selection.Group.html
-html_file: aca1bd1715b39449bb2a4b1e072e9bf7.html
-module: csc.tools.selection.Group
----
+[CLEAN]
+<!-- Cleaned by batch script 2025-08-22 23:46 | Original: 13bf58a3 -->
 
-# csc.tools.selection.Group 
+# csc.tools.selection.Group
 
-Group class
+**Module:** `csc.tools.selection.Group`  
+**Source:** [Cascadeur Python API Documentation](https://cascadeur.com/python-api/_generate/csc.tools.selection.Group.html)
+
+## Overview
+
+Group class representing a selection group with a set of objects and a pivot object.
+
+## Class Definition
+
+```python
+class csc.tools.selection.Group
+```
+
+Represents a selection group with:
 - objects – std::set<ModelObjectId>
 - pivot – ModelObjectId
 
-objects – std::set<ModelObjectId> pivot – ModelObjectId Overloaded function.
-1. __init__(self: csc.tools.selection.Group) -> None
-2. __init__(self: csc.tools.selection.Group, arg0: set[Union[csc.model.ObjectId, csc.domain.Tool_object_id]], arg1: Union[csc.model.ObjectId, csc.domain.Tool_object_id]) -> None
+## Constructor
 
-__init__(self: csc.tools.selection.Group) -> None __init__(self: csc.tools.selection.Group, arg0: set[Union[csc.model.ObjectId, csc.domain.Tool_object_id]], arg1: Union[csc.model.ObjectId, csc.domain.Tool_object_id]) -> None Methods __init__ (*args, **kwargs) Overloaded function. Attributes objects pivot Overloaded function.
-1. __init__(self: csc.tools.selection.Group) -> None
-2. __init__(self: csc.tools.selection.Group, arg0: set[Union[csc.model.ObjectId, csc.domain.Tool_object_id]], arg1: Union[csc.model.ObjectId, csc.domain.Tool_object_id]) -> None
+### `__init__() -> None`
 
-__init__(self: csc.tools.selection.Group) -> None __init__(self: csc.tools.selection.Group, arg0: set[Union[csc.model.ObjectId, csc.domain.Tool_object_id]], arg1: Union[csc.model.ObjectId, csc.domain.Tool_object_id]) -> None
+Default constructor.
+
+**Parameters:**
+- None
+
+**Returns:**
+- None
+
+### `__init__(arg0: set[Union[csc.model.ObjectId, csc.domain.Tool_object_id]], arg1: Union[csc.model.ObjectId, csc.domain.Tool_object_id]) -> None`
+
+Constructs a Group with specified objects and pivot.
+
+**Parameters:**
+- `arg0` (set[Union[csc.model.ObjectId, csc.domain.Tool_object_id]]): Set of object identifiers for the group.
+- `arg1` (Union[csc.model.ObjectId, csc.domain.Tool_object_id]): Identifier of the pivot object.
+
+**Returns:**
+- None
+
+## Methods
+
+The class provides an overloaded `__init__` constructor as described above. No additional methods are documented.
+
+## Attributes
+
+- `objects`: std::set<ModelObjectId>
+- `pivot`: ModelObjectId
+
+## Usage Example
+
+```python
+from csc.tools.selection import Group
+from csc.model import ObjectId
+
+# Create an empty group
+g1 = Group()
+
+# Create a group with objects and a pivot
+obj_ids = {ObjectId(1), ObjectId(2)}
+pivot_id = ObjectId(1)
+g2 = Group(obj_ids, pivot_id)
+```
+
+## Usage Notes
+
+- Ensure that all IDs in the objects set and the pivot are valid instances of csc.model.ObjectId or csc.domain.Tool_object_id.
+- The pivot should typically be one of the objects in the set.
+
+## See Also
+
+- csc.model.ObjectId
+- csc.domain.Tool_object_id
+- csc.tools.selection module

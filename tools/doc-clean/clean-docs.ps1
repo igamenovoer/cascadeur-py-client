@@ -22,7 +22,7 @@ Usage examples:
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
   [int]$Limit = 0,
-  [switch]$TagClean,
+  [switch]$TagClean,  # Deprecated: tagging now always applied; retained for backward compat
   [string]$GuidePath = 'context/hints/howto-clean-api-documentation.md',
   [string]$MarkdownDir = 'casey-docs/markdown',
   [string]$AiderExtraArgs = ''
@@ -34,10 +34,10 @@ $ErrorActionPreference = 'Stop'
 function Get-UncleanMarkdownFiles {
   param([string]$Dir)
   Get-ChildItem -Path $Dir -Filter *.md -File -Recurse | Where-Object {
-    # Read only first few lines (can't mix -Raw with -TotalCount)
     $lines = Get-Content -Path $_.FullName -TotalCount 8
-    $firstLine = $lines | Where-Object { $_.Trim() -ne '' } | Select-Object -First 1
-    -not ($firstLine -and ($firstLine -match '^#?\s*\[CLEAN\]'))
+    $firstLine = ($lines | Where-Object { $_.Trim() -ne '' } | Select-Object -First 1).Trim()
+    # Clean if first non-empty line is exactly [CLEAN]
+    -not ($firstLine -eq '[CLEAN]')
   }
 }
 
@@ -68,17 +68,17 @@ foreach ($file in $files) {
   $message = @"
 rewrite doc file $relPath
 
-Transform it to the standardized API doc structure:
-1. Remove the YAML front matter block delimited by --- at the top.
-2. Start with: # [CLEAN] $($file.BaseName)
-3. Add an Overview section summarizing purpose in 2-4 concise sentences.
-4. Provide a Class Definition code block if it's a class; else a Function Definition block.
-5. List Constructor (if class) and then Methods, each with: signature (backticks), brief description, parameter bullets (name: type – description), return type, and important notes. Skip duplicates.
-6. Add Attributes section if there are notable attributes; otherwise omit.
-7. End with a Usage Notes section containing any caveats or typical usage patterns.
-8. No trailing blank heading, keep formatting tight, wrap code fences with ```python where relevant.
-9. Avoid repeating the module path in every heading; concise names only after the main title.
-10. Do not fabricate APIs; only include what is evidently present.
+Standardize per project rules:
+1. If a YAML front matter block (--- ... ---) exists at top, remove it entirely.
+2. Ensure the FIRST non-empty line is exactly: [CLEAN]
+3. After a blank line, provide a single H1 title: # $($file.BaseName)
+4. Add an '## Overview' section with 2-4 concise sentences describing purpose & context.
+5. Include '## Class Definition' (or '## Function Definition') with a python code fence of the signature(s).
+6. Sections order (omit if not applicable): Constructor, Methods, Attributes, Usage Notes.
+7. For each method: heading '### `signature`', one-sentence summary, Parameters bullet list (name: type – description), Returns line, Notes (optional).
+8. Do NOT fabricate undocumented params, types, or behavior. If unknown, say 'undocumented' minimally or omit.
+9. No duplicate info; keep formatting tight; use ```python fences for code.
+10. Do not prepend [CLEAN] to the title; the tag must stand alone as its own line.
 "@
   # Use a temporary message file to avoid CLI arg parsing issues with spaces.
   $msgFile = New-TemporaryFile
@@ -107,12 +107,26 @@ Transform it to the standardized API doc structure:
     }
 
     # Tag cleaned file if requested
-    if ($TagClean) {
-      $content = Get-Content -Path $file.FullName -Raw
-      if ($content -notmatch '^# \[CLEAN\] ') {
-        $content = $content -replace '^#\s+', '# [CLEAN] '  # prefix first header
-        Set-Content -Path $file.FullName -Value $content -Encoding UTF8
-      }
+    # Always enforce single-line [CLEAN] tag at top
+    $content = Get-Content -Path $file.FullName -Raw
+    $lines = [System.Collections.Generic.List[string]]::new()
+    $content -split "`n" | ForEach-Object { $lines.Add($_) }
+
+    # Remove any legacy '# [CLEAN] ...' header variants
+    if ($lines.Count -gt 0 -and $lines[0] -match '^#\s*\[CLEAN\]') { $lines.RemoveAt(0) }
+
+    # Strip leading blank lines
+    while ($lines.Count -gt 0 -and $lines[0].Trim() -eq '') { $lines.RemoveAt(0) }
+
+    # Insert [CLEAN] tag if missing
+    if (-not ($lines.Count -gt 0 -and $lines[0].Trim() -eq '[CLEAN]')) {
+      $lines.Insert(0, '[CLEAN]')
+      $lines.Insert(1, '')
+    }
+
+    $newContent = ($lines -join "`n").TrimEnd() + "`n"
+    if ($newContent -ne $content) {
+      Set-Content -Path $file.FullName -Value $newContent -Encoding UTF8
     }
 
     # Recompute hash; skip staging if unchanged

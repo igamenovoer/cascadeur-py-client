@@ -149,3 +149,7 @@ tmp/
 
 # API keys and secrets
 .api_key
+# Ignore generic aider transient artifacts but track explicit config files
+.aider*
+!.aider.conf.yml
+!.aider.model.settings.yml

@@ -2,7 +2,6 @@
 # Similar semantics to .gitignore, but specific to aider's file/context logic.
 
 # Large generated or scraped documentation
-casey-docs/
 docs/
 
 # Temporary / cache / state directories

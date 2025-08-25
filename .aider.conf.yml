@@ -31,7 +31,7 @@ cache-prompts: true                  # Enable provider prompt caching (caches re
 max-chat-history-tokens: 400000
 
 # System prompt enforcing standardized documentation cleanup style
-system-prompt-file: context/hints/doc_style.system.txt
+# system-prompt-file: context/hints/doc_style.system.txt
 
 # Automatic commit behavior
 auto-commits: false                # Disabled per user request (no automatic commits after edits)

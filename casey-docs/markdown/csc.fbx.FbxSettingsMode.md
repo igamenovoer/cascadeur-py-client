@@ -1,17 +1,43 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.fbx.FbxSettingsMode.html
-html_file: a01865877261403c80c9a0898fe7dced.html
-module: csc.fbx.FbxSettingsMode
----
+[CLEAN]
 
-# csc.fbx.FbxSettingsMode 
+# csc.fbx.FbxSettingsMode
 
-> 
-FbxSettingsMode enumeration
-> Binary, Ascii
+## Overview
 
-FbxSettingsMode enumeration Binary, Ascii Members:
-> Binary
-> Ascii
+FbxSettingsMode is an enumeration in the csc.fbx module. It represents the available settings mode values related to FBX operations, with two known members: Binary and Ascii. The specific usage context within the API is not documented in this file.
 
-Binary Ascii Methods __init__ (self, value) Attributes Ascii Binary name value
+## Class Definition
+
+```python
+class csc.fbx.FbxSettingsMode:
+    """Enumeration with members: Binary, Ascii."""
+```
+
+## Constructor
+
+### `__init__(self, value)`
+
+Initializes an enumeration member.
+
+**Parameters:**
+- value: undocumented
+
+**Returns:**
+- undocumented
+
+## Attributes
+
+- Binary — enumeration member (undocumented)
+- Ascii — enumeration member (undocumented)
+- name — member name (undocumented)
+- value — underlying value (undocumented)
+
+## Usage Notes
+
+```python
+from csc.fbx import FbxSettingsMode
+
+# Select a mode
+mode = FbxSettingsMode.Binary  # or FbxSettingsMode.Ascii
+```
+

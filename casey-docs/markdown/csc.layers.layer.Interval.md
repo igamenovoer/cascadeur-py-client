@@ -1,13 +1,25 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.layer.Interval.html
-html_file: d20c7220a3f3a438c5d371e7b1b63265.html
-module: csc.layers.layer.Interval
----
+[CLEAN]
 
-# csc.layers.layer.Interval 
+# csc.layers.layer.Interval
 
-Interval class Describes the interpolation interval properties
-- common – Get set Common
-- interpolation – Get set Interpolation
+## Overview
+Interval represents the interpolation interval properties for a layer in Cascadeur. It encapsulates settings that control how values are interpolated across frames within a layer. The available attributes indicated by the source are common and interpolation; their detailed types and semantics are undocumented.
 
-common – Get set Common interpolation – Get set Interpolation Methods __init__ (self) Attributes common interpolation
+## Class Definition
+```python
+class Interval:
+    ...
+```
+
+## Constructor
+
+### `__init__(self)`
+Initializes a new Interval instance; specific initialization details are undocumented.
+
+**Returns:**
+- None
+
+## Attributes
+- common – undocumented
+- interpolation – undocumented
+

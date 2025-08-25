@@ -1,23 +1,74 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.view.DialogButton.html
-html_file: 616a8026d36afbd00179d29e627ef554.html
-module: csc.view.DialogButton
----
+[CLEAN]
 
-# csc.view.DialogButton 
+# csc.view.DialogButton
 
-DialogButton class Overloaded function.
-1. __init__(self: csc.view.DialogButton) -> None
-2. __init__(self: csc.view.DialogButton, arg0: str) -> None
-3. __init__(self: csc.view.DialogButton, text: str, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None
-4. __init__(self: csc.view.DialogButton, arg0: csc.view.StandardButton) -> None
-5. __init__(self: csc.view.DialogButton, button: csc.view.StandardButton, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None
+## Overview
 
-__init__(self: csc.view.DialogButton) -> None __init__(self: csc.view.DialogButton, arg0: str) -> None __init__(self: csc.view.DialogButton, text: str, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None __init__(self: csc.view.DialogButton, arg0: csc.view.StandardButton) -> None __init__(self: csc.view.DialogButton, button: csc.view.StandardButton, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None Methods __init__ (*args, **kwargs) Overloaded function. force_active_focus (self) text (self) -> string Overloaded function.
-1. __init__(self: csc.view.DialogButton) -> None
-2. __init__(self: csc.view.DialogButton, arg0: str) -> None
-3. __init__(self: csc.view.DialogButton, text: str, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None
-4. __init__(self: csc.view.DialogButton, arg0: csc.view.StandardButton) -> None
-5. __init__(self: csc.view.DialogButton, button: csc.view.StandardButton, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None
+DialogButton represents a button widget used in Cascadeur dialog/view interfaces. It can be constructed using plain text or a csc.view.StandardButton value, with an optional callable handler. Optional flags allow forcing active focus and applying an accent style. Additional behavior is undocumented in the provided source.
 
-__init__(self: csc.view.DialogButton) -> None __init__(self: csc.view.DialogButton, arg0: str) -> None __init__(self: csc.view.DialogButton, text: str, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None __init__(self: csc.view.DialogButton, arg0: csc.view.StandardButton) -> None __init__(self: csc.view.DialogButton, button: csc.view.StandardButton, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None -> string
+## Class Definition
+
+```python
+class csc.view.DialogButton
+```
+
+## Constructor
+
+### `__init__(self) -> None`
+Undocumented constructor overload.
+
+- Parameters: none
+- Returns: None
+
+### `__init__(self, arg0: str) -> None`
+Undocumented constructor overload.
+
+- Parameters:
+  - arg0: str – undocumented
+- Returns: None
+
+### `__init__(self, text: str, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None`
+Undocumented constructor overload.
+
+- Parameters:
+  - text: str – undocumented
+  - handler: Callable – undocumented
+  - force_active_focus: bool – optional, default False (undocumented)
+  - accent: bool – optional, default False (undocumented)
+- Returns: None
+
+### `__init__(self, arg0: csc.view.StandardButton) -> None`
+Undocumented constructor overload.
+
+- Parameters:
+  - arg0: csc.view.StandardButton – undocumented
+- Returns: None
+
+### `__init__(self, button: csc.view.StandardButton, handler: Callable, force_active_focus: bool = False, accent: bool = False) -> None`
+Undocumented constructor overload.
+
+- Parameters:
+  - button: csc.view.StandardButton – undocumented
+  - handler: Callable – undocumented
+  - force_active_focus: bool – optional, default False (undocumented)
+  - accent: bool – optional, default False (undocumented)
+- Returns: None
+
+## Methods
+
+### `text(self) -> str`
+Undocumented accessor.
+
+- Parameters: none
+- Returns: str — undocumented
+
+### `force_active_focus(self)`
+Undocumented accessor.
+
+- Parameters: none
+- Returns: undocumented
+
+## Usage Notes
+
+- Overloaded constructors allow creation with either a text label or a StandardButton value, optionally with a handler and flags; specific behaviors are undocumented here.
+

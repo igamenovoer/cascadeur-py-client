@@ -1,13 +1,25 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.ConstantDataAttributeId.html
-html_file: 56f0c8eeb3a30c4a2c7ff4b7a4a05a5a.html
-module: csc.update.ConstantDataAttributeId
----
+[CLEAN]
 
-# csc.update.ConstantDataAttributeId 
+# csc.update.ConstantDataAttributeId
 
-ConstantDataAttributeId is defined by the ConstantDatasId and the data id of the constant Implements the ConstantDataAttributeId.
-- group_id – Get ConstantDatasId
-- attribute_id – Get the data id (csc.model.DataId)
+## Overview
+ConstantDataAttributeId identifies a specific constant data attribute using two parts: a ConstantDatasId for the group and a csc.model.DataId for the attribute. This pairs the group identifier with the attribute identifier to reference a particular constant’s data field within csc.update.
 
-group_id – Get ConstantDatasId attribute_id – Get the data id (csc.model.DataId) Methods __init__ (self, group_id, attribute_id) Attributes attribute_id group_id
+## Class Definition
+```python
+class ConstantDataAttributeId
+```
+
+## Constructor
+
+### `__init__(self, group_id, attribute_id)`
+Initializes a ConstantDataAttributeId with the given group and attribute identifiers.
+
+**Parameters:**
+- `group_id`: ConstantDatasId – undocumented
+- `attribute_id`: csc.model.DataId – undocumented
+
+## Attributes
+- `group_id`: ConstantDatasId – undocumented
+- `attribute_id`: csc.model.DataId – undocumented
+

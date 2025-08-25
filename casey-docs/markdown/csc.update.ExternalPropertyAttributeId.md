@@ -1,13 +1,29 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.ExternalPropertyAttributeId.html
-html_file: 4b9f78efbdae0d811f050a3caf8e8be9.html
-module: csc.update.ExternalPropertyAttributeId
----
+[CLEAN]
 
-# csc.update.ExternalPropertyAttributeId 
+# csc.update.ExternalPropertyAttributeId
 
-ExternalPropertyAttributeId is defined by the ExternalPropertiesId and the value of the ExternalProperty enum Implements the ExternalPropertyAttributeId.
-- node_id – Get GroupId
-- property – Get ExternalProperty enum value
+## Overview
+Represents an identifier for an external property attribute in Cascadeur. It is defined by a node/group identifier and an ExternalProperty enum value. This allows referencing a specific external property attribute associated with a node; detailed API semantics are undocumented in this excerpt.
 
-node_id – Get GroupId property – Get ExternalProperty enum value Methods __init__ (self, node_id, property) Attributes node_id property
+## Class Definition
+```python
+class ExternalPropertyAttributeId
+```
+
+## Constructor
+
+### `__init__(self, node_id, property)`
+Initializes the identifier with a node/group ID and an ExternalProperty enum value.
+
+**Parameters:**
+- `node_id`: undocumented – GroupId of the target node.
+- `property`: undocumented – ExternalProperty enum value.
+
+## Attributes
+- `node_id`: undocumented – GroupId of the node this attribute belongs to.
+- `property`: undocumented – ExternalProperty enum value associated with this attribute.
+
+## Usage Notes
+- Types and valid values are not specified in the available documentation excerpt.
+- This class appears to act as an identifier; additional behavior is undocumented.
+

@@ -1,17 +1,55 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.SettingFunctionId.html
-html_file: 7e9c881118385e35ba9585802c265e8a.html
-module: csc.model.SettingFunctionId
----
+[CLEAN]
 
-# csc.model.SettingFunctionId 
+# csc.model.SettingFunctionId
 
-Overloaded function.
-1. __init__(self: csc.model.SettingFunctionId, arg0: str) -> None
-2. __init__(self: csc.model.SettingFunctionId) -> None
+## Overview
 
-__init__(self: csc.model.SettingFunctionId, arg0: str) -> None __init__(self: csc.model.SettingFunctionId) -> None Methods __init__ (*args, **kwargs) Overloaded function. is_null (self) null () to_string (self) Overloaded function.
-1. __init__(self: csc.model.SettingFunctionId, arg0: str) -> None
-2. __init__(self: csc.model.SettingFunctionId) -> None
+SettingFunctionId represents an identifier for a setting function within the Cascadeur model API. It can be constructed either without arguments or from a string value. The API appears to provide null checks and conversion to string. Specific behaviors, parameter details, and return types are undocumented in the provided source.
 
-__init__(self: csc.model.SettingFunctionId, arg0: str) -> None __init__(self: csc.model.SettingFunctionId) -> None
+## Class Definition
+
+```python
+class csc.model.SettingFunctionId
+```
+
+## Constructor
+
+### __init__(arg0: str) -> None
+Initializes an instance from a string identifier; further behavior is undocumented.
+
+**Parameters:**
+- arg0: str – undocumented
+
+**Returns:**
+- None
+
+### __init__() -> None
+Initializes an instance with no arguments; behavior is undocumented.
+
+**Returns:**
+- None
+
+## Methods
+
+### is_null(self)
+Checks whether this identifier represents a null or empty value; behavior is undocumented.
+
+**Returns:**
+- undocumented
+
+### null()
+Returns a null SettingFunctionId instance; details are undocumented.
+
+**Returns:**
+- undocumented
+
+### to_string(self)
+Returns a string representation; details are undocumented.
+
+**Returns:**
+- undocumented
+
+## Usage Notes
+
+This document is a cleaned summary with limited details; refer to the original API source for authoritative information.
+

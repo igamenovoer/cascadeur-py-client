@@ -1,9 +1,237 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.RegularFunction.html
-html_file: 1194ef04dcc089dc9e82aa5b249b9074.html
-module: csc.update.RegularFunction
----
+[CLEAN]
 
-# csc.update.RegularFunction 
+# csc.update.RegularFunction
 
-RegularFunction class represents a node that calculates same operation, done with datas. Methods __init__ (*args, **kwargs) activity (self) activity attributes arguments (self) its input arguments attributes (self, d) array of all input and output attributes decrease_vector (self, path, direction) method that decreases vector attribute equal_to (self, arg0) full_name (self) name with all the parent nodes func_id (self) its id has_input (self, name) check if there is an input with such a name has_output (self, name) check if there is an output with such a name id (self) get uniqui id increase_vector (self, path, direction) method that increases vector attribute input (self, name) shortcut if node has only one input attribute inputs (self) array of all the inputes attributes is_active (self) check whether it is active for current actualities states (see Additional functionality in csc.update.UpdateEditor) is_convertible (self) check whether this function will make it to the resulting data graph is_fictive (self) whether it is a fictive node (constants, inputs, outputs of a group or external properties) name (self) get name output (self, name) shortcut if node has only one output attribute outputs (self) array of all the outputs attributes parent_group (self) return parent group (where this group node is located) parent_object (self) return object of the node. remove_attribute (self, attribute) method that removes one in vector attribute resize_vector_inputs (self, count, path) method that resizes input vector attribute resize_vector_outputs (self, count, path) method that resizes output vector attribute results (self) its output arguments set_convertible (self, convertible) set the state of the function, whether it will be used or not set_name (self, name) rename node activity attributes its input arguments method that decreases vector attribute its id method that increases vector attribute check whether this function will make it to the resulting data graph method that removes one in vector attribute method that resizes input vector attribute method that resizes output vector attribute its output arguments set the state of the function, whether it will be used or not
+## Overview
+RegularFunction represents a node in Cascadeur’s update/data graph that performs a defined computation over inputs to produce outputs. It manages named input and output attributes (including vector attributes) and can participate in groups within a larger graph. Nodes can be marked as convertible (included in the resulting data graph) or as fictive (e.g., constants, group I/O, or external properties). Specific parameter types and return values are undocumented.
+
+## Class Definition
+```python
+class RegularFunction:
+    ...
+```
+
+## Constructor
+
+### `__init__(*args, **kwargs)`
+Constructor for RegularFunction; parameters and behavior are undocumented.
+
+Parameters:
+- `*args`: undocumented – variable positional arguments
+- `**kwargs`: undocumented – keyword arguments
+
+Returns:
+- None
+
+## Methods
+
+### `activity(self)`
+Returns activity-related attributes for the node; exact structure is undocumented.
+
+Returns:
+- undocumented
+
+### `arguments(self)`
+Returns the input arguments of the node; exact structure is undocumented.
+
+Returns:
+- undocumented
+
+### `attributes(self, d)`
+Returns all input and output attributes; the meaning of `d` is undocumented.
+
+Parameters:
+- `d`: undocumented – filter or context
+
+Returns:
+- undocumented
+
+### `decrease_vector(self, path, direction)`
+Decreases a vector attribute referenced by path; exact semantics are undocumented.
+
+Parameters:
+- `path`: undocumented – attribute path
+- `direction`: undocumented – adjustment direction or amount
+
+Returns:
+- undocumented
+
+### `equal_to(self, arg0)`
+Compares the node to another object; comparison details are undocumented.
+
+Parameters:
+- `arg0`: undocumented – object to compare
+
+Returns:
+- undocumented
+
+### `full_name(self)`
+Returns the full hierarchical name including parent nodes.
+
+Returns:
+- undocumented
+
+### `func_id(self)`
+Returns the function identifier of the node.
+
+Returns:
+- undocumented
+
+### `has_input(self, name)`
+Checks whether an input attribute with the given name exists.
+
+Parameters:
+- `name`: undocumented – input attribute name
+
+Returns:
+- undocumented
+
+### `has_output(self, name)`
+Checks whether an output attribute with the given name exists.
+
+Parameters:
+- `name`: undocumented – output attribute name
+
+Returns:
+- undocumented
+
+### `id(self)`
+Returns the unique identifier of the node.
+
+Returns:
+- undocumented
+
+### `increase_vector(self, path, direction)`
+Increases a vector attribute referenced by path; exact semantics are undocumented.
+
+Parameters:
+- `path`: undocumented – attribute path
+- `direction`: undocumented – adjustment direction or amount
+
+Returns:
+- undocumented
+
+### `input(self, name)`
+Returns a specific input attribute by name (shortcut when only one exists).
+
+Parameters:
+- `name`: undocumented – input attribute name
+
+Returns:
+- undocumented
+
+### `inputs(self)`
+Returns all input attributes.
+
+Returns:
+- undocumented
+
+### `is_active(self)`
+Indicates whether the node is active for the current actuality/state; criteria are undocumented.
+
+Returns:
+- undocumented
+
+### `is_convertible(self)`
+Indicates whether this node will be included in the resulting data graph.
+
+Returns:
+- undocumented
+
+### `is_fictive(self)`
+Indicates whether this node is fictive (e.g., constants, group I/O, or external properties).
+
+Returns:
+- undocumented
+
+### `name(self)`
+Returns the node’s name.
+
+Returns:
+- undocumented
+
+### `output(self, name)`
+Returns a specific output attribute by name (shortcut when only one exists).
+
+Parameters:
+- `name`: undocumented – output attribute name
+
+Returns:
+- undocumented
+
+### `outputs(self)`
+Returns all output attributes.
+
+Returns:
+- undocumented
+
+### `parent_group(self)`
+Returns the parent group in which this node is located.
+
+Returns:
+- undocumented
+
+### `parent_object(self)`
+Returns the underlying object of the node.
+
+Returns:
+- undocumented
+
+### `remove_attribute(self, attribute)`
+Removes one element from a vector attribute; exact behavior is undocumented.
+
+Parameters:
+- `attribute`: undocumented – attribute or element identifier
+
+Returns:
+- undocumented
+
+### `resize_vector_inputs(self, count, path)`
+Resizes an input vector attribute.
+
+Parameters:
+- `count`: undocumented – new size
+- `path`: undocumented – attribute path
+
+Returns:
+- undocumented
+
+### `resize_vector_outputs(self, count, path)`
+Resizes an output vector attribute.
+
+Parameters:
+- `count`: undocumented – new size
+- `path`: undocumented – attribute path
+
+Returns:
+- undocumented
+
+### `results(self)`
+Returns the output arguments of the node; exact structure is undocumented.
+
+Returns:
+- undocumented
+
+### `set_convertible(self, convertible)`
+Sets whether this node should be included in the resulting data graph.
+
+Parameters:
+- `convertible`: undocumented – truthy/flag value
+
+Returns:
+- undocumented
+
+### `set_name(self, name)`
+Renames the node.
+
+Parameters:
+- `name`: undocumented – new name
+
+Returns:
+- undocumented
+
+## Usage Notes
+- Names, paths, and vector operations are interface concepts specific to Cascadeur’s update graph; their exact types and error behaviors are undocumented here.
+- Use existence checks (has_input/has_output) before accessing attributes by name to avoid runtime errors.
+- Convertible and fictive flags influence graph export/inclusion; default behaviors are undocumented.
+

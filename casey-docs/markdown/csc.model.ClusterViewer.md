@@ -1,10 +1,69 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.ClusterViewer.html
-html_file: 24a252a4503aeac8d3fefbef3dec51e4.html
-module: csc.model.ClusterViewer
----
+[CLEAN]
 
-# csc.model.ClusterViewer 
+# csc.model.ClusterViewer
 
-ClusterViewer class 
-This class lets read scene data clusters. Methods __init__ (*args, **kwargs) cluster_by_data (self, data_id) data_id : csc.model.DataId | -> ClusterId cluster_datas (self, cluster_id) cluster_id : ClusterId | -> csc.model.DataId[] cluster_name (self, cluster_id) cluster_id : ClusterId | -> string clusters (self) -> ClusterId[] clusters_bindings (self) -> (ClusterId,ClusterId)[] data_id : csc.model.DataId | -> ClusterId cluster_id : ClusterId | -> csc.model.DataId[] cluster_id : ClusterId | -> string -> ClusterId[] -> (ClusterId,ClusterId)[]
+## Overview
+ClusterViewer provides read access to scene data clusters. It lets you enumerate clusters, resolve a cluster from a data identifier, list data items within a cluster, and query cluster names and bindings. Type details for ClusterId and DataId come from Cascadeur’s API and are not expanded here.
+
+## Class Definition
+```python
+class csc.model.ClusterViewer
+```
+
+## Constructor
+
+### `__init__(*args, **kwargs)`
+Constructor; parameters are undocumented.
+
+**Parameters:**
+- *args: undocumented – undocumented
+- **kwargs: undocumented – undocumented
+
+## Methods
+
+### `cluster_by_data(self, data_id: csc.model.DataId) -> ClusterId`
+Returns the cluster identifier associated with a given data identifier.
+
+**Parameters:**
+- data_id: csc.model.DataId – undocumented
+
+**Returns:**
+- ClusterId – undocumented
+
+### `cluster_datas(self, cluster_id: ClusterId) -> csc.model.DataId[]`
+Lists data identifiers that belong to a specified cluster.
+
+**Parameters:**
+- cluster_id: ClusterId – undocumented
+
+**Returns:**
+- csc.model.DataId[] – undocumented
+
+### `cluster_name(self, cluster_id: ClusterId) -> string`
+Gets the name of a cluster.
+
+**Parameters:**
+- cluster_id: ClusterId – undocumented
+
+**Returns:**
+- string – undocumented
+
+### `clusters(self) -> ClusterId[]`
+Returns all cluster identifiers in the scene.
+
+**Returns:**
+- ClusterId[] – undocumented
+
+### `clusters_bindings(self) -> (ClusterId, ClusterId)[]`
+Returns a list of cluster bindings as pairs.
+
+**Returns:**
+- (ClusterId, ClusterId)[] – undocumented
+
+**Notes:**
+- The semantics of the binding pairs are undocumented.
+
+## Usage Notes
+- The exact structure and behavior of ClusterId and DataId are defined by Cascadeur’s API and are not detailed here.
+- Method return values and parameter semantics are minimally documented in this excerpt.
+

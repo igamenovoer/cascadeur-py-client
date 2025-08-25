@@ -1,33 +1,34 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.layer.Interpolation.html
-html_file: be8d297eca1985395af3e06560bae8d1.html
-module: csc.layers.layer.Interpolation
----
+[CLEAN]
 
-# csc.layers.layer.Interpolation 
+# csc.layers.layer.Interpolation
 
-> Interpolation enumerable
-> BEZIER = 0,
-> LOW_AMPLITUDE_BEZIER = 1, // viscous
-> LINEAR = 2,
-> STEP = 3,
-> FIXED = 4,
-> NONE = 5,
-> CLAMPED_BEZIER = 6,
+## Overview
+An enumeration of keyframe interpolation modes used in Cascadeur's layer system. These values determine how animation values transition between keyframes (e.g., smooth curves, linear transitions, or stepped changes). Use these constants when setting or reading interpolation for keys on animation layers.
 
-Interpolation enumerable BEZIER = 0,
-LOW_AMPLITUDE_BEZIER = 1, // viscous
-LINEAR = 2,
-STEP = 3,
-FIXED = 4,
-NONE = 5,
-CLAMPED_BEZIER = 6, Members:
-> BEZIER
-> LOW_AMPLITUDE_BEZIER
-> LINEAR
-> STEP
-> FIXED
-> NONE
-> CLAMPED_BEZIER
+## Class Definition
+```python
+class csc.layers.layer.Interpolation
+```
 
-BEZIER LOW_AMPLITUDE_BEZIER LINEAR STEP FIXED NONE CLAMPED_BEZIER Methods __init__ (self, value) Attributes BEZIER CLAMPED_BEZIER FIXED LINEAR LOW_AMPLITUDE_BEZIER NONE STEP name value
+## Constructor
+
+### `__init__(value)`
+Initializes the enumeration member.
+
+- Parameters:
+  - value: undocumented – Underlying value used to construct the enum member.
+- Returns: None
+
+## Attributes
+- BEZIER: int – 0
+- LOW_AMPLITUDE_BEZIER: int – 1 (viscous)
+- LINEAR: int – 2
+- STEP: int – 3
+- FIXED: int – 4
+- NONE: int – 5
+- CLAMPED_BEZIER: int – 6
+
+## Usage Notes
+- Choose an Interpolation value to control how a key transitions to the next key on a layer.
+- Exact behavior of each mode is defined by Cascadeur; consult the original documentation for detailed semantics.
+

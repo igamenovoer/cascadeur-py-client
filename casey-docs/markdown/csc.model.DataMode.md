@@ -1,19 +1,25 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.DataMode.html
-html_file: b1e7268cf5daf91c8afc82cd0039b3c3.html
-module: csc.model.DataMode
----
+[CLEAN]
 
-# csc.model.DataMode 
+# csc.model.DataMode
 
-> Data::Mode
-> enum
-> This enumerates the basic types of data.
-> Static, Animation
+## Overview
+DataMode is an enumeration that distinguishes between static and time-varying data in Cascadeur. Use it to tell APIs whether an operation should act on a single state or over an animation timeline. Choosing the correct mode helps avoid unintended processing across frames or missed time variation.
 
-Data::Mode enum This enumerates the basic types of data.
-Static, Animation Members:
-> Static
-> Animation
+## Class Definition
+```python
+class csc.model.DataMode  # enum
+    Static
+    Animation
+```
 
-Static Animation Methods __init__ (self, value) Attributes Animation Static name value
+## Attributes
+- Static: enumeration member – Non-animated (time-invariant) data.
+- Animation: enumeration member – Animated (time-varying) data.
+- name: str – Name of the enum member.
+- value: undocumented – Underlying value associated with the enum member.
+
+## Usage Notes
+- Use Static for operations on a single pose or snapshot.
+- Use Animation when traversing, evaluating, or modifying data across frames.
+- Prefer the enum members over raw literals for clarity and safety.
+

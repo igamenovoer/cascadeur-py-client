@@ -1,17 +1,48 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.GroupId.html
-html_file: e589307b9f0e0698695b21c7bf31f224.html
-module: csc.update.GroupId
----
+[CLEAN]
 
-# csc.update.GroupId 
+# csc.update.GroupId
 
-Overloaded function.
-1. __init__(self: csc.update.GroupId, arg0: str) -> None
-2. __init__(self: csc.update.GroupId) -> None
+## Overview
+Represents an identifier object in the csc.update namespace. Supports default and string-based construction, testing for a null state, and converting the identifier to text. Detailed semantics and usage context are undocumented in the source page.
 
-__init__(self: csc.update.GroupId, arg0: str) -> None __init__(self: csc.update.GroupId) -> None Methods __init__ (*args, **kwargs) Overloaded function. is_null (self) null () to_string (self) Overloaded function.
-1. __init__(self: csc.update.GroupId, arg0: str) -> None
-2. __init__(self: csc.update.GroupId) -> None
+## Class Definition
+```python
+class csc.update.GroupId:
+    ...
+```
 
-__init__(self: csc.update.GroupId, arg0: str) -> None __init__(self: csc.update.GroupId) -> None
+## Constructor
+
+### `__init__(self: csc.update.GroupId, arg0: str) -> None`
+Initializes the identifier from a string value.
+
+- Parameters:
+  - arg0: str – identifier string (undocumented specifics)
+- Returns: None
+
+### `__init__(self: csc.update.GroupId) -> None`
+Initializes an empty/null identifier.
+
+- Parameters: None
+- Returns: None
+
+## Methods
+
+### `is_null(self) -> undocumented`
+Returns whether the identifier is in a null/empty state (undocumented).
+
+- Parameters: None
+- Returns: undocumented
+
+### `null() -> undocumented`
+Returns a null/empty identifier (undocumented).
+
+- Parameters: None
+- Returns: undocumented
+
+### `to_string(self) -> undocumented`
+Converts the identifier to its string representation (undocumented).
+
+- Parameters: None
+- Returns: undocumented
+

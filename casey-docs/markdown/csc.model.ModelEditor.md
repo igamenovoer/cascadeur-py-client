@@ -1,13 +1,119 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.ModelEditor.html
-html_file: dbc6362aebe211be60307113c12bfeaa.html
-module: csc.model.ModelEditor
----
+[CLEAN]
 
-# csc.model.ModelEditor 
+# csc.model.ModelEditor
 
-ModelEditor class Represents basic methods to edit the scene model add_object – overridden method by GroupId -> csc.model.ObjectId Methods __init__ (*args, **kwargs) add_object (*args, **kwargs) Overloaded function. behaviour_editor (self) -> BehaviourEditor data_editor (self) -> DataEditor delete_objects (self, ids[, close_connections]) fit_animation_size_by_layers (self) get_viewer (self) init_default_constants (self) layers (self) -> csc.layers.Layers layers_editor (self) -> csc.layers.Editor layers_selector (self) -> csc.layers.Selector move_obj_ids_in_layers (self[, objIds]) move_objects_to_layer (self, ids, target_layer_id) set_fixed_interpolation_if_need (self, ...[, ...]) set_object_name (self, id, name) set_object_type_name (self, id, name) Overloaded function.
-1. add_object(self: csc.model.ModelEditor) -> csc.model.ObjectId
-2. add_object(self: csc.model.ModelEditor, id: csc.model.ObjectId) -> csc.model.ObjectId
+## Overview
+ModelEditor provides basic methods to edit the scene model in Cascadeur. It includes operations for adding and removing objects, working with layers, and accessing related editors and the viewer. Specific parameter types and behaviors are not fully documented here; unknown details are marked as undocumented.
 
-add_object(self: csc.model.ModelEditor) -> csc.model.ObjectId add_object(self: csc.model.ModelEditor, id: csc.model.ObjectId) -> csc.model.ObjectId -> BehaviourEditor -> DataEditor -> csc.layers.Layers -> csc.layers.Editor -> csc.layers.Selector
+## Class Definition
+```python
+class csc.model.ModelEditor
+```
+
+## Constructor
+
+### `__init__(*args, **kwargs)`
+Creates a ModelEditor instance.
+- Parameters:
+  - `*args`: undocumented
+  - `**kwargs`: undocumented
+- Returns: None
+
+## Methods
+
+### `add_object() -> csc.model.ObjectId`
+Adds a new object to the scene model.
+- Parameters: none
+- Returns: `csc.model.ObjectId` – undocumented
+
+### `add_object(id: csc.model.ObjectId) -> csc.model.ObjectId`
+Adds the specified object to the scene model.
+- Parameters:
+  - `id`: `csc.model.ObjectId` – undocumented
+- Returns: `csc.model.ObjectId` – undocumented
+
+### `behaviour_editor() -> BehaviourEditor`
+Returns the behaviour editor associated with the model.
+- Parameters: none
+- Returns: `BehaviourEditor` – undocumented
+
+### `data_editor() -> DataEditor`
+Returns the data editor associated with the model.
+- Parameters: none
+- Returns: `DataEditor` – undocumented
+
+### `delete_objects(ids, close_connections=None)`
+Deletes the specified objects from the scene model.
+- Parameters:
+  - `ids`: undocumented
+  - `close_connections` (optional): undocumented
+- Returns: undocumented
+
+### `fit_animation_size_by_layers()`
+Fits or adjusts animation size based on layers.
+- Parameters: none
+- Returns: undocumented
+
+### `get_viewer()`
+Returns the viewer instance associated with the model.
+- Parameters: none
+- Returns: undocumented
+
+### `init_default_constants()`
+Initializes default constants for the model editor.
+- Parameters: none
+- Returns: undocumented
+
+### `layers() -> csc.layers.Layers`
+Returns the layers collection.
+- Parameters: none
+- Returns: `csc.layers.Layers`
+
+### `layers_editor() -> csc.layers.Editor`
+Returns the layers editor.
+- Parameters: none
+- Returns: `csc.layers.Editor`
+
+### `layers_selector() -> csc.layers.Selector`
+Returns the layers selector.
+- Parameters: none
+- Returns: `csc.layers.Selector`
+
+### `move_obj_ids_in_layers(objIds=None)`
+Moves object IDs within layers.
+- Parameters:
+  - `objIds` (optional): undocumented
+- Returns: undocumented
+
+### `move_objects_to_layer(ids, target_layer_id)`
+Moves the specified objects to a target layer.
+- Parameters:
+  - `ids`: undocumented
+  - `target_layer_id`: undocumented
+- Returns: undocumented
+
+### `set_fixed_interpolation_if_need(...)`
+Sets fixed interpolation if needed.
+- Parameters: undocumented
+- Returns: undocumented
+- Notes: Signature is variadic/undocumented.
+
+### `set_object_name(id, name)`
+Sets an object's name.
+- Parameters:
+  - `id`: undocumented
+  - `name`: undocumented
+- Returns: undocumented
+
+### `set_object_type_name(id, name)`
+Sets an object's type name.
+- Parameters:
+  - `id`: undocumented
+  - `name`: undocumented
+- Returns: undocumented
+- Notes: Overloaded function; details undocumented.
+
+## Usage Notes
+- This documentation reflects available signatures; parameter types and behaviors marked as undocumented should be validated against the official Cascadeur API reference.
+- Editor accessors (behaviour_editor, data_editor, layers_editor, layers_selector) return helper editors for specialized operations.
+

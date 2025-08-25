@@ -1,14 +1,34 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.view.SphericalCameraStruct.html
-html_file: 612841d018681d072ffacbe314655069.html
-module: csc.view.SphericalCameraStruct
----
+[CLEAN]
 
-# csc.view.SphericalCameraStruct 
+# csc.view.SphericalCameraStruct
 
-SphericalCameraStruct class
-- target – Get set Vector3f
-- position – Get set Vector3f
-- type – Get set CameraType
+## Overview
 
-target – Get set Vector3f position – Get set Vector3f type – Get set CameraType Methods __init__ (self) Attributes position target type
+SphericalCameraStruct represents a camera configuration within the csc.view module. It contains a 3D position, a 3D target, and a camera type value. It is used to pass or read camera state in the API; detailed behavior and constraints are undocumented.
+
+## Class Definition
+
+```python
+class csc.view.SphericalCameraStruct
+```
+
+## Constructor
+
+### `__init__(self)`
+
+Initialize a new SphericalCameraStruct instance.
+
+**Returns:**
+- None
+
+## Attributes
+
+- position: Vector3f – get/set; undocumented details.
+- target: Vector3f – get/set; undocumented details.
+- type: CameraType – get/set; undocumented details.
+
+## Usage Notes
+
+- Properties are reported as get/set; specific validation, defaults, and side effects are undocumented.
+- Types Vector3f and CameraType refer to API-defined types in the Cascadeur environment.
+

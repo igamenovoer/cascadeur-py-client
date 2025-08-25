@@ -1,21 +1,203 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.RegularData.html
-html_file: 8fe79620ce85c240cf8ecb310da0ad63.html
-module: csc.update.RegularData
----
+[CLEAN]
 
-# csc.update.RegularData 
+# csc.update.RegularData
 
-RegularData class represents a node of a data.
-- value – overridden method by frame, get data value (requires frame if Animation data)
-- set_value – overridden method by frame, set data value (requires frame if Animation data)
+## Overview
+RegularData represents a data node in Cascadeur's update system. It can be Static or Animation data and exposes input/output attributes, identity, and hierarchy information. For Animation data, values may be accessed or set per frame, with interpolation controls such as Euler filtering, explicit linear mode, and configurable lerp mode. The API allows querying actual/active state, connectivity, and parent relationships, and reading or writing values.
 
-value – overridden method by frame, get data value (requires frame if Animation data) set_value – overridden method by frame, set data value (requires frame if Animation data) Methods __init__ (*args, **kwargs) actuality (self) output attribute, that provides actuality status attribute (self, d) get attribute by direction attributes (self, d) array of all input and output attributes data_id (self) equal_to (self, arg0) full_name (self) name with all the parent nodes get_apply_euler_filter (self) get apply euler filter get_explicit_linear (self) get explicit linear get_lerp_mode (self) get lerp mode has_input (self, name) check if there is an input with such a name has_output (self, name) check if there is an output with such a name id (self) get uniqui id input (self) input attribute inputs (self) array of all the inputes attributes is_active (self) check whether it is active for current actualities states (see Additional functionality in csc.update.UpdateEditor) is_actual (self) check if this data is set to actual (see Additional functionality in csc.update.UpdateEditor) is_fictive (self) whether it is a fictive node (constants, inputs, outputs of a group or external properties) mode (self) Check if data is Animation or Static name (self) get name output (self) output attribute outputs (self) array of all the outputs attributes parent_group (self) return parent group (where this group node is located) parent_object (self) return object of the node. remove_period (self) in interpolation, remove period set_actual (self, act) set this data as actual (see Additional functionality in csc.update.UpdateEditor) set_apply_euler_filter (self, apply_euler_filter) set apply euler filter set_description_value (self, name) setDescriptionValue set_explicit_linear (self, explicit_linear) set explicit linear set_lerp_mode (self, mode) can be slerp for Vector3 datas. set_name (self, name) rename node set_period (self, period) in interpolation, if perion is provided, the data will be "fixed" to provide smoothness set_value (*args, **kwargs) Overloaded function. value (*args, **kwargs) Overloaded function. output attribute, that provides actuality status get attribute by direction get apply euler filter get explicit linear get lerp mode input attribute check if this data is set to actual (see Additional functionality in csc.update.UpdateEditor) Check if data is Animation or Static output attribute in interpolation, remove period set this data as actual (see Additional functionality in csc.update.UpdateEditor) set apply euler filter setDescriptionValue set explicit linear can be slerp for Vector3 datas. Used in interpolation in interpolation, if perion is provided, the data will be âfixedâ to provide smoothness Overloaded function.
-1. set_value(self: csc.update.RegularData, v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None
-2. set_value(self: csc.update.RegularData, v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], frame: int) -> None
+## Class Definition
+```python
+class csc.update.RegularData
+```
 
-set_value(self: csc.update.RegularData, v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None set_value(self: csc.update.RegularData, v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], frame: int) -> None Overloaded function.
-1. value(self: csc.update.RegularData) -> Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]
-2. value(self: csc.update.RegularData, frame: int) -> Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]
+## Constructor
 
-value(self: csc.update.RegularData) -> Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] value(self: csc.update.RegularData, frame: int) -> Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]
+### `__init__(*args, **kwargs)`
+Create a RegularData instance.
+- Parameters:
+  - args: undocumented – positional arguments.
+  - kwargs: undocumented – keyword arguments.
+
+## Methods
+
+### `actuality()`
+Output attribute providing the actuality status.
+- Returns: undocumented.
+
+### `attribute(d)`
+Get attribute by direction.
+- Parameters:
+  - d: undocumented – direction specifier.
+- Returns: undocumented.
+
+### `attributes(d)`
+Return all input and/or output attributes for a given direction.
+- Parameters:
+  - d: undocumented – direction specifier.
+- Returns: undocumented.
+
+### `data_id()`
+Get the data identifier.
+- Returns: undocumented.
+
+### `equal_to(arg0)`
+Check equality with another object/value.
+- Parameters:
+  - arg0: undocumented – object or value to compare.
+- Returns: undocumented.
+
+### `full_name()`
+Get the name with all parent nodes.
+- Returns: undocumented.
+
+### `get_apply_euler_filter()`
+Get the current "apply Euler filter" setting.
+- Returns: undocumented.
+
+### `get_explicit_linear()`
+Get the current explicit-linear interpolation setting.
+- Returns: undocumented.
+
+### `get_lerp_mode()`
+Get the current lerp mode.
+- Returns: undocumented.
+
+### `has_input(name)`
+Check if there is an input with the given name.
+- Parameters:
+  - name: undocumented – input name to check.
+- Returns: undocumented.
+
+### `has_output(name)`
+Check if there is an output with the given name.
+- Parameters:
+  - name: undocumented – output name to check.
+- Returns: undocumented.
+
+### `id()`
+Get a unique id.
+- Returns: undocumented.
+
+### `input()`
+Get the input attribute.
+- Returns: undocumented.
+
+### `inputs()`
+Get all input attributes.
+- Returns: undocumented.
+
+### `is_active()`
+Check whether it is active for the current actuality states.
+- Returns: undocumented.
+- Notes: See additional functionality in csc.update.UpdateEditor.
+
+### `is_actual()`
+Check if this data is set to actual.
+- Returns: undocumented.
+- Notes: See additional functionality in csc.update.UpdateEditor.
+
+### `is_fictive()`
+Whether this is a fictive node (e.g., constants, group I/O, external properties).
+- Returns: undocumented.
+
+### `mode()`
+Check if data is Animation or Static.
+- Returns: undocumented.
+
+### `name()`
+Get the name.
+- Returns: undocumented.
+
+### `output()`
+Get the output attribute.
+- Returns: undocumented.
+
+### `outputs()`
+Get all output attributes.
+- Returns: undocumented.
+
+### `parent_group()`
+Return the parent group (location of this group node).
+- Returns: undocumented.
+
+### `parent_object()`
+Return the object of the node.
+- Returns: undocumented.
+
+### `remove_period()`
+In interpolation, remove the existing period.
+- Returns: undocumented.
+
+### `set_actual(act)`
+Set this data as actual.
+- Parameters:
+  - act: undocumented – actuality flag/value.
+- Returns: undocumented.
+- Notes: See additional functionality in csc.update.UpdateEditor.
+
+### `set_apply_euler_filter(apply_euler_filter)`
+Set the "apply Euler filter" option.
+- Parameters:
+  - apply_euler_filter: undocumented.
+- Returns: undocumented.
+
+### `set_description_value(name)`
+Set description value.
+- Parameters:
+  - name: undocumented.
+- Returns: undocumented.
+
+### `set_explicit_linear(explicit_linear)`
+Set the explicit-linear interpolation mode.
+- Parameters:
+  - explicit_linear: undocumented.
+- Returns: undocumented.
+
+### `set_lerp_mode(mode)`
+Set the lerp mode (can be slerp for Vector3 data).
+- Parameters:
+  - mode: undocumented.
+- Returns: undocumented.
+
+### `set_name(name)`
+Rename the node.
+- Parameters:
+  - name: undocumented – new name.
+- Returns: undocumented.
+
+### `set_period(period)`
+In interpolation, fix the period to provide smoothness.
+- Parameters:
+  - period: undocumented.
+- Returns: undocumented.
+
+### `set_value(v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None`
+Set the data value.
+- Parameters:
+  - v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – value to set.
+- Returns: None.
+- Notes: For Animation data, a frame may be required.
+
+### `set_value(v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], frame: int) -> None`
+Set the data value at a specific frame.
+- Parameters:
+  - v: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – value to set.
+  - frame: int – target frame.
+- Returns: None.
+
+### `value() -> Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]`
+Get the current data value.
+- Returns: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]].
+- Notes: For Animation data, a frame may be required.
+
+### `value(frame: int) -> Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]`
+Get the data value at a specific frame.
+- Parameters:
+  - frame: int – target frame.
+- Returns: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]].
+
+## Usage Notes
+- If the data is Animation, value access and setting may require a frame parameter.
+- Lerp mode can be set (e.g., slerp for Vector3 data); Euler filtering and explicit-linear options affect interpolation behavior.
+- Fictive nodes include constants, group I/O, and external properties.
+

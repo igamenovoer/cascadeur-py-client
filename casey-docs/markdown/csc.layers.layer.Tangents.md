@@ -1,16 +1,35 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.layer.Tangents.html
-html_file: 66f8323d2c8195fe89cc7403c44a6a3a.html
-module: csc.layers.layer.Tangents
----
+[CLEAN]
 
-# csc.layers.layer.Tangents 
+# csc.layers.layer.Tangents
 
-> Layer Frame Tangents enumerable
-> Continuous = 0, UserDefined = 1
+## Overview
+Enumeration representing layer frame tangents in Cascadeur’s animation system. It distinguishes how tangents for layer frames are specified. Members include Continuous (0) and UserDefined (1). Typically used to indicate the tangent mode for frames on an animation layer.
 
-Layer Frame Tangents enumerable Continuous = 0, UserDefined = 1 Members:
-> Continuous
-> UserDefined
+## Class Definition
+```python
+class csc.layers.layer.Tangents
+```
 
-Continuous UserDefined Methods __init__ (self, value) Attributes Continuous UserDefined name value
+## Constructor
+### __init__(self, value)
+Initializes an enumeration member with the given value.
+
+**Parameters:**
+- value: undocumented – enumeration value
+
+**Returns:**
+- undocumented
+
+## Methods
+- None beyond standard enumeration behavior.
+
+## Attributes
+- Continuous – enumeration member with value 0
+- UserDefined – enumeration member with value 1
+- name – enum member name (undocumented)
+- value – enum member value (undocumented)
+
+## Usage Notes
+- This is an enumeration; values are typically consumed by APIs that accept a tangent mode.
+- Specific integration points and effects are undocumented here.
+

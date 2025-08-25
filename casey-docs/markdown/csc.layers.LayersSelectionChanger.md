@@ -1,17 +1,68 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.LayersSelectionChanger.html
-html_file: b28b4b90b9c459794d7ddb9ff3f6ec9c.html
-module: csc.layers.LayersSelectionChanger
----
+[CLEAN]
 
-# csc.layers.LayersSelectionChanger 
+# csc.layers.LayersSelectionChanger
 
-Layer 
-SelectionChanger class Methods __init__ (*args, **kwargs) refresh (self) selectDefault (self) set_full_selection_by_parts (*args, **kwargs) Overloaded function. Overloaded function.
-1. set_full_selection_by_parts(self: csc.layers.LayersSelectionChanger, inds: domain::scene::layers::index::IndicesContainer) -> None inds : IndicesContainer
-2. set_full_selection_by_parts(self: csc.layers.LayersSelectionChanger, itms: list[csc.Guid], first: int, last: int) -> bool
+## Overview
+Utility for controlling or modifying layer selections within the csc.layers API. Provides operations to refresh the selection state, select a default set, and set the full selection by specified parts. Detailed behavior and side effects are undocumented in the provided source.
 
-set_full_selection_by_parts(self: csc.layers.LayersSelectionChanger, inds: domain::scene::layers::index::IndicesContainer) -> None
-> inds : IndicesContainer
+## Class Definition
+```python
+class csc.layers.LayersSelectionChanger
+```
 
-inds : IndicesContainer set_full_selection_by_parts(self: csc.layers.LayersSelectionChanger, itms: list[csc.Guid], first: int, last: int) -> bool
+## Constructor
+
+### `__init__(*args, **kwargs)`
+Undocumented.
+
+**Parameters:**
+- `*args`: undocumented – undocumented
+- `**kwargs`: undocumented – undocumented
+
+**Returns:**
+- undocumented
+
+## Methods
+
+### `refresh(self)`
+Undocumented.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `selectDefault(self)`
+Undocumented.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `set_full_selection_by_parts(self: csc.layers.LayersSelectionChanger, inds: domain::scene::layers::index::IndicesContainer) -> None`
+Undocumented.
+
+**Parameters:**
+- `inds`: domain::scene::layers::index::IndicesContainer – undocumented
+
+**Returns:**
+- None
+
+### `set_full_selection_by_parts(self: csc.layers.LayersSelectionChanger, itms: list[csc.Guid], first: int, last: int) -> bool`
+Undocumented.
+
+**Parameters:**
+- `itms`: list[csc.Guid] – undocumented
+- `first`: int – undocumented
+- `last`: int – undocumented
+
+**Returns:**
+- bool – undocumented
+
+## Usage Notes
+- Method documentation is limited; behavior details are not specified in the source.
+- Type names are preserved as given in the original documentation.
+

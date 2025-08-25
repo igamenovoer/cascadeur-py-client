@@ -1,14 +1,30 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.math.ScaledTransform.html
-html_file: 9825f68d10de0ef23e5a7d21401ab1c4.html
-module: csc.math.ScaledTransform
----
+[CLEAN]
 
-# csc.math.ScaledTransform 
+# csc.math.ScaledTransform
 
-ScaledTransform class Implements transform with the scale possibility.
-- position – Get set Vector3f
-- rotation – Get set Rotation
-- scale – Get set Vector3f
+## Overview
+csc.math.ScaledTransform represents a transform that includes translation, rotation, and scale. It is intended for contexts where explicit scaling must accompany position and orientation. Detailed behavior and API surface are undocumented in the available source.
 
-position – Get set Vector3f rotation – Get set Rotation scale – Get set Vector3f Methods __init__ (self) Attributes position rotation scale
+## Class Definition
+```python
+class csc.math.ScaledTransform
+```
+
+## Constructor
+### __init__(self)
+Initializes a new ScaledTransform instance; specific parameters are undocumented.
+
+Parameters:
+- undocumented
+
+Returns: None
+
+## Attributes
+- position — undocumented
+- rotation — undocumented
+- scale — undocumented
+
+## Usage Notes
+- Property types, valid ranges, and side effects are undocumented.
+- Use when scale needs to be preserved alongside position and rotation.
+

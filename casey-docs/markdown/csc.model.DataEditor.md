@@ -1,62 +1,305 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.DataEditor.html
-html_file: eaa75ab470cb971d43a9107fcffc86b2.html
-module: csc.model.DataEditor
----
+[CLEAN]
 
-# csc.model.DataEditor 
+# csc.model.DataEditor
 
-DataEditor class 
-This class has the possibility to edit scene data and their properties.
-- add_data – overridden method by csc.model.ObjectId, string, DataMode, Data.Value, csc.model.DataId -> Data
-- add_setting – overridden method by string, Setting.Value || csc.model.ObjectId, string, Setting.Value, csc.model.SettingId -> Setting
-- add_constant_data – overridden method by string, Data.Value || string, Data.Value, csc.model.DataId -> Data
-- add_constant_setting – overridden method by string, Setting.Value || string, Setting.Value, csc.model.SettingId -> Setting
-- set_data_value – overridden method by csc.model.DataId&, Data.Value || csc.model.DataId, int{}, Data.Value || csc.model.DataId, int, Data.Value
+## Overview
 
-add_data – overridden method by csc.model.ObjectId, string, DataMode, Data.Value, csc.model.DataId -> Data add_setting – overridden method by string, Setting.Value || csc.model.ObjectId, string, Setting.Value, csc.model.SettingId -> Setting add_constant_data – overridden method by string, Data.Value || string, Data.Value, csc.model.DataId -> Data add_constant_setting – overridden method by string, Setting.Value || string, Setting.Value, csc.model.SettingId -> Setting set_data_value – overridden method by csc.model.DataId&, Data.Value || csc.model.DataId, int{}, Data.Value || csc.model.DataId, int, Data.Value Methods __init__ (*args, **kwargs) add_constant_data (*args, **kwargs) Overloaded function. add_constant_setting (*args, **kwargs) Overloaded function. add_data (*args, **kwargs) Overloaded function. add_description (self, name, id) add_setting (*args, **kwargs) Overloaded function. change_description (self, name, description) cluster_editor (self) -> ClusterEditor copy_data (self, from_to) delete_data (self, id) delete_setting (self, id) remove_description (self, name) reset_description_value (*args, **kwargs) Overloaded function. set_data_value (*args, **kwargs) Overloaded function. set_description_value (*args, **kwargs) Overloaded function. set_setting_value (*args, **kwargs) Overloaded function. Overloaded function.
-1. add_constant_data(self: csc.model.DataEditor, arg0: str, arg1: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> csc.model.Data
-2. add_constant_data(self: csc.model.DataEditor, name: str, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], id: csc.model.DataId) -> csc.model.Data
+DataEditor provides capabilities to add, edit, and remove scene data and settings in Cascadeur. It supports setting values at specific frames, managing descriptions, and working with both data and settings identifiers. Several methods are overloaded to accept different argument combinations. Exact behaviors for some utility methods are undocumented in the provided source.
 
-add_constant_data(self: csc.model.DataEditor, arg0: str, arg1: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> csc.model.Data add_constant_data(self: csc.model.DataEditor, name: str, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], id: csc.model.DataId) -> csc.model.Data Overloaded function.
-1. add_constant_setting(self: csc.model.DataEditor, arg0: str, arg1: Union[bool, int]) -> csc.model.Setting
-2. add_constant_setting(self: csc.model.DataEditor, name: str, value: Union[bool, int], id: csc.model.SettingId) -> csc.model.Setting
+## Class Definition
 
-add_constant_setting(self: csc.model.DataEditor, arg0: str, arg1: Union[bool, int]) -> csc.model.Setting add_constant_setting(self: csc.model.DataEditor, name: str, value: Union[bool, int], id: csc.model.SettingId) -> csc.model.Setting Overloaded function.
-1. add_data(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, mode: csc.model.DataMode, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> csc.model.Data -> Data
-2. add_data(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, mode: csc.model.DataMode, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], id: csc.model.DataId) -> csc.model.Data -> Data
+```python
+class csc.model.DataEditor:
+    ...
+```
 
-add_data(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, mode: csc.model.DataMode, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> csc.model.Data
-> -> Data
+## Constructor
 
--> Data add_data(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, mode: csc.model.DataMode, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], id: csc.model.DataId) -> csc.model.Data
-> -> Data
+### `__init__(*args, **kwargs)`
 
--> Data Overloaded function.
-1. add_setting(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, value: Union[bool, int], mode: csc.model.SettingMode = <SettingMode.Static: 0>) -> csc.model.Setting -> Setting
-2. add_setting(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, value: Union[bool, int], mode: csc.model.SettingMode, id: csc.model.SettingId) -> csc.model.Setting -> Setting
+Initializes a new DataEditor instance.
 
-add_setting(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, value: Union[bool, int], mode: csc.model.SettingMode = <SettingMode.Static: 0>) -> csc.model.Setting
-> -> Setting
+**Parameters:**
+- `*args`: undocumented
+- `**kwargs`: undocumented
 
--> Setting add_setting(self: csc.model.DataEditor, object_id: csc.model.ObjectId, name: str, value: Union[bool, int], mode: csc.model.SettingMode, id: csc.model.SettingId) -> csc.model.Setting
-> -> Setting
+## Methods
 
--> Setting -> ClusterEditor Overloaded function.
-1. reset_description_value(self: csc.model.DataEditor, id: csc.model.DataId) -> None
-2. reset_description_value(self: csc.model.DataEditor, id: csc.model.SettingId) -> None
+### `add_constant_data(arg0: str, arg1: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> csc.model.Data`
 
-reset_description_value(self: csc.model.DataEditor, id: csc.model.DataId) -> None reset_description_value(self: csc.model.DataEditor, id: csc.model.SettingId) -> None Overloaded function.
-1. set_data_value(self: csc.model.DataEditor, id: csc.model.DataId, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None
-2. set_data_value(self: csc.model.DataEditor, id: csc.model.DataId, frames: set[int], value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None
-3. set_data_value(self: csc.model.DataEditor, id: csc.model.DataId, frame: int, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None
+Adds a constant data entry by name.
 
-set_data_value(self: csc.model.DataEditor, id: csc.model.DataId, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None set_data_value(self: csc.model.DataEditor, id: csc.model.DataId, frames: set[int], value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None set_data_value(self: csc.model.DataEditor, id: csc.model.DataId, frame: int, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None Overloaded function.
-1. set_description_value(self: csc.model.DataEditor, name: str, id: csc.model.DataId) -> None
-2. set_description_value(self: csc.model.DataEditor, name: str, id: csc.model.SettingId) -> None
+**Parameters:**
+- `arg0`: str – undocumented
+- `arg1`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
 
-set_description_value(self: csc.model.DataEditor, name: str, id: csc.model.DataId) -> None set_description_value(self: csc.model.DataEditor, name: str, id: csc.model.SettingId) -> None Overloaded function.
-1. set_setting_value(self: csc.model.DataEditor, id: csc.model.SettingId, value: Union[bool, int]) -> None
-2. set_setting_value(self: csc.model.DataEditor, id: csc.model.SettingId, frame: int, value: Union[bool, int]) -> None
+**Returns:**
+- `csc.model.Data`: the created data
 
-set_setting_value(self: csc.model.DataEditor, id: csc.model.SettingId, value: Union[bool, int]) -> None set_setting_value(self: csc.model.DataEditor, id: csc.model.SettingId, frame: int, value: Union[bool, int]) -> None
+### `add_constant_data(name: str, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], id: csc.model.DataId) -> csc.model.Data`
+
+Adds a constant data entry with an explicit id.
+
+**Parameters:**
+- `name`: str – undocumented
+- `value`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
+- `id`: csc.model.DataId – undocumented
+
+**Returns:**
+- `csc.model.Data`: the created data
+
+### `add_constant_setting(arg0: str, arg1: Union[bool, int]) -> csc.model.Setting`
+
+Adds a constant setting by name.
+
+**Parameters:**
+- `arg0`: str – undocumented
+- `arg1`: Union[bool, int] – undocumented
+
+**Returns:**
+- `csc.model.Setting`: the created setting
+
+### `add_constant_setting(name: str, value: Union[bool, int], id: csc.model.SettingId) -> csc.model.Setting`
+
+Adds a constant setting with an explicit id.
+
+**Parameters:**
+- `name`: str – undocumented
+- `value`: Union[bool, int] – undocumented
+- `id`: csc.model.SettingId – undocumented
+
+**Returns:**
+- `csc.model.Setting`: the created setting
+
+### `add_data(object_id: csc.model.ObjectId, name: str, mode: csc.model.DataMode, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> csc.model.Data`
+
+Adds a data entry to an object with the given mode and value.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+- `name`: str – undocumented
+- `mode`: csc.model.DataMode – undocumented
+- `value`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
+
+**Returns:**
+- `csc.model.Data`: the created data
+
+### `add_data(object_id: csc.model.ObjectId, name: str, mode: csc.model.DataMode, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]], id: csc.model.DataId) -> csc.model.Data`
+
+Adds a data entry to an object with an explicit id.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+- `name`: str – undocumented
+- `mode`: csc.model.DataMode – undocumented
+- `value`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
+- `id`: csc.model.DataId – undocumented
+
+**Returns:**
+- `csc.model.Data`: the created data
+
+### `add_description(name, id)`
+
+Adds a description entry for a given name and id.
+
+**Parameters:**
+- `name`: undocumented
+- `id`: undocumented
+
+**Returns:**
+- None
+
+### `add_setting(object_id: csc.model.ObjectId, name: str, value: Union[bool, int], mode: csc.model.SettingMode = <SettingMode.Static: 0>) -> csc.model.Setting`
+
+Adds a setting to an object with an optional mode.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+- `name`: str – undocumented
+- `value`: Union[bool, int] – undocumented
+- `mode`: csc.model.SettingMode – undocumented (default: <SettingMode.Static: 0>)
+
+**Returns:**
+- `csc.model.Setting`: the created setting
+
+### `add_setting(object_id: csc.model.ObjectId, name: str, value: Union[bool, int], mode: csc.model.SettingMode, id: csc.model.SettingId) -> csc.model.Setting`
+
+Adds a setting to an object with an explicit id.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+- `name`: str – undocumented
+- `value`: Union[bool, int] – undocumented
+- `mode`: csc.model.SettingMode – undocumented
+- `id`: csc.model.SettingId – undocumented
+
+**Returns:**
+- `csc.model.Setting`: the created setting
+
+### `change_description(name, description)`
+
+Changes the description text for a given name.
+
+**Parameters:**
+- `name`: undocumented
+- `description`: undocumented
+
+**Returns:**
+- None
+
+### `cluster_editor() -> ClusterEditor`
+
+Returns a ClusterEditor interface.
+
+**Parameters:**
+- None
+
+**Returns:**
+- `ClusterEditor`: undocumented
+
+### `copy_data(from_to)`
+
+Copies data between identifiers.
+
+**Parameters:**
+- `from_to`: undocumented
+
+**Returns:**
+- None
+
+### `delete_data(id)`
+
+Deletes a data entry.
+
+**Parameters:**
+- `id`: undocumented
+
+**Returns:**
+- None
+
+### `delete_setting(id)`
+
+Deletes a setting entry.
+
+**Parameters:**
+- `id`: undocumented
+
+**Returns:**
+- None
+
+### `remove_description(name)`
+
+Removes a description entry for the given name.
+
+**Parameters:**
+- `name`: undocumented
+
+**Returns:**
+- None
+
+### `reset_description_value(id: csc.model.DataId) -> None`
+
+Resets the description value for a data id.
+
+**Parameters:**
+- `id`: csc.model.DataId – undocumented
+
+**Returns:**
+- None
+
+### `reset_description_value(id: csc.model.SettingId) -> None`
+
+Resets the description value for a setting id.
+
+**Parameters:**
+- `id`: csc.model.SettingId – undocumented
+
+**Returns:**
+- None
+
+### `set_data_value(id: csc.model.DataId, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None`
+
+Sets the value for a data id.
+
+**Parameters:**
+- `id`: csc.model.DataId – undocumented
+- `value`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
+
+**Returns:**
+- None
+
+### `set_data_value(id: csc.model.DataId, frames: set[int], value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None`
+
+Sets the value for a data id at multiple frames.
+
+**Parameters:**
+- `id`: csc.model.DataId – undocumented
+- `frames`: set[int] – undocumented
+- `value`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
+
+**Returns:**
+- None
+
+### `set_data_value(id: csc.model.DataId, frame: int, value: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]]) -> None`
+
+Sets the value for a data id at a specific frame.
+
+**Parameters:**
+- `id`: csc.model.DataId – undocumented
+- `frame`: int – undocumented
+- `value`: Union[bool, int, float, numpy.ndarray[numpy.float32[3, 1]], numpy.ndarray[numpy.float32[4, 1]], csc.math.Rotation, numpy.ndarray[numpy.float32[3, 3]], numpy.ndarray[numpy.float32[4, 4]], csc.math.Quaternion, str, numpy.ndarray[bool[3, 1]]] – undocumented
+
+**Returns:**
+- None
+
+### `set_description_value(name: str, id: csc.model.DataId) -> None`
+
+Sets a description association for a data id.
+
+**Parameters:**
+- `name`: str – undocumented
+- `id`: csc.model.DataId – undocumented
+
+**Returns:**
+- None
+
+### `set_description_value(name: str, id: csc.model.SettingId) -> None`
+
+Sets a description association for a setting id.
+
+**Parameters:**
+- `name`: str – undocumented
+- `id`: csc.model.SettingId – undocumented
+
+**Returns:**
+- None
+
+### `set_setting_value(id: csc.model.SettingId, value: Union[bool, int]) -> None`
+
+Sets a setting value.
+
+**Parameters:**
+- `id`: csc.model.SettingId – undocumented
+- `value`: Union[bool, int] – undocumented
+
+**Returns:**
+- None
+
+### `set_setting_value(id: csc.model.SettingId, frame: int, value: Union[bool, int]) -> None`
+
+Sets a setting value at a specific frame.
+
+**Parameters:**
+- `id`: csc.model.SettingId – undocumented
+- `frame`: int – undocumented
+- `value`: Union[bool, int] – undocumented
+
+**Returns:**
+- None
+
+## Usage Notes
+
+- Many methods are overloaded; use the signature that matches your data types and availability of ids.
+- Parameter semantics for some methods are undocumented; consult Cascadeur’s Python API for details.
+- Frame-based variants allow setting time-dependent values.
+

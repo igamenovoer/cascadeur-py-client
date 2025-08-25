@@ -1,14 +1,35 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.Header.html
-html_file: 5cdd092c31b92effe13a291c1da002bf.html
-module: csc.layers.Header
----
+[CLEAN]
 
-# csc.layers.Header 
+# csc.layers.Header
 
-Header class Describes the header properties for a folder
-- parent – Get set csc.Guid
-- id – Get set csc.Guid
-- name – Get set string
+## Overview
 
-parent – Get set csc.Guid id – Get set csc.Guid name – Get set string Methods __init__ (*args, **kwargs) Attributes id name parent
+The Header class represents the header properties for a folder within the Cascadeur layer system. It stores basic identification fields used to reference and organize layers. The exposed properties include an id, a parent identifier, and a name. Further behavioral details are undocumented.
+
+## Class Definition
+
+```python
+class Header
+```
+
+## Constructor
+
+### __init__(*args, **kwargs)
+
+Constructor for Header; parameters and behavior are undocumented.
+
+**Parameters:**
+- *args: undocumented – positional arguments
+- **kwargs: undocumented – keyword arguments
+
+## Attributes
+
+- id: csc.Guid – get/set; undocumented
+- parent: csc.Guid – get/set; undocumented
+- name: string – get/set; undocumented
+
+## Usage Notes
+
+- Specific constraints, defaults, and validation are not documented in the source.
+- Refer to the official API page for authoritative details.
+

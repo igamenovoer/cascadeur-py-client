@@ -1,17 +1,65 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.BehaviourId.html
-html_file: eb4d64f084ac6ed32e985099b43923e8.html
-module: csc.model.BehaviourId
----
+[CLEAN]
 
-# csc.model.BehaviourId 
+# csc.model.BehaviourId
 
-Overloaded function.
-1. __init__(self: csc.model.BehaviourId, arg0: str) -> None
-2. __init__(self: csc.model.BehaviourId) -> None
+## Overview
+Represents an identifier type associated with a behaviour object in the csc.model API. The available documentation exposes overloaded constructors and a few utility methods, but does not describe semantics in detail. Details about return types and specific behavior of the methods are largely undocumented.
 
-__init__(self: csc.model.BehaviourId, arg0: str) -> None __init__(self: csc.model.BehaviourId) -> None Methods __init__ (*args, **kwargs) Overloaded function. is_null (self) null () to_string (self) Overloaded function.
-1. __init__(self: csc.model.BehaviourId, arg0: str) -> None
-2. __init__(self: csc.model.BehaviourId) -> None
+## Class Definition
+```python
+class csc.model.BehaviourId
+```
 
-__init__(self: csc.model.BehaviourId, arg0: str) -> None __init__(self: csc.model.BehaviourId) -> None
+## Constructor
+
+### `__init__(self)`
+Initializes a new BehaviourId instance; behavior is undocumented.
+
+**Parameters:**
+- none
+
+**Returns:**
+- None
+
+### `__init__(self, arg0: str)`
+Initializes a BehaviourId instance from a string; exact semantics are undocumented.
+
+**Parameters:**
+- arg0: str – undocumented
+
+**Returns:**
+- None
+
+## Methods
+
+### `is_null(self)`
+Checks whether the identifier represents a null/empty value; exact semantics are undocumented.
+
+**Parameters:**
+- none
+
+**Returns:**
+- undocumented
+
+### `null()`
+Creates or returns a null/empty identifier; scope (class or instance) and return type are undocumented.
+
+**Parameters:**
+- none
+
+**Returns:**
+- undocumented
+
+### `to_string(self)`
+Converts the identifier to a string representation; formatting details are undocumented.
+
+**Parameters:**
+- none
+
+**Returns:**
+- undocumented
+
+## Usage Notes
+- Functionality, types, and semantics beyond the listed signatures are undocumented in the source material.
+- Refer to the official API documentation for definitive behavior and examples.
+

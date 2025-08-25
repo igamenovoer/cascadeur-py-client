@@ -1,13 +1,33 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.layer.Cell.html
-html_file: fc072e7ba9387331c5f4db8daa2bd25d.html
-module: csc.layers.layer.Cell
----
+[CLEAN]
 
-# csc.layers.layer.Cell 
+# csc.layers.layer.Cell
 
-Cell class Describes the interpolation properties of the cell
-- key – Get set Key
-- interval – Get set Interval
+## Overview
 
-key – Get set Key interval – Get set Interval Methods __init__ (self) Attributes interval key
+Cell represents a unit within a layer that describes interpolation behavior over a span of time. It exposes properties for the associated key and the interval it covers. Detailed parameter types and behavior are undocumented in the source.
+
+## Class Definition
+
+```python
+class csc.layers.layer.Cell
+```
+
+## Constructor
+
+### `__init__(self)`
+
+Initializes a new Cell instance; parameters are undocumented.
+
+Returns:
+- None
+
+## Attributes
+
+- key – undocumented; get/set property
+- interval – undocumented; get/set property
+
+## Usage Notes
+
+- Only high-level details are available; parameter types and semantics are not documented.
+- Inspect at runtime or refer to upstream API docs for concrete types and behavior.
+

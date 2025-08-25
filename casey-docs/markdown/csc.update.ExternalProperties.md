@@ -1,11 +1,110 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.ExternalProperties.html
-html_file: 5e7e28ce53dab8628f17728f3d7c1065.html
-module: csc.update.ExternalProperties
----
+[CLEAN]
 
-# csc.update.ExternalProperties 
+# csc.update.ExternalProperties
 
-ExternalProperties represents a node of external properties.
-(E.g. is this update called during interpolation or not)
-It is represent in any place. Methods __init__ (*args, **kwargs) attributes (self, d) array of all input and output attributes equal_to (self, arg0) full_name (self) name with all the parent nodes has_input (self, name) check if there is an input with such a name has_output (self, name) check if there is an output with such a name id (self) get uniqui id input (self, name) shortcut if node has only one input attribute inputs (self) array of all the inputes attributes is_active (self) check whether it is active for current actualities states (see Additional functionality in csc.update.UpdateEditor) is_fictive (self) whether it is a fictive node (constants, inputs, outputs of a group or external properties) name (self) get name output (self, name) shortcut if node has only one output attribute outputs (self) array of all the outputs attributes parent_group (self) return parent group (where this group node is located) parent_object (self) return object of the node. property_outputs (self) set_name (self, name) rename node
+## Overview
+ExternalProperties represents a node of external properties in the csc.update system. It can appear anywhere and is used to reflect information such as whether an update is called during interpolation. The API exposes methods to query inputs/outputs, naming, hierarchy, activation state, and related details.
+
+## Class Definition
+```python
+class csc.update.ExternalProperties
+```
+
+## Constructor
+
+### `__init__(*args, **kwargs)`
+Initializes a new ExternalProperties node.
+**Parameters:**
+- `*args`: undocumented – positional arguments
+- `**kwargs`: undocumented – keyword arguments
+**Returns:** undocumented
+
+## Methods
+
+### `attributes(self, d)`
+Returns all input and output attributes.
+**Parameters:**
+- `d`: undocumented – undocumented
+**Returns:** undocumented
+
+### `equal_to(self, arg0)`
+Undocumented method.
+**Parameters:**
+- `arg0`: undocumented – undocumented
+**Returns:** undocumented
+
+### `full_name(self)`
+Returns the name with all parent nodes included.
+**Returns:** undocumented
+
+### `has_input(self, name)`
+Checks whether there is an input with the given name.
+**Parameters:**
+- `name`: undocumented – attribute name to check
+**Returns:** undocumented
+
+### `has_output(self, name)`
+Checks whether there is an output with the given name.
+**Parameters:**
+- `name`: undocumented – attribute name to check
+**Returns:** undocumented
+
+### `id(self)`
+Returns a unique identifier for this node.
+**Returns:** undocumented
+
+### `input(self, name)`
+Shortcut for accessing the input attribute when the node has only one input.
+**Parameters:**
+- `name`: undocumented – attribute name
+**Returns:** undocumented
+
+### `inputs(self)`
+Returns all input attributes.
+**Returns:** undocumented
+
+### `is_active(self)`
+Checks whether the node is active for the current actualities states.
+**Returns:** undocumented
+**Notes:** Mentioned in context of additional functionality in csc.update.UpdateEditor.
+
+### `is_fictive(self)`
+Returns whether the node is fictive (e.g., constants, group inputs/outputs, or external properties).
+**Returns:** undocumented
+
+### `name(self)`
+Returns the node name.
+**Returns:** undocumented
+
+### `output(self, name)`
+Shortcut for accessing the output attribute when the node has only one output.
+**Parameters:**
+- `name`: undocumented – attribute name
+**Returns:** undocumented
+
+### `outputs(self)`
+Returns all output attributes.
+**Returns:** undocumented
+
+### `parent_group(self)`
+Returns the parent group in which this node is located.
+**Returns:** undocumented
+
+### `parent_object(self)`
+Returns the object associated with this node.
+**Returns:** undocumented
+
+### `property_outputs(self)`
+Undocumented method.
+**Returns:** undocumented
+
+### `set_name(self, name)`
+Renames the node.
+**Parameters:**
+- `name`: undocumented – new name
+**Returns:** undocumented
+
+## Usage Notes
+- Many details of this API are undocumented; method behavior may depend on the broader csc.update system.
+- Names and identifiers are intended for navigation and grouping within update graphs.
+

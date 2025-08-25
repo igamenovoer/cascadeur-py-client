@@ -1,16 +1,31 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.InterfaceAttributeSide.html
-html_file: 4fb543e1d62ff7517e9bfa95223baa7d.html
-module: csc.update.InterfaceAttributeSide
----
+[CLEAN]
 
-# csc.update.InterfaceAttributeSide 
+# csc.update.InterfaceAttributeSide
 
-> InterfaceAttributeSide enumerable
-> InterfaceSide - inside the group, GroupSide - when the group is a node
+## Overview
+InterfaceAttributeSide is an enumeration indicating the context of an interface attribute within the Cascadeur update module. It distinguishes attributes that apply to the interface of a group from those that apply to the group node itself. Use this enum where APIs require specifying which side of a group an operation targets.
 
-InterfaceAttributeSide enumerable InterfaceSide - inside the group, GroupSide - when the group is a node Members:
-> InterfaceSide
-> GroupSide
+## Class Definition
+```python
+class InterfaceAttributeSide
+```
 
-InterfaceSide GroupSide Methods __init__ (self, value) Attributes GroupSide InterfaceSide name value
+## Constructor
+
+### __init__(self, value)
+Initialize an enum member with a value (undocumented).
+
+- Parameters:
+  - value: undocumented – underlying value for the enum member.
+- Returns: InterfaceAttributeSide
+
+## Attributes
+- InterfaceSide: inside the group (undocumented).
+- GroupSide: when the group is a node (undocumented).
+- name: undocumented.
+- value: undocumented.
+
+## Usage Notes
+- Select InterfaceSide to refer to attributes on the group's interface.
+- Select GroupSide to refer to attributes on the group node itself.
+

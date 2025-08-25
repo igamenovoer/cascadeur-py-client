@@ -1,14 +1,11 @@
+[CLEAN]
+
 # csc.layers.Cycle
 
-**Module:** `csc.layers.Cycle`  
-**Source:** [Original Documentation Link](https://cascadeur.com/python-api/_generate/csc.layers.Cycle.html)
-
 ## Overview
-
-Represents an animation frame cycle with active and inactive frame ranges and utility methods to inspect frame indices and compare cycles.
+Represents a frame cycle used in Cascadeur’s layer system. A cycle covers an active range of frames and may have surrounding inactive boundaries. It provides helpers to query boundary positions and to compare coverage with another cycle.
 
 ## Class Definition
-
 ```python
 class csc.layers.Cycle
 ```
@@ -16,71 +13,51 @@ class csc.layers.Cycle
 ## Constructor
 
 ### `__init__(*args, **kwargs)`
-
-Description not available in source.
+Undocumented constructor.
 
 **Parameters:**
-- `*args`: Variable length argument list.
-- `**kwargs`: Arbitrary keyword arguments.
+- `*args`: undocumented – undocumented
+- `**kwargs`: undocumented – undocumented
 
 ## Methods
 
 ### `get_no_pos()`
-
-Description not available in source.
+Undocumented.
 
 **Returns:**
-- (unknown): Description not available in source.
+- undocumented – undocumented
 
 ### `is_the_same_frames_as(other_cycle) -> bool`
-
 Returns whether this cycle covers the same frames as another cycle.
 
 **Parameters:**
-- `other_cycle` (Cycle): Cycle to compare.
+- `other_cycle`: Cycle – cycle to compare
 
 **Returns:**
-- bool: True if frames match.
+- bool – True if frames match
 
 ### `left_frame_index() -> Pos`
-
 Returns the left (starting) active frame index.
 
 **Returns:**
-- `Pos`: Left frame index.
+- `Pos` – undocumented
 
 ### `right_frame_index() -> Pos`
-
 Returns the right (ending) active frame index.
 
 **Returns:**
-- `Pos`: Right frame index.
+- `Pos` – undocumented
 
 ## Attributes
 
-- `first_active_frame_index` (`Pos`): First active frame index. (Inferred name; description not in source.)
-- `following_interval` (unknown): Description not available in source.
-- `last_active_frame_index` (`Pos`): Last active frame index. (Inferred.)
-- `left_inactive_frame_index` (`Pos`): Left boundary of inactive interval preceding active frames. (Inferred.)
-- `right_inactive_frame_index` (`Pos`): Right boundary of inactive interval following active frames. (Inferred.)
+- `first_active_frame_index`: Pos – undocumented
+- `following_interval`: undocumented – undocumented
+- `last_active_frame_index`: Pos – undocumented
+- `left_inactive_frame_index`: Pos – undocumented
+- `right_inactive_frame_index`: Pos – undocumented
 
 ## Usage Notes
 
-- Use `is_the_same_frames_as` to compare cycles efficiently.
-- Frame index methods return `Pos` objects; ensure to access their numeric value as needed.
-- Attributes may be read-only (not specified in source); modify through higher-level APIs if required.
+- Methods returning Pos yield position-like objects; specific structure is undocumented.
+- Behavior details are not documented in the source; consult higher-level APIs or official references when available.
 
-```python
-# Example usage
-from csc.layers import Cycle
-
-cycle_a = Cycle()
-cycle_b = Cycle()
-
-if cycle_a.is_the_same_frames_as(cycle_b):
-	print("Cycles match")
-
-start = cycle_a.left_frame_index()
-end = cycle_a.right_frame_index()
-print("Span:", start, end)
-```

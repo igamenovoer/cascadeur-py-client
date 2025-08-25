@@ -1,13 +1,32 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.layers.layer.Section.html
-html_file: 7269775de5487f54905503901d062942.html
-module: csc.layers.layer.Section
----
+[CLEAN]
 
-# csc.layers.layer.Section 
+# csc.layers.layer.Section
 
-Section class Describes the interpolation properties of the section
-- key – Get set Key
-- interval – Get set Interval
+## Overview
 
-key – Get set Key interval – Get set Interval Methods __init__ (self) Attributes interval key
+Section describes the interpolation properties for a layer section in Cascadeur. It provides accessors for two properties: key and interval. Detailed behavior, parameter types, and value ranges are not documented in the available source.
+
+## Class Definition
+
+```python
+class Section:
+    ...
+```
+
+## Constructor
+
+### `__init__(self)`
+
+Initializes a Section instance; specific initialization details are undocumented.
+
+**Parameters:**
+- undocumented
+
+**Returns:**
+- undocumented
+
+## Attributes
+
+- key: undocumented – get/set property.
+- interval: undocumented – get/set property.
+

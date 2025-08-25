@@ -1,20 +1,34 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.RegularDataAttributeId.html
-html_file: a952edc8ea45b6aca4946f18ab8e197e.html
-module: csc.update.RegularDataAttributeId
----
+[CLEAN]
 
-# csc.update.RegularDataAttributeId 
+# csc.update.RegularDataAttributeId
 
-RegularDataAttributeId is defined by the data id.
-Data only has one input and one output attributes. Overloaded function.
-1. __init__(self: csc.update.RegularDataAttributeId, arg0: str) -> None
-2. __init__(self: csc.update.RegularDataAttributeId, arg0: csc.model.DataId) -> None
-3. __init__(self: csc.update.RegularDataAttributeId) -> None
+## Overview
+RegularDataAttributeId identifies a regular data attribute by its underlying data id. It is intended for data that exposes exactly one input and one output attribute. Construction is overloaded to accept either a string id, a DataId object, or no argument.
 
-__init__(self: csc.update.RegularDataAttributeId, arg0: str) -> None __init__(self: csc.update.RegularDataAttributeId, arg0: csc.model.DataId) -> None __init__(self: csc.update.RegularDataAttributeId) -> None Methods __init__ (*args, **kwargs) Overloaded function. Overloaded function.
-1. __init__(self: csc.update.RegularDataAttributeId, arg0: str) -> None
-2. __init__(self: csc.update.RegularDataAttributeId, arg0: csc.model.DataId) -> None
-3. __init__(self: csc.update.RegularDataAttributeId) -> None
+## Class Definition
+```python
+class csc.update.RegularDataAttributeId
+```
 
-__init__(self: csc.update.RegularDataAttributeId, arg0: str) -> None __init__(self: csc.update.RegularDataAttributeId, arg0: csc.model.DataId) -> None __init__(self: csc.update.RegularDataAttributeId) -> None
+## Constructor
+
+### __init__(self: csc.update.RegularDataAttributeId, arg0: str) -> None
+Initialize with a string identifier.
+- Parameters:
+  - arg0: str – undocumented
+- Returns: None
+
+### __init__(self: csc.update.RegularDataAttributeId, arg0: csc.model.DataId) -> None
+Initialize with a DataId instance.
+- Parameters:
+  - arg0: csc.model.DataId – undocumented
+- Returns: None
+
+### __init__(self: csc.update.RegularDataAttributeId) -> None
+Initialize without arguments.
+- Parameters: undocumented
+- Returns: None
+
+## Usage Notes
+- Designed for data with a single input and single output attribute.
+

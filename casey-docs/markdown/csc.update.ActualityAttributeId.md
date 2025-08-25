@@ -1,20 +1,42 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.ActualityAttributeId.html
-html_file: 7772890d603d99a29b7b61766bfd7db2.html
-module: csc.update.ActualityAttributeId
----
+[CLEAN]
 
-# csc.update.ActualityAttributeId 
+# csc.update.ActualityAttributeId
 
-ActualityAttributeId is defined by the data id. It's an output only attribute.
-Each data can be actual or non-actual at the start of the graphs update. Overloaded function.
-1. __init__(self: csc.update.ActualityAttributeId, arg0: str) -> None
-2. __init__(self: csc.update.ActualityAttributeId, arg0: csc.model.DataId) -> None
-3. __init__(self: csc.update.ActualityAttributeId) -> None
+## Overview
+Represents an identifier for an actuality attribute defined by a data id. This is an output-only attribute indicating whether a piece of data is actual or non-actual at the start of a graph update. The constructor is overloaded to accept a string, a csc.model.DataId, or no arguments. Further details are undocumented.
 
-__init__(self: csc.update.ActualityAttributeId, arg0: str) -> None __init__(self: csc.update.ActualityAttributeId, arg0: csc.model.DataId) -> None __init__(self: csc.update.ActualityAttributeId) -> None Methods __init__ (*args, **kwargs) Overloaded function. Overloaded function.
-1. __init__(self: csc.update.ActualityAttributeId, arg0: str) -> None
-2. __init__(self: csc.update.ActualityAttributeId, arg0: csc.model.DataId) -> None
-3. __init__(self: csc.update.ActualityAttributeId) -> None
+## Class Definition
+```python
+class csc.update.ActualityAttributeId
+```
 
-__init__(self: csc.update.ActualityAttributeId, arg0: str) -> None __init__(self: csc.update.ActualityAttributeId, arg0: csc.model.DataId) -> None __init__(self: csc.update.ActualityAttributeId) -> None
+## Constructor
+
+### `__init__() -> None`
+Initializes a new ActualityAttributeId (undocumented).
+
+Returns:
+- None
+
+### `__init__(arg0: str) -> None`
+Initializes the attribute id from a string (undocumented).
+
+Parameters:
+- arg0: str - undocumented
+
+Returns:
+- None
+
+### `__init__(arg0: csc.model.DataId) -> None`
+Initializes the attribute id from a csc.model.DataId (undocumented).
+
+Parameters:
+- arg0: csc.model.DataId - undocumented
+
+Returns:
+- None
+
+## Usage Notes
+- This is an output-only attribute.
+- The actual/non-actual state is determined at the start of a graph update.
+

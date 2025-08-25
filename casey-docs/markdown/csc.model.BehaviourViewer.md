@@ -1,20 +1,265 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.model.BehaviourViewer.html
-html_file: be9ab243b7070ca4aec36922171e15b3.html
-module: csc.model.BehaviourViewer
----
+[CLEAN]
 
-# csc.model.BehaviourViewer 
+# csc.model.BehaviourViewer
 
-BehaviourViewer class 
-This class allows viewing of scene behaviours and their properties. Methods __init__ (*args, **kwargs) behaviour_id (self, object_id, behaviour_name) objectId : csc.model.ObjectId | behaviour_name : string | -> csc.model.BehaviourId get_behaviour_asset (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId get_behaviour_asset_range (self, ...) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId[] get_behaviour_by_name (self, object_id, ...) objectId : csc.model.ObjectId | behaviour_name : string | -> csc.model.BehaviourId get_behaviour_data (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.DataId get_behaviour_data_range (self, behaviour_id, ...) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.DataId[] get_behaviour_name (self, behaviour_id) behaviour_id : csc.model.BehaviourId | -> string get_behaviour_object (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.ObjectId get_behaviour_objects_range (self, ...) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.ObjectId[] get_behaviour_owner (self, behaviour_id) behaviour_id : csc.model.BehaviourId | -> csc.model.ObjectId get_behaviour_property_names (self, behaviour_id) -> string[] get_behaviour_reference (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId get_behaviour_reference_range (self, ...) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId[] get_behaviour_setting (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.SettingId get_behaviour_settings_range (self, ...) behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.SettingId[] get_behaviour_string (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> string get_behaviours (*args, **kwargs) Overloaded function. get_children (self, object_id) -> Children behs ids get_property_type (self, behaviour_id, name) behaviour_id : csc.model.BehaviourId | name : string | -> Type[] is_hidden (self, behaviour_id) -> bool is_valid_behaviour_type (self, behaviour_name) behaviour_name : string | -> bool objectId : csc.model.ObjectId | behaviour_name : string | -> csc.model.BehaviourId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId[] objectId : csc.model.ObjectId | behaviour_name : string | -> csc.model.BehaviourId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.DataId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.DataId[] behaviour_id : csc.model.BehaviourId | -> string behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.ObjectId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.ObjectId[] behaviour_id : csc.model.BehaviourId | -> csc.model.ObjectId -> string[] behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.BehaviourId[] behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.SettingId behaviour_id : csc.model.BehaviourId | name : string | -> csc.model.SettingId[] behaviour_id : csc.model.BehaviourId | name : string | -> string Overloaded function.
-1. get_behaviours(self: csc.model.BehaviourViewer, type_name: str) -> list[csc.model.BehaviourId] typeName : string | -> csc.model.BehaviourId[]
-2. get_behaviours(self: csc.model.BehaviourViewer, object_id: csc.model.ObjectId) -> list[csc.model.BehaviourId] objectId : csc.model.ObjectId | -> csc.model.BehaviourId[]
+## Overview
 
-get_behaviours(self: csc.model.BehaviourViewer, type_name: str) -> list[csc.model.BehaviourId]
-> typeName : string | -> csc.model.BehaviourId[]
+BehaviourViewer allows viewing and querying of behaviours and their properties in a Cascadeur scene. It provides lookups by behaviour name, type, or owner object and returns identifiers for related assets, data, settings, references, and objects. The API primarily returns IDs rather than concrete objects and includes helpers to inspect names, property types, visibility, and validity.
 
-typeName : string | -> csc.model.BehaviourId[] get_behaviours(self: csc.model.BehaviourViewer, object_id: csc.model.ObjectId) -> list[csc.model.BehaviourId]
-> objectId : csc.model.ObjectId | -> csc.model.BehaviourId[]
+## Class Definition
 
-objectId : csc.model.ObjectId | -> csc.model.BehaviourId[] -> Children behs ids behaviour_id : csc.model.BehaviourId | name : string | -> Type[] -> bool behaviour_name : string | -> bool
+```python
+class csc.model.BehaviourViewer
+```
+
+## Constructor
+
+### `__init__(*args, **kwargs)`
+
+undocumented.
+
+**Parameters:**
+- `*args`: undocumented
+- `**kwargs`: undocumented
+
+## Methods
+
+### `behaviour_id(object_id: csc.model.ObjectId, behaviour_name: str) -> csc.model.BehaviourId`
+
+undocumented.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+- `behaviour_name`: str – undocumented
+
+**Returns:**
+- csc.model.BehaviourId – undocumented
+
+### `get_behaviour_asset(behaviour_id: csc.model.BehaviourId, name: str) -> csc.model.BehaviourId`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- csc.model.BehaviourId – undocumented
+
+### `get_behaviour_asset_range(behaviour_id: csc.model.BehaviourId, name: str) -> list[csc.model.BehaviourId]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- list[csc.model.BehaviourId] – undocumented
+
+### `get_behaviour_by_name(object_id: csc.model.ObjectId, behaviour_name: str) -> csc.model.BehaviourId`
+
+undocumented.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+- `behaviour_name`: str – undocumented
+
+**Returns:**
+- csc.model.BehaviourId – undocumented
+
+### `get_behaviour_data(behaviour_id: csc.model.BehaviourId, name: str) -> csc.model.DataId`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- csc.model.DataId – undocumented
+
+### `get_behaviour_data_range(behaviour_id: csc.model.BehaviourId, name: str) -> list[csc.model.DataId]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- list[csc.model.DataId] – undocumented
+
+### `get_behaviour_name(behaviour_id: csc.model.BehaviourId) -> str`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+
+**Returns:**
+- str – undocumented
+
+### `get_behaviour_object(behaviour_id: csc.model.BehaviourId, name: str) -> csc.model.ObjectId`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- csc.model.ObjectId – undocumented
+
+### `get_behaviour_objects_range(behaviour_id: csc.model.BehaviourId, name: str) -> list[csc.model.ObjectId]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- list[csc.model.ObjectId] – undocumented
+
+### `get_behaviour_owner(behaviour_id: csc.model.BehaviourId) -> csc.model.ObjectId`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+
+**Returns:**
+- csc.model.ObjectId – undocumented
+
+### `get_behaviour_property_names(behaviour_id: csc.model.BehaviourId) -> list[str]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+
+**Returns:**
+- list[str] – undocumented
+
+### `get_behaviour_reference(behaviour_id: csc.model.BehaviourId, name: str) -> csc.model.BehaviourId`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- csc.model.BehaviourId – undocumented
+
+### `get_behaviour_reference_range(behaviour_id: csc.model.BehaviourId, name: str) -> list[csc.model.BehaviourId]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- list[csc.model.BehaviourId] – undocumented
+
+### `get_behaviour_setting(behaviour_id: csc.model.BehaviourId, name: str) -> csc.model.SettingId`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- csc.model.SettingId – undocumented
+
+### `get_behaviour_settings_range(behaviour_id: csc.model.BehaviourId, name: str) -> list[csc.model.SettingId]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- list[csc.model.SettingId] – undocumented
+
+### `get_behaviour_string(behaviour_id: csc.model.BehaviourId, name: str) -> str`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- str – undocumented
+
+### `get_behaviours(type_name: str) -> list[csc.model.BehaviourId]`
+
+undocumented.
+
+**Parameters:**
+- `type_name`: str – undocumented
+
+**Returns:**
+- list[csc.model.BehaviourId] – undocumented
+
+### `get_behaviours(object_id: csc.model.ObjectId) -> list[csc.model.BehaviourId]`
+
+undocumented.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+
+**Returns:**
+- list[csc.model.BehaviourId] – undocumented
+
+### `get_children(object_id: csc.model.ObjectId) -> undocumented`
+
+undocumented.
+
+**Parameters:**
+- `object_id`: csc.model.ObjectId – undocumented
+
+**Returns:**
+- undocumented – undocumented
+
+### `get_property_type(behaviour_id: csc.model.BehaviourId, name: str) -> list[Type]`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+- `name`: str – undocumented
+
+**Returns:**
+- list[Type] – undocumented
+
+### `is_hidden(behaviour_id: csc.model.BehaviourId) -> bool`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_id`: csc.model.BehaviourId – undocumented
+
+**Returns:**
+- bool – undocumented
+
+### `is_valid_behaviour_type(behaviour_name: str) -> bool`
+
+undocumented.
+
+**Parameters:**
+- `behaviour_name`: str – undocumented
+
+**Returns:**
+- bool – undocumented
+
+## Usage Notes
+
+- Many methods return identifiers (IDs) rather than concrete objects.
+- For behavior-specific semantics and ID dereferencing, consult the Cascadeur Python API.
+

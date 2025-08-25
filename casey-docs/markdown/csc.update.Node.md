@@ -1,10 +1,180 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.Node.html
-html_file: 32058fdf37945e4f98a8b945025f81a4.html
-module: csc.update.Node
----
+[CLEAN]
 
-# csc.update.Node 
+# csc.update.Node
 
-Node class represents a generic Node and implements methods that are common for all nodes Methods __init__ (*args, **kwargs) attributes (self, d) array of all input and output attributes equal_to (self, arg0) full_name (self) name with all the parent nodes has_input (self, name) check if there is an input with such a name has_output (self, name) check if there is an output with such a name id (self) get uniqui id input (self, name) shortcut if node has only one input attribute inputs (self) array of all the inputes attributes is_active (self) check whether it is active for current actualities states (see Additional functionality in csc.update.UpdateEditor) is_fictive (self) whether it is a fictive node (constants, inputs, outputs of a group or external properties) name (self) get name output (self, name) shortcut if node has only one output attribute outputs (self) array of all the outputs attributes parent_group (self) return parent group (where this group node is located) parent_object (self) return object of the node. set_name (self, name) rename node array of all input and output attributes name with all the parent nodes check if there is an input with such a name check if there is an output with such a name get uniqui id shortcut if node has only one input attribute array of all the inputes attributes check whether it is active for current actualities states
-(see Additional functionality in csc.update.UpdateEditor) whether it is a fictive node (constants, inputs, outputs of a group or external properties) get name shortcut if node has only one output attribute array of all the outputs attributes return parent group (where this group node is located) return object of the node. Will return null if this is not an update group rename node
+## Overview
+csc.update.Node represents a generic node in the update system and provides behavior common to all nodes. It lets you query inputs and outputs, retrieve names and identifiers, and navigate relationships to parent groups and objects. The API also exposes checks for activation state and whether a node is fictive (e.g., constants or group I/O). This is a foundational building block used by update editors and related tooling.
+
+## Class Definition
+```python
+class Node
+```
+
+## Constructor
+
+### `__init__(*args, **kwargs)`
+Initialize a Node instance. Details are undocumented.
+
+**Parameters:**
+- `*args`: undocumented – implementation-specific arguments
+- `**kwargs`: undocumented – implementation-specific keyword arguments
+
+**Returns:**
+- None
+
+## Methods
+
+### `attributes(d)`
+Return all input and output attributes. Further details are undocumented.
+
+**Parameters:**
+- `d`: undocumented – undocumented
+
+**Returns:**
+- undocumented
+
+### `equal_to(arg0)`
+Check whether this node is equal to another. Further details are undocumented.
+
+**Parameters:**
+- `arg0`: undocumented – object to compare against
+
+**Returns:**
+- undocumented
+
+### `full_name()`
+Get the node name including all parent nodes.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `has_input(name)`
+Check if there is an input with the given name.
+
+**Parameters:**
+- `name`: undocumented – input name to check
+
+**Returns:**
+- undocumented
+
+### `has_output(name)`
+Check if there is an output with the given name.
+
+**Parameters:**
+- `name`: undocumented – output name to check
+
+**Returns:**
+- undocumented
+
+### `id()`
+Get a unique identifier for the node.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `input(name)`
+Access an input attribute by name; may act as a shortcut when the node has only one input attribute.
+
+**Parameters:**
+- `name`: undocumented – input name
+
+**Returns:**
+- undocumented
+
+### `inputs()`
+Return all input attributes.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `is_active()`
+Check whether the node is active for the current actualities states.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+**Notes:**
+- See Additional functionality in csc.update.UpdateEditor.
+
+### `is_fictive()`
+Check whether this is a fictive node (e.g., constants, inputs/outputs of a group, or external properties).
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `name()`
+Get the node name.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `output(name)`
+Access an output attribute by name; may act as a shortcut when the node has only one output attribute.
+
+**Parameters:**
+- `name`: undocumented – output name
+
+**Returns:**
+- undocumented
+
+### `outputs()`
+Return all output attributes.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `parent_group()`
+Return the parent group in which this group node is located.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+### `parent_object()`
+Return the object of the node.
+
+**Parameters:**
+- None
+
+**Returns:**
+- undocumented
+
+**Notes:**
+- Will return null if this is not an update group.
+
+### `set_name(name)`
+Rename the node.
+
+**Parameters:**
+- `name`: undocumented – new node name
+
+**Returns:**
+- undocumented
+
+## Usage Notes
+- Some behaviors depend on the update editor context; consult csc.update.UpdateEditor for additional functionality.
+- Input/output accessors may behave as shortcuts when only a single attribute exists on that side.
+

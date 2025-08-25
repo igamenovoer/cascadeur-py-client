@@ -1,21 +1,39 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.math.OrthogonalTransform.html
-html_file: a61e29b971d7a2c76f53552258f53c10.html
-module: csc.math.OrthogonalTransform
----
+[CLEAN]
 
-# csc.math.OrthogonalTransform 
+# csc.math.OrthogonalTransform
 
-OrthogonalTransform class Implements orthogonal transform
-- position – Get set Vector3f
-- rotation – Get set Rotation
+## Overview
+OrthogonalTransform represents a transform defined by a position and a rotation. It provides get/set accessors for both components and can be constructed with defaults or with explicit values. The detailed behavior and defaults are not documented in the source snippet. Use this class where an orthogonal (rotation + translation) transform is required.
 
-position – Get set Vector3f rotation – Get set Rotation Overloaded function.
-1. __init__(self: csc.math.OrthogonalTransform, position: numpy.ndarray[numpy.float32[3, 1]], rotate: csc.math.Quaternion) -> None
-2. __init__(self: csc.math.OrthogonalTransform) -> None
+## Class Definition
+```python
+class csc.math.OrthogonalTransform:
+    ...
+```
 
-__init__(self: csc.math.OrthogonalTransform, position: numpy.ndarray[numpy.float32[3, 1]], rotate: csc.math.Quaternion) -> None __init__(self: csc.math.OrthogonalTransform) -> None Methods __init__ (*args, **kwargs) Overloaded function. Attributes position rotation Overloaded function.
-1. __init__(self: csc.math.OrthogonalTransform, position: numpy.ndarray[numpy.float32[3, 1]], rotate: csc.math.Quaternion) -> None
-2. __init__(self: csc.math.OrthogonalTransform) -> None
+## Constructor
 
-__init__(self: csc.math.OrthogonalTransform, position: numpy.ndarray[numpy.float32[3, 1]], rotate: csc.math.Quaternion) -> None __init__(self: csc.math.OrthogonalTransform) -> None
+### `__init__(self) -> None`
+Constructs an OrthogonalTransform with default position and rotation (defaults are undocumented).
+
+Returns:
+- None
+
+### `__init__(self, position: numpy.ndarray[numpy.float32[3, 1]], rotate: csc.math.Quaternion) -> None`
+Constructs an OrthogonalTransform with the specified position and rotation.
+
+Parameters:
+- position: numpy.ndarray[numpy.float32[3, 1]] – Position vector (undocumented)
+- rotate: csc.math.Quaternion – Rotation (undocumented)
+
+Returns:
+- None
+
+## Attributes
+- position: Vector3f – Get/set (undocumented)
+- rotation: Rotation – Get/set (undocumented)
+
+## Usage Notes
+- Behavior of default-constructed instances (exact values) is undocumented.
+- No additional methods beyond constructors and attributes are documented here.
+

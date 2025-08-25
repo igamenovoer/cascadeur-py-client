@@ -1,13 +1,28 @@
----
-source_url: https://cascadeur.com/python-api/_generate/csc.update.RegularFunctionAttributeId.html
-html_file: 58b42a9547e4710b32651779e661b309.html
-module: csc.update.RegularFunctionAttributeId
----
+[CLEAN]
 
-# csc.update.RegularFunctionAttributeId 
+# csc.update.RegularFunctionAttributeId
 
-RegularFunctionAttributeId is defined by the RegularFunctionId and the name of the attribute
-- function_id – Get SettingFunctionId
-- attribute_id – Get name of the attribute
+## Overview
+Represents an identifier for a specific attribute of a regular function in the csc.update module. It combines a function identifier with an attribute name to uniquely reference that attribute on the function. Useful when addressing or updating attributes through the update API. Specific underlying types are undocumented.
 
-function_id – Get SettingFunctionId attribute_id – Get name of the attribute Methods __init__ (self, function_id, attribute_id) Attributes attribute_id function_id
+## Class Definition
+```python
+class csc.update.RegularFunctionAttributeId
+```
+
+## Constructor
+
+### `__init__(function_id, attribute_id)`
+Creates a new identifier bound to a function and one of its attributes.
+
+**Parameters:**
+- function_id: undocumented – Identifier of the target regular function.
+- attribute_id: undocumented – Name of the attribute on the function.
+
+**Returns:**
+- None
+
+## Attributes
+- function_id: undocumented – The stored function identifier.
+- attribute_id: undocumented – The name of the attribute.
+

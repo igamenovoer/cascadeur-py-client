@@ -1,0 +1,26 @@
+# Serena project configuration for cascadeur-py-client
+# Adjust settings as needed. See Serena README for available keys.
+name: cascadeur-py-client
+language: python
+# If you want to force read-only operations (no edits), set to true
+read_only: false
+# Relative or absolute path to project root (this file's parent)
+root: ..
+# Optional: languages to prioritize (Serena auto-detects; list here to hint ordering)
+preferred_languages:
+  - python
+# Enable onboarding memories on first activation
+onboarding:
+  enabled: true
+# You can predefine memories to seed (leave empty list to skip)
+memories: []
+# Optional: exclude globs from indexing / symbol search
+exclude:
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/.venv/**"
+  - "**/__pycache__/**"
+# Optional: include additional tool options
+# tools:
+#   included_optional_tools:
+#     - initial_instructions

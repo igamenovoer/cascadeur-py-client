@@ -87,23 +87,18 @@ Standardize per project rules:
   $cmd = @('aider', $guideFull, $relPath, '--message-file', $msgFile, '--no-auto-commits')
     if ($AiderExtraArgs) { $cmd += $AiderExtraArgs }
 
-    $outFile = New-TemporaryFile
-    $errFile = New-TemporaryFile
     try {
       $argList = $cmd[1..($cmd.Count-1)]
-      $proc = Start-Process -FilePath $cmd[0] -ArgumentList $argList -NoNewWindow -Wait -PassThru -RedirectStandardOutput $outFile -RedirectStandardError $errFile
-      $stdout = if (Test-Path $outFile) { Get-Content -Path $outFile -Raw } else { '' }
-      $stderr = if (Test-Path $errFile) { Get-Content -Path $errFile -Raw } else { '' }
-      if ($proc.ExitCode -ne 0) {
-        Write-Warning "aider exited with code $($proc.ExitCode) for $relPath"
-        if ($stderr) { Write-Host $stderr -ForegroundColor Red }
-        elseif ($stdout) { Write-Host $stdout -ForegroundColor DarkGray }
+      Write-Host ("→ aider {0}" -f ($argList -join ' ')) -ForegroundColor DarkCyan
+      & $cmd[0] @argList
+      $exitCode = $LASTEXITCODE
+      if ($exitCode -ne 0) {
+        Write-Warning "aider exited with code $exitCode for $relPath"
         continue
       }
     }
     finally {
-      if (Test-Path $outFile) { Remove-Item $outFile -Force }
-      if (Test-Path $errFile) { Remove-Item $errFile -Force }
+      if (Test-Path $msgFile) { Remove-Item $msgFile -Force }
     }
 
     # Tag cleaned file if requested

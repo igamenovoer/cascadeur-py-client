@@ -2,3 +2,9 @@
 	path = .magic-context
 	url = git@github.com:igamenovoer/magic-context.git
 	branch = main
+[submodule "context/refcode/jsonrpcclient"]
+	path = context/refcode/jsonrpcclient
+	url = https://github.com/explodinglabs/jsonrpcclient.git
+[submodule "context/refcode/jsonrpcserver"]
+	path = context/refcode/jsonrpcserver
+	url = https://github.com/explodinglabs/jsonrpcserver.git

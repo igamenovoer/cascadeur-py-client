@@ -1,0 +1,58 @@
+# Files and paths aider should ignore when scanning/adding context.
+# Similar semantics to .gitignore, but specific to aider's file/context logic.
+
+# Large generated or scraped documentation
+casey-docs/
+docs/
+
+# Temporary / cache / state directories
+tmp/
+/tmp/
+**/cache/
+.cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+
+# Logs & artifacts
+*.log
+*.cache
+
+# Python build/dist artifacts
+build/
+dist/
+*.egg-info/
+
+# Virtual environments (common names)
+.venv/
+venv/
+env/
+
+# Node / frontend caches if any appear later
+node_modules/
+
+# History & aider session artifacts
+.aider.input.history
+.aider.chat.history.md
+.aider.llm.history.json
+
+# Editor/IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Binary / large files patterns
+*.bin
+*.tar
+*.zip
+*.gz
+*.7z
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Misc
+*.tmp
+*.bak

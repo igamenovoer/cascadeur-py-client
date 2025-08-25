@@ -51,20 +51,7 @@ if (-not $files) {
 
 Write-Host "Found $($files.Count) unclean markdown files." -ForegroundColor Cyan
 
-# Core rewrite message template (single quoted to minimize escaping)
-$messageTemplate = @'
-Rewrite the target markdown API documentation file to the standardized format per the style guide already provided as an added file.
-Rules:
-- Remove any front matter (YAML or metadata), navigation menus, social/footer clutter, ads.
-- Title: first line '# <FullyQualifiedName>' (use existing header text trimmed).
-- Add Module/Source line if source_url was present: **Module:** `FullyQualifiedName`  **Source:** [Original Documentation Link](<source_url>)
-- Sections (omit only if not applicable): Overview, Class Definition, Constructor, Methods, (optional Attributes if present), Usage Notes.
-- For each method: heading ### `signature` followed by description (or 'Description not available in source.'), Parameters list, Returns, Example (if meaningful).
-- Do NOT invent new methods; only use those clearly present.
-- If descriptions missing, use the fallback phrase exactly once per item.
-- Provide at least one minimal python example, valid syntax.
-- Output ONLY the cleaned markdown content for the file.
-'@
+# Per-file instruction will be a concise message: "rewrite doc file <relative path>"
 
 $guideFull = Resolve-Path -Path $GuidePath -ErrorAction Stop
 
@@ -75,14 +62,8 @@ foreach ($file in $files) {
 
   if ($PSCmdlet.ShouldProcess($relPath, 'Rewrite with aider')) {
     # Run aider with guide file and target file
-    $cmd = @(
-      'aider',
-      $guideFull,
-      $relPath,
-      '--no-auto-commits',
-      '--message',
-      $messageTemplate
-    )
+  $message = "rewrite doc file $relPath"
+  $cmd = @('aider', $guideFull, '--no-auto-commits', '--message', $message)
     if ($AiderExtraArgs) { $cmd += $AiderExtraArgs }
 
     $processInfo = New-Object System.Diagnostics.ProcessStartInfo

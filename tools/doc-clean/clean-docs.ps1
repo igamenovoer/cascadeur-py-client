@@ -34,10 +34,10 @@ $ErrorActionPreference = 'Stop'
 function Get-UncleanMarkdownFiles {
   param([string]$Dir)
   Get-ChildItem -Path $Dir -Filter *.md -File -Recurse | Where-Object {
-    $content = Get-Content -Path $_.FullName -First 5 -Raw
-    # Normalize first non-empty line
-    $firstLine = ($content -split "`n" | Where-Object { $_.Trim() -ne '' } | Select-Object -First 1)
-    -not ($firstLine -match '^#?\s*\[CLEAN\]')
+    # Read only first few lines (can't mix -Raw with -TotalCount)
+    $lines = Get-Content -Path $_.FullName -TotalCount 8
+    $firstLine = $lines | Where-Object { $_.Trim() -ne '' } | Select-Object -First 1
+    -not ($firstLine -and ($firstLine -match '^#?\s*\[CLEAN\]'))
   }
 }
 
@@ -62,8 +62,12 @@ foreach ($file in $files) {
 
   if ($PSCmdlet.ShouldProcess($relPath, 'Rewrite with aider')) {
     # Run aider with guide file and target file
+  # Capture pre-change hash to detect no-op rewrites
+  $preHash = (Get-FileHash -Algorithm SHA256 -Path $file.FullName).Hash
+
   $message = "rewrite doc file $relPath"
-  $cmd = @('aider', $guideFull, '--no-auto-commits', '--message', $message)
+  # IMPORTANT: Include the target markdown file itself so aider can read & edit it.
+  $cmd = @('aider', $guideFull, $relPath, '--no-auto-commits', '--message', $message)
     if ($AiderExtraArgs) { $cmd += $AiderExtraArgs }
 
     $processInfo = New-Object System.Diagnostics.ProcessStartInfo
@@ -92,6 +96,13 @@ foreach ($file in $files) {
         $content = $content -replace '^#\s+', '# [CLEAN] '  # prefix first header
         Set-Content -Path $file.FullName -Value $content -Encoding UTF8
       }
+    }
+
+    # Recompute hash; skip staging if unchanged
+    $postHash = (Get-FileHash -Algorithm SHA256 -Path $file.FullName).Hash
+    if ($preHash -eq $postHash) {
+      Write-Warning "No changes detected for $relPath (skipping add). Consider enriching the rewrite message if this persists."
+      continue
     }
 
     git add -- "$relPath" 2>$null

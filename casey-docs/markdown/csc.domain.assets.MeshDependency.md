@@ -1,7 +1,9 @@
-# [CLEAN] csc.domain.assets.MeshDependency
+[CLEAN]
+
+# csc.domain.assets.MeshDependency
 
 ## Overview
-MeshDependency represents mesh skinning dependency data, exposing inverse bind matrices for joints and per-vertex weight information used in deformation/skinning. It provides read access to the core data needed to understand how a mesh is influenced by a rig. This is useful for inspection, validation, or export workflows. Details below reflect only what is present in the source documentation.
+MeshDependency represents mesh skinning dependency data, exposing inverse bind matrices for joints and per-vertex weight information used in deformation/skinning. It provides read-only access to the core data needed to understand how a mesh is influenced by a rig. This is useful for inspection, validation, and export workflows within the Cascadeur environment.
 
 ## Class Definition
 ```python
@@ -14,25 +16,36 @@ class MeshDependency:
 ### `__init__(arg0)`
 Initializes a MeshDependency instance.
 
-- arg0: (unspecified) – Undocumented input from the source documentation.
+Parameters:
+- arg0: undocumented – Input as documented is unspecified.
 
 ## Methods
 
 ### `joints_inverse_bind_matrices() -> Matrix4f[]`
 Returns the inverse bind matrices associated with joints.
 
-- Parameters: None
-- Returns: Matrix4f[] – Collection of 4x4 inverse bind matrices.
-- Notes: Matrix4f type is defined by the Cascadeur API.
+Parameters:
+- none
+
+Returns:
+- Matrix4f[] – Collection of 4x4 inverse bind matrices.
+
+Notes:
+- Matrix4f is defined by the Cascadeur API.
 
 ### `vertices_weights() -> List[List[VertexWeight]]`
 Returns per-vertex skinning weights.
 
-- Parameters: None
-- Returns: List[List[VertexWeight]] – A list where each item contains the weights for a given vertex.
-- Notes: VertexWeight type is defined by the Cascadeur API.
+Parameters:
+- none
+
+Returns:
+- List[List[VertexWeight]] – For each vertex, the list of its weights.
+
+Notes:
+- VertexWeight is defined by the Cascadeur API.
 
 ## Usage Notes
-- Intended for read access to bind transforms and skinning weights for processing and export scenarios.
-- Exact container and element types (Matrix4f, VertexWeight) are provided by the Cascadeur Python API bindings.
-- No additional behavior or mutators are documented here.
+- Read-only access intended for processing, validation, or export scenarios.
+- Exact container and element types are provided by the Cascadeur Python API bindings.
+

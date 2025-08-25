@@ -41,15 +41,15 @@ function Get-UncleanMarkdownFiles {
   }
 }
 
-$files = Get-UncleanMarkdownFiles -Dir $MarkdownDir
-if ($Limit -gt 0) { $files = $files | Select-Object -First $Limit }
+$files = @(Get-UncleanMarkdownFiles -Dir $MarkdownDir)
+if ($Limit -gt 0) { $files = @($files | Select-Object -First $Limit) }
 
-if (-not $files) {
+if (-not $files -or $files.Count -eq 0) {
   Write-Host 'No unclean markdown files found.' -ForegroundColor Green
   exit 0
 }
 
-Write-Host "Found $($files.Count) unclean markdown files." -ForegroundColor Cyan
+Write-Host ("Found {0} unclean markdown file{1}." -f $files.Count, $(if ($files.Count -eq 1) { '' } else { 's' })) -ForegroundColor Cyan
 
 # Per-file instruction will be a concise message: "rewrite doc file <relative path>"
 

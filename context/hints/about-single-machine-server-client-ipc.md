@@ -165,6 +165,173 @@ Mitigate cleanup via TTL sweeper.
 | Low-level Win control | `pywin32` | Overlapped I/O & security descriptors |
 | POSIX queues | `posix_ipc` | Use two queues or tagged IDs |
 
+## Example: JSON-RPC 2.0 over Named Pipe (Windows) / UDS (Unix)
+
+This example shows how to run JSON-RPC 2.0 over a local OS IPC transport using `multiprocessing.connection`:
+- Windows: Named pipe at `r"\\.\pipe\csc_jsonrpc_demo"`
+- Unix: Unix Domain Socket `/tmp/csc_jsonrpc_demo.sock`
+
+It uses explicit length-prefix framing as recommended in the Framing section, and JSON for safe serialization.
+
+Prerequisites
+- pip install json-rpc
+- Python 3.8+
+
+Server (JSON-RPC over Named Pipe/UDS)
+```python
+# np_jsonrpc_server.py
+import os
+import json
+import struct
+from multiprocessing.connection import Listener, wait
+from jsonrpc import JSONRPCResponseManager, dispatcher
+
+# 1) Transport address: Named pipe on Windows; UDS on Unix
+if os.name == "nt":
+    ADDRESS = r"\\.\pipe\csc_jsonrpc_demo"
+else:
+    ADDRESS = "/tmp/csc_jsonrpc_demo.sock"
+
+# 2) Helpers: explicit framing (length-prefix) on top of send_bytes/recv_bytes
+def write_frame(conn, payload: bytes) -> None:
+    conn.send_bytes(struct.pack("!I", len(payload)) + payload)
+
+def read_frame(conn, max_size: int = 10 * 1024 * 1024) -> bytes:
+    blob = conn.recv_bytes()
+    if len(blob) &lt; 4:
+        raise EOFError("short frame")
+    size = struct.unpack("!I", blob[:4])[0]
+    if size &gt; max_size:
+        raise ValueError(f"frame too large: {size} &gt; {max_size}")
+    return blob[4:4 + size]
+
+# 3) Register JSON-RPC methods
+def ping() -&gt; str:
+    return "pong"
+
+def add(a: int, b: int) -&gt; int:
+    return a + b
+
+dispatcher["ping"] = ping
+dispatcher["add"] = add
+
+def handle_jsonrpc(request_text: str) -&gt; str:
+    # JSONRPCResponseManager handles single and batch requests per JSON-RPC 2.0
+    response = JSONRPCResponseManager.handle(request_text, dispatcher)
+    # For notifications (no id) response may be None; send empty object to keep transport simple
+    return (response.json if response is not None else "{}")
+
+def main() -&gt; None:
+    # On Unix, cleanup stale socket path
+    if os.name != "nt" and os.path.exists(ADDRESS):
+        try:
+            os.unlink(ADDRESS)
+        except OSError:
+            pass
+
+    # Optional: authkey=b"shared-secret" to prevent accidental connects
+    with Listener(ADDRESS) as listener:
+        print(f"JSON-RPC pipe server listening at {ADDRESS}")
+        while True:
+            conn = listener.accept()
+            try:
+                # Keep-alive connection: handle multiple requests on one connection
+                while True:
+                    # Optional idle timeout
+                    ready = wait([conn], timeout=60.0)
+                    if not ready:
+                        break
+                    try:
+                        payload = read_frame(conn)
+                    except EOFError:
+                        break
+                    except Exception as e:
+                        print(f"Receive error: {e}")
+                        break
+
+                    try:
+                        request_text = payload.decode("utf-8")
+                        response_text = handle_jsonrpc(request_text)
+                        write_frame(conn, response_text.encode("utf-8"))
+                    except Exception:
+                        # JSON-RPC error envelope (generic internal error)
+                        error_resp = {
+                            "jsonrpc": "2.0",
+                            "error": {"code": -32603, "message": "Internal error"},
+                            "id": None,
+                        }
+                        try:
+                            write_frame(conn, json.dumps(error_resp).encode("utf-8"))
+                        except Exception:
+                            pass
+                        break
+            finally:
+                conn.close()
+
+if __name__ == "__main__":
+    main()
+```
+
+Client (JSON-RPC over Named Pipe/UDS)
+```python
+# np_jsonrpc_client.py
+import os
+import json
+import struct
+import uuid
+from multiprocessing.connection import Client
+
+if os.name == "nt":
+    ADDRESS = r"\\.\pipe\csc_jsonrpc_demo"
+else:
+    ADDRESS = "/tmp/csc_jsonrpc_demo.sock"
+
+def write_frame(conn, payload: bytes) -> None:
+    conn.send_bytes(struct.pack("!I", len(payload)) + payload)
+
+def read_frame(conn, max_size: int = 10 * 1024 * 1024) -> bytes:
+    blob = conn.recv_bytes()
+    if len(blob) &lt; 4:
+        raise EOFError("short frame")
+    size = struct.unpack("!I", blob[:4])[0]
+    if size &gt; max_size:
+        raise ValueError(f"frame too large: {size} &gt; {max_size}")
+    return blob[4:4 + size]
+
+def jsonrpc_call(method: str, params):
+    rid = uuid.uuid4().hex
+    req = {"jsonrpc": "2.0", "method": method, "params": params, "id": rid}
+    with Client(ADDRESS) as conn:
+        write_frame(conn, json.dumps(req, separators=(",", ":")).encode("utf-8"))
+        resp_text = read_frame(conn).decode("utf-8")
+        resp = json.loads(resp_text or "{}")
+        if "error" in resp and resp["error"] is not None:
+            raise RuntimeError(f"JSON-RPC error: {resp['error']}")
+        if resp.get("id") != rid:
+            raise RuntimeError(f"mismatched id: expected {rid}, got {resp.get('id')}")
+        return resp.get("result")
+
+if __name__ == "__main__":
+    print("ping -&gt;", jsonrpc_call("ping", []))
+    print("add(2, 3) -&gt;", jsonrpc_call("add", [2, 3]))
+```
+
+How to run
+1) Install: `pip install json-rpc`
+2) Start server: `python np_jsonrpc_server.py`
+3) In another terminal: `python np_jsonrpc_client.py`
+   - Expected:
+     - `ping -&gt; pong`
+     - `add(2, 3) -&gt; 5`
+
+Notes
+- Framing: 4-byte big-endian length prefix on each message.
+- Timeouts: `wait(..., timeout=60.0)` to prevent hanging reads.
+- Notifications (no id): This sample returns an empty `{}` frame; you can omit sending any frame to match spec strictly.
+- Security: Consider `authkey` and Windows pipe ACLs; validate max sizes and fields.
+- Scaling: Start with per-connection thread; move to overlapped I/O (`pywin32`) if needed for high concurrency.
+
+Source: https://pypi.org/project/json-rpc/
 ## Example: ZeroMQ Local REQ/REP (Unix)
 ```python
 import zmq

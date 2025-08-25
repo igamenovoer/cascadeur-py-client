@@ -1,0 +1,14 @@
+{
+  // VS Code currently launches MCP servers via stdio. HTTP/SSE attach is not (yet) generally supported in the official UI.
+  // Configure Serena in stdio mode; run a separate SSE server only for other clients.
+  "servers": {
+    "serena": {
+      "command": "serena",
+      "args": [
+        "start-mcp-server",
+        "--context","ide-assistant",
+        "--project","${workspaceFolder}"
+      ]
+    }
+  }
+}

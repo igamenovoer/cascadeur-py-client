@@ -65,28 +65,45 @@ foreach ($file in $files) {
   # Capture pre-change hash to detect no-op rewrites
   $preHash = (Get-FileHash -Algorithm SHA256 -Path $file.FullName).Hash
 
-  $message = "rewrite doc file $relPath"
-  # IMPORTANT: Include the target markdown file itself so aider can read & edit it.
-  $cmd = @('aider', $guideFull, $relPath, '--no-auto-commits', '--message', $message)
+  $message = @"
+rewrite doc file $relPath
+
+Transform it to the standardized API doc structure:
+1. Remove the YAML front matter block delimited by --- at the top.
+2. Start with: # [CLEAN] $($file.BaseName)
+3. Add an Overview section summarizing purpose in 2-4 concise sentences.
+4. Provide a Class Definition code block if it's a class; else a Function Definition block.
+5. List Constructor (if class) and then Methods, each with: signature (backticks), brief description, parameter bullets (name: type – description), return type, and important notes. Skip duplicates.
+6. Add Attributes section if there are notable attributes; otherwise omit.
+7. End with a Usage Notes section containing any caveats or typical usage patterns.
+8. No trailing blank heading, keep formatting tight, wrap code fences with ```python where relevant.
+9. Avoid repeating the module path in every heading; concise names only after the main title.
+10. Do not fabricate APIs; only include what is evidently present.
+"@
+  # Use a temporary message file to avoid CLI arg parsing issues with spaces.
+  $msgFile = New-TemporaryFile
+  Set-Content -Path $msgFile -Value $message -Encoding UTF8
+  # Include the target markdown file so aider can read & edit it.
+  $cmd = @('aider', $guideFull, $relPath, '--message-file', $msgFile, '--no-auto-commits')
     if ($AiderExtraArgs) { $cmd += $AiderExtraArgs }
 
-    $processInfo = New-Object System.Diagnostics.ProcessStartInfo
-    $processInfo.FileName = $cmd[0]
-    $processInfo.ArgumentList.AddRange($cmd[1..($cmd.Count-1)])
-    $processInfo.RedirectStandardOutput = $true
-    $processInfo.RedirectStandardError = $true
-    $processInfo.UseShellExecute = $false
-
-    $proc = [System.Diagnostics.Process]::Start($processInfo)
-  $stdout = $proc.StandardOutput.ReadToEnd()
-    $stderr = $proc.StandardError.ReadToEnd()
-    $proc.WaitForExit()
-
-    if ($proc.ExitCode -ne 0) {
-      Write-Warning "aider exited with code $($proc.ExitCode) for $relPath"
-      if ($stderr) { Write-Host $stderr -ForegroundColor Red }
-      elseif ($stdout) { Write-Host $stdout -ForegroundColor DarkGray }
-      continue
+    $outFile = New-TemporaryFile
+    $errFile = New-TemporaryFile
+    try {
+      $argList = $cmd[1..($cmd.Count-1)]
+      $proc = Start-Process -FilePath $cmd[0] -ArgumentList $argList -NoNewWindow -Wait -PassThru -RedirectStandardOutput $outFile -RedirectStandardError $errFile
+      $stdout = if (Test-Path $outFile) { Get-Content -Path $outFile -Raw } else { '' }
+      $stderr = if (Test-Path $errFile) { Get-Content -Path $errFile -Raw } else { '' }
+      if ($proc.ExitCode -ne 0) {
+        Write-Warning "aider exited with code $($proc.ExitCode) for $relPath"
+        if ($stderr) { Write-Host $stderr -ForegroundColor Red }
+        elseif ($stdout) { Write-Host $stdout -ForegroundColor DarkGray }
+        continue
+      }
+    }
+    finally {
+      if (Test-Path $outFile) { Remove-Item $outFile -Force }
+      if (Test-Path $errFile) { Remove-Item $errFile -Force }
     }
 
     # Tag cleaned file if requested

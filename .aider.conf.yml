@@ -30,6 +30,9 @@ cache-prompts: true                  # Enable provider prompt caching (caches re
 # Limit how much prior conversation gets re-sent (controls cost & context size)
 max-chat-history-tokens: 400000
 
+# System prompt enforcing standardized documentation cleanup style
+system-prompt-file: context/hints/doc_style.system.txt
+
 # Automatic commit behavior
 auto-commits: false                # Disabled per user request (no automatic commits after edits)
 attribute-commit-message-author: false # If later enabling auto/manual commits, adds 'aider:' authored-by marker in commit message

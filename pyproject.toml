@@ -31,7 +31,7 @@ classifiers = [
 ]
 requires-python = ">=3.7"
 dependencies = [
-    "typing-extensions>=4.0.0; python_version<'3.8'", "jsonrpc>=3.0.1,<4", "aiohttp>=3.12.15,<4", "requests>=2.32.5,<3", "pydantic>=2.11.7,<3", "html2text>=2025.4.15,<2026", "litellm>=1.75.9,<2",
+    "typing-extensions>=4.0.0; python_version<'3.8'", "jsonrpc>=3.0.1,<4", "aiohttp>=3.12.15,<4", "requests>=2.32.5,<3", "pydantic>=2.11.7,<3", "html2text>=2025.4.15,<2026", "litellm>=1.75.9,<2", "jsonrpcclient>=4.0.3,<5", "jsonrpcserver>=5.0.9,<6",
 ]
 
 [project.optional-dependencies]

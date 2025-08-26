@@ -6,7 +6,8 @@ we are going to develop a named pipe based json-rpc server, such that:
 - it never touches socket api
 - it works on both windows and linux
 - it processes requests and responses using a system pipe
-  - pipe name is given in env variable `NOSOCK_SERVER_PIPE_NAME`
-- it accepts json-rpc 2.0 conformant requests
+  - pipe name is fixed as `\\.\pipe\my-test-pipe` on windows
+- it accepts json-rpc 2.0 conformant requests, use responses using json-rpc 2.0 conformant responses
+- the source code should be written to `src\cascadeur_client\server`
 
-- reference approach: `context\hints\about-single-machine-server-client-ipc.md`
+reference approach: `context\hints\about-jsonrpc-without-networking.md`

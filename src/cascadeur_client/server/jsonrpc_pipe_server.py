@@ -39,6 +39,9 @@ else:  # Unix/Linux
     if os.path.exists(PIPE_ADDRESS):
         os.unlink(PIPE_ADDRESS)
 
+# Global server instance for quit command
+_server_instance: Optional['JSONRPCPipeServer'] = None
+
 
 # Define JSON-RPC methods
 @method
@@ -67,6 +70,49 @@ def echo(*args, **kwargs):
     
     # Return Success result with the message
     return Success(message)
+
+
+@method  
+def quit():
+    """
+    Shutdown the server gracefully.
+    This is an alternative to Ctrl+C for environments where signal handling doesn't work.
+    
+    Returns:
+        Success message indicating shutdown initiated
+    """
+    global _server_instance
+    if _server_instance:
+        logger.info("Quit command received, initiating shutdown...")
+        # Schedule shutdown in a separate thread to allow response to be sent
+        def delayed_shutdown():
+            import time
+            time.sleep(0.5)  # Give time for response to be sent
+            _server_instance.stop()
+        
+        shutdown_thread = threading.Thread(target=delayed_shutdown)
+        shutdown_thread.daemon = True
+        shutdown_thread.start()
+        
+        return Success("Server shutdown initiated")
+    else:
+        return Error("No server instance found", code=-32603)
+
+
+# Helper functions
+def is_main_thread() -> bool:
+    """
+    Check if we're running in the main thread of the main interpreter.
+    
+    Returns:
+        True if in main thread and signal handlers can be registered
+    """
+    try:
+        # Try to check if we're in the main thread
+        return threading.current_thread() is threading.main_thread()
+    except AttributeError:
+        # Python < 3.4 doesn't have main_thread()
+        return threading.current_thread().name == 'MainThread'
 
 
 # Message framing helpers
@@ -129,12 +175,15 @@ class JSONRPCPipeServer:
         Args:
             address: The pipe address. If None, uses platform default.
         """
+        global _server_instance
         self.address = address or PIPE_ADDRESS
         self.running = False
         self.listener: Optional[Listener] = None
         self._shutdown_requested = False
         self._client_threads = []
         self._shutdown_in_progress = False
+        # Set global instance for quit command
+        _server_instance = self
         
     def _handle_client(self, conn) -> None:
         """
@@ -196,32 +245,46 @@ class JSONRPCPipeServer:
             except:
                 pass
         
-        def signal_handler(signum, frame):
-            """Handle Ctrl+C gracefully."""
-            logger.info(f"Received signal {signum}, shutting down...")
-            self._shutdown_requested = True
-
-            # Close listener to unblock accept() on all platforms
-            try:
-                if self.listener:
-                    self.listener.close()
-            except Exception:
-                pass
-
-            # On Windows, also attempt a dummy connection to ensure accept() is unblocked
-            if os.name == 'nt':
-                # Use an instance-level guard to avoid repeated attempts
-                if not self._shutdown_in_progress:
-                    self._shutdown_in_progress = True
-                    try:
-                        dummy = Client(self.address)
-                        dummy.close()
-                    except Exception:
-                        pass
+        # Check if we can setup signal handlers
+        can_use_signals = is_main_thread()
         
-        # Setup signal handlers
-        signal.signal(signal.SIGINT, signal_handler)
-        signal.signal(signal.SIGTERM, signal_handler)
+        if can_use_signals:
+            def signal_handler(signum, frame):
+                """Handle Ctrl+C gracefully."""
+                logger.info(f"Received signal {signum}, shutting down...")
+                self._shutdown_requested = True
+
+                # Close listener to unblock accept() on all platforms
+                try:
+                    if self.listener:
+                        self.listener.close()
+                except Exception:
+                    pass
+
+                # On Windows, also attempt a dummy connection to ensure accept() is unblocked
+                if os.name == 'nt':
+                    # Use an instance-level guard to avoid repeated attempts
+                    if not self._shutdown_in_progress:
+                        self._shutdown_in_progress = True
+                        try:
+                            dummy = Client(self.address)
+                            dummy.close()
+                        except Exception:
+                            pass
+            
+            try:
+                # Setup signal handlers
+                signal.signal(signal.SIGINT, signal_handler)
+                signal.signal(signal.SIGTERM, signal_handler)
+                logger.info("Signal handlers registered (Ctrl+C to stop)")
+            except Exception as e:
+                # If signal setup fails, continue without it
+                logger.warning(f"Could not setup signal handlers: {e}")
+                logger.info("Use the 'quit' JSON-RPC method to stop the server")
+                can_use_signals = False
+        else:
+            logger.info("Running in non-main thread/interpreter (e.g., Jupyter)")
+            logger.info("Use the 'quit' JSON-RPC method to stop the server")
         
         try:
             self.listener = Listener(self.address)
@@ -293,6 +356,15 @@ class JSONRPCPipeServer:
                 self.listener.close()
             except:
                 pass
+        
+        # On Windows, send a dummy connection to unblock accept() if needed
+        if os.name == 'nt' and not self._shutdown_in_progress:
+            self._shutdown_in_progress = True
+            try:
+                dummy = Client(self.address)
+                dummy.close()
+            except Exception:
+                pass
 
 
 def main():
@@ -305,15 +377,27 @@ def main():
         logger.info("Starting JSON-RPC Pipe Server...")
         logger.info(f"Platform: {os.name}")
         logger.info(f"Pipe address: {server.address}")
-        logger.info("Press Ctrl+C to stop the server")
+        
+        # Check if we're in main thread
+        if is_main_thread():
+            logger.info("Press Ctrl+C to stop the server (or use 'quit' RPC method)")
+        else:
+            logger.info("Send 'quit' RPC method to stop the server")
+            
         server.start()
     except KeyboardInterrupt:
         logger.info("Keyboard interrupt received")
         server.stop()
     except Exception as e:
         logger.error(f"Server error: {e}")
+        if 'signal only works in main thread' in str(e):
+            logger.info("TIP: Server can still be started - it will use the 'quit' command instead of Ctrl+C")
         sys.exit(1)
 
 
 if __name__ == "__main__":
     main()
+    
+# Uncomment below to auto-start server when imported (e.g., in Jupyter notebooks)
+# th = threading.Thread(target=main)
+# th.start()

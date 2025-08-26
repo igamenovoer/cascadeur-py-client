@@ -9,6 +9,7 @@ with various commands and options.
 import os
 import sys
 import json
+import time
 import argparse
 import logging
 from pathlib import Path
@@ -55,8 +56,9 @@ def interactive_mode(client: JSONRPCPipeClient) -> None:
     print("  notify <message>  - Send notification (no response)")
     print("  raw <json>        - Send raw JSON-RPC request")
     print("  batch             - Enter batch mode")
+    print("  shutdown          - Send quit command to server")
     print("  help              - Show this help")
-    print("  quit              - Exit the client")
+    print("  quit              - Exit the client (local only)")
     print("=" * 60)
     print()
     
@@ -77,13 +79,27 @@ def interactive_mode(client: JSONRPCPipeClient) -> None:
                 print("  notify <message>  - Send notification")
                 print("  raw <json>        - Send raw JSON-RPC")
                 print("  batch             - Batch request mode")
-                print("  quit              - Exit")
+                print("  shutdown          - Send quit command to server")
+                print("  quit              - Exit client (local only)")
                 print()
+            
+            elif command.lower() == 'shutdown':
+                print("Sending shutdown command to server...")
+                try:
+                    result = client.call("quit", {})
+                    print(f"Server response: {result}")
+                    print("Server is shutting down. Client will exit in 2 seconds...")
+                    time.sleep(2)
+                    print("Goodbye!")
+                    break
+                except Exception as e:
+                    print(f"Error sending shutdown command: {e}")
+                    print("The server may not support the quit command or may already be stopped.")
             
             elif command.startswith('echo '):
                 message = command[5:]
                 try:
-                    result = client.call("echo", [message])
+                    result = client.call("echo", {"message": message})
                     print(f"Server echoed: {result}")
                 except Exception as e:
                     print(f"Error: {e}")
@@ -111,7 +127,7 @@ def interactive_mode(client: JSONRPCPipeClient) -> None:
             
             elif command == 'batch':
                 print("\nBatch mode - enter requests (empty line to execute):")
-                requests = []
+                requests: List[tuple[str, Optional[Any]]] = []
                 while True:
                     req = input("  method params> ").strip()
                     if not req:
@@ -189,6 +205,12 @@ def main() -> None:
         help="Format JSON output with indentation"
     )
     
+    parser.add_argument(
+        "--shutdown",
+        action="store_true",
+        help="Send quit command to shutdown the server"
+    )
+    
     args = parser.parse_args()
     
     # Configure logging
@@ -212,7 +234,18 @@ def main() -> None:
     client = JSONRPCPipeClient(pipe_address)
     
     try:
-        if args.interactive:
+        if args.shutdown:
+            # Shutdown mode - send quit command to server
+            print("\nSending shutdown command to server...")
+            try:
+                result = client.call("quit", {})
+                print(f"Server response: {result}")
+                print("Server is shutting down successfully.")
+            except Exception as e:
+                print(f"Error: {e}")
+                print("The server may not support the quit command or may already be stopped.")
+                sys.exit(1)
+        elif args.interactive:
             interactive_mode(client)
         elif args.method:
             # Single call mode

@@ -4,85 +4,136 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build and Development Commands
 
-### Installation
+### Environment Setup
 ```bash
-# Install package in development mode with all dependencies
-pip install -e ".[dev]"
-
-# Or using pixi (project uses pixi for environment management)
+# Using pixi (recommended - handles both conda and PyPI dependencies)
 pixi install
+pixi shell  # Activate default environment
+
+# Or traditional pip install
+pip install -e ".[dev]"
 ```
 
 ### Code Quality
 ```bash
-# Format code
-black src tests examples
+# Format code with black
+black src tests scripts examples
 
 # Sort imports
-isort src tests examples
+isort src tests scripts examples
 
-# Lint code
-flake8 src tests examples
+# Lint with flake8
+flake8 src tests scripts examples
 
 # Type checking
 mypy src
+
+# Or using ruff (faster alternative)
+ruff check src tests scripts
+ruff format src tests scripts
 ```
 
 ### Testing
 ```bash
-# Run all tests
-pytest
+# Run all automated tests
+pytest tests/auto/
 
-# Run tests with coverage
-pytest --cov=cascadeur_client --cov-report=term-missing
+# Run with coverage report
+pytest tests/auto/ --cov=cascadeur_client --cov-report=term-missing
 
 # Run specific test file
-pytest tests/test_client.py
+pytest tests/auto/test_jsonrpc_pipe.py
+
+# Run a single test
+pytest tests/auto/test_jsonrpc_pipe.py::TestJSONRPCPipe::test_simple_echo
 ```
 
-### Documentation Building
+### Cascadeur Package Management
 ```bash
-# Install documentation dependencies
-pip install -e ".[docs]"
+# Activate the cas-installer environment (Python 3.11 for binary compatibility)
+pixi shell -e cas-installer
 
-# Build HTML documentation
-cd docs && make html
+# Install packages into Cascadeur
+python scripts/pip_for_cascadeur.py install <package_name>
+python scripts/pip_for_cascadeur.py install -r requirements-cascadeur.txt
+
+# List installed packages
+python scripts/pip_for_cascadeur.py list
+python scripts/pip_for_cascadeur.py list --format=freeze
+
+# Uninstall packages
+python scripts/pip_for_cascadeur.py uninstall <package_name>
 ```
 
 ## Architecture Overview
 
-This is a Python client library for interfacing with Cascadeur animation software. The project consists of:
+### Cascadeur's Embedded Python Environment
+Cascadeur uses an embedded Python 3.11 interpreter with these characteristics:
+- **No standalone python.exe**: Python runs through cascadeur.exe
+- **Isolated runtime**: Ignores environment variables, no user site packages
+- **No console I/O**: stdin/stdout/stderr are null
+- **Custom module**: `csc` module provides Cascadeur's internal API
+- **Site-packages locations**: 
+  - `%LOCALAPPDATA%\Cascadeur\Lib\site-packages`
+  - `%LOCALAPPDATA%\Cascadeur\python\Lib\site-packages`
 
-### Core Client Architecture
-- **CascadeurClient** (`src/cascadeur_client/client.py`): Main entry point that manages connections to Cascadeur and provides high-level scene operations
-- **Scene** (`src/cascadeur_client/scene.py`): Represents a Cascadeur scene with methods for manipulating joints, frames, and animation data
-- **Animation/Rig** modules: Provide specialized functionality for animation curves and character rigs
+### IPC Architecture
+The project implements a JSON-RPC over named pipes communication system:
 
-### Server Components
-The `src/cascadeur_client/server/` directory contains multiple JSON-RPC server implementations designed to run inside Cascadeur's Python environment:
-- **health_exec_server_aio.py**: Async (aiohttp) server with non-blocking execution
-- **health_exec_server_threaded.py**: Thread-based server for concurrent handling
-- **health_exec_server.py**: Basic synchronous implementation
-- All servers expose `health` and `exec_b64` methods for remote code execution in Cascadeur
+#### Server Components (`src/cascadeur_client/server/`)
+- **jsonrpc_pipe_server.py**: Main server running inside Cascadeur, handles RPC requests
+- **jsonrpc_pipe_server_simple.py**: Simplified server for testing and debugging
+- **jsonrpc_pipe_client.py**: Client library for connecting to the server
 
-### Key Design Patterns
-- Client-Server architecture where the Python client communicates with a server running inside Cascadeur
-- Base64 encoding for code transmission to avoid JSON escaping issues
-- Multiple server implementations (async, threaded, sync) for different deployment scenarios
-- Placeholder implementations currently exist as the actual Cascadeur API integration is in development
+#### Communication Protocol
+- Uses Windows named pipes (`\\.\pipe\cascadeur_jsonrpc`)
+- JSON-RPC 2.0 protocol with base64 encoding for code transmission
+- Supports synchronous and asynchronous execution models
+- Health check endpoint for connection verification
 
-## Package Structure
-- Python 3.7+ compatible with type hints
-- Uses setuptools for packaging with pyproject.toml configuration
-- Optional pixi environment management for Windows development
-- Follows standard Python package layout with src/ directory
+### Package Management System
+Due to Cascadeur's embedded Python limitations:
+- External Python 3.11 environment (`cas-installer`) manages packages
+- `scripts/pip_for_cascadeur.py`: Pip-like interface for package management
+- Uses `--target` flag to install directly into Cascadeur's site-packages
+- Binary wheel compatibility requires exact Python 3.11 match
 
-## Context Directory
-The `context/` directory contains comprehensive project documentation, development history, and AI collaboration materials. Key areas include:
-- `design/` - Architecture specifications and technical designs
-- `hints/` - How-to guides and troubleshooting tips
-- `plans/` - Development roadmaps and implementation strategies
-- `summaries/` - Project analysis and knowledge consolidation
-- `tasks/` - Current and planned work items organized by type
+### Testing Infrastructure
+- **tests/auto/**: Automated pytest tests for CI/CD
+- **tests/manual/**: Interactive testing tools (only created when explicitly needed)
+- JSON-RPC pipe tests verify IPC functionality
+- Coverage reporting integrated with pytest
 
-See `context/README.md` for detailed information about the project's knowledge base.
+## Key Design Decisions
+
+### Why Named Pipes?
+- Native Windows IPC mechanism with good performance
+- No firewall issues unlike TCP sockets
+- Built-in security through Windows access controls
+- Simple to implement with Python's win32 libraries
+
+### Why External Package Management?
+- Cascadeur's Python lacks pip and console access
+- External Python can download and install packages normally
+- Binary compatibility ensured by matching Python versions (3.11)
+- Allows full pip functionality (requirements files, upgrades, etc.)
+
+### Why JSON-RPC?
+- Standard protocol with good library support
+- Clean separation between transport and application logic
+- Supports batching and async operations
+- Easy to debug and extend
+
+## Project Dependencies
+
+### Core Runtime
+- Python 3.11+ (must match Cascadeur's version for binary compatibility)
+- jsonrpc, aiohttp, requests: RPC and HTTP communication
+- pydantic: Data validation and serialization
+- loguru: Structured logging
+
+### Development
+- pytest: Testing framework
+- black, isort, ruff: Code formatting and linting
+- mypy: Static type checking
+- pixi: Cross-platform package management (conda + PyPI)

@@ -188,7 +188,7 @@ def get_output_path() -> Path:
     Determine the output directory based on environment variable or default to temp.
     
     Returns:
-        Path object for the output file location
+        Path object for the output file location with timestamp to avoid overrides
     """
     output_dir_str: Optional[str] = os.environ.get('CASCADEUR_PYTHON_OUTPUT_DIR')
     
@@ -200,7 +200,11 @@ def get_output_path() -> Path:
         # Use system temp directory
         output_dir = Path(tempfile.gettempdir())
     
-    return output_dir / 'cascadeur_python_info.json'
+    # Generate filename with timestamp (YYMMDD_HHMMSS format)
+    timestamp = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
+    filename = f'cascadeur_env_{timestamp}.json'
+    
+    return output_dir / filename
 
 
 def save_python_info() -> str:

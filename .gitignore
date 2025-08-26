@@ -154,3 +154,6 @@ tmp/
 !.aider.conf.yml
 !.aider.model.settings.yml
 !.aiderignore
+
+# logs
+/logs/

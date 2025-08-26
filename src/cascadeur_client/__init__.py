@@ -9,14 +9,15 @@ __author__ = "Your Name"
 __email__ = "your.email@example.com"
 __license__ = "MIT"
 
-from .client import CascadeurClient
-from .scene import Scene
-from .exceptions import CascadeurError, ConnectionError, SceneError
+# Temporarily commented out - modules not yet implemented
+# from .client import CascadeurClient
+# from .scene import Scene
+# from .exceptions import CascadeurError, ConnectionError, SceneError
 
 __all__ = [
-    "CascadeurClient",
-    "Scene", 
-    "CascadeurError",
-    "ConnectionError",
-    "SceneError",
+    # "CascadeurClient",
+    # "Scene", 
+    # "CascadeurError",
+    # "ConnectionError",
+    # "SceneError",
 ]

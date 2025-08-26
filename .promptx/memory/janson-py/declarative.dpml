@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<memory>
+  <item id="mem_1756194975638_et1nvk6ze" time="2025/08/26 15:56">
+    <content>
+      Testing Strategy Guidelines:
+      - DO NOT create manual testing scripts in tests/manual unless EXPLICITLY requested
+      - The tests/manual directory is reserved for user-requested manual testing tools only
+      - Default to creating automated tests in tests/auto for CI/CD
+      - When testing functionality, prefer pytest-based automated tests
+      - Manual scripts are only for debugging tools that users will run interactively
+      - Always think carefully before creating any test file - ask if it&#x27;s truly needed
+    </content>
+    <tags>#其他</tags>
+  </item>
+</memory>

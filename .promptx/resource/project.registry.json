@@ -1,0 +1,80 @@
+{
+  "version": "2.0.0",
+  "source": "project",
+  "metadata": {
+    "version": "2.0.0",
+    "description": "project 级资源注册表",
+    "createdAt": "2025-08-26T08:33:38.110Z",
+    "updatedAt": "2025-08-26T08:33:38.115Z",
+    "resourceCount": 4
+  },
+  "resources": [
+    {
+      "id": "ipc-development-workflow",
+      "source": "project",
+      "protocol": "execution",
+      "name": "Ipc Development Workflow 执行模式",
+      "description": "执行模式，定义具体的行为模式",
+      "reference": "@project://.promptx/resource/role/janson-py/execution/ipc-development-workflow.execution.md",
+      "metadata": {
+        "createdAt": "2025-08-26T08:33:38.112Z",
+        "updatedAt": "2025-08-26T08:33:38.112Z",
+        "scannedAt": "2025-08-26T08:33:38.112Z",
+        "path": "role/janson-py/execution/ipc-development-workflow.execution.md"
+      }
+    },
+    {
+      "id": "janson-py",
+      "source": "project",
+      "protocol": "role",
+      "name": "Janson Py 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/role/janson-py/janson-py.role.md",
+      "metadata": {
+        "createdAt": "2025-08-26T08:33:38.112Z",
+        "updatedAt": "2025-08-26T08:33:38.112Z",
+        "scannedAt": "2025-08-26T08:33:38.112Z",
+        "path": "role/janson-py/janson-py.role.md"
+      }
+    },
+    {
+      "id": "architectural-reasoning",
+      "source": "project",
+      "protocol": "thought",
+      "name": "Architectural Reasoning 思维模式",
+      "description": "思维模式，指导AI的思考方式",
+      "reference": "@project://.promptx/resource/role/janson-py/thought/architectural-reasoning.thought.md",
+      "metadata": {
+        "createdAt": "2025-08-26T08:33:38.115Z",
+        "updatedAt": "2025-08-26T08:33:38.115Z",
+        "scannedAt": "2025-08-26T08:33:38.115Z",
+        "path": "role/janson-py/thought/architectural-reasoning.thought.md"
+      }
+    },
+    {
+      "id": "concurrency-analysis",
+      "source": "project",
+      "protocol": "thought",
+      "name": "Concurrency Analysis 思维模式",
+      "description": "思维模式，指导AI的思考方式",
+      "reference": "@project://.promptx/resource/role/janson-py/thought/concurrency-analysis.thought.md",
+      "metadata": {
+        "createdAt": "2025-08-26T08:33:38.115Z",
+        "updatedAt": "2025-08-26T08:33:38.115Z",
+        "scannedAt": "2025-08-26T08:33:38.115Z",
+        "path": "role/janson-py/thought/concurrency-analysis.thought.md"
+      }
+    }
+  ],
+  "stats": {
+    "totalResources": 4,
+    "byProtocol": {
+      "execution": 1,
+      "role": 1,
+      "thought": 2
+    },
+    "bySource": {
+      "project": 4
+    }
+  }
+}

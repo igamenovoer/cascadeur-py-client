@@ -574,9 +574,8 @@ packages:
 - pypi: ./
   name: cascadeur-py-client
   version: 0.1.0
-  sha256: 0de2eeceb7342658d7202516eae5eb9348c126a6519e5ad88945374ff7ed7e89
+  sha256: ebb857281087dabb275e9b9c90c2abf1a3551ff9bb31387542d5f3664083d66b
   requires_dist:
-  - typing-extensions>=4.0.0 ; python_full_version < '3.8'
   - jsonrpc>=3.0.1,<4
   - aiohttp>=3.12.15,<4
   - requests>=2.32.5,<3
@@ -585,6 +584,7 @@ packages:
   - litellm>=1.75.9,<2
   - jsonrpcclient>=4.0.3,<5
   - jsonrpcserver>=5.0.9,<6
+  - click
   - pytest>=6.0 ; extra == 'dev'
   - pytest-cov>=2.0 ; extra == 'dev'
   - black>=22.0 ; extra == 'dev'
@@ -594,7 +594,7 @@ packages:
   - sphinx>=4.0 ; extra == 'docs'
   - sphinx-rtd-theme>=1.0 ; extra == 'docs'
   - sphinx-autodoc-typehints>=1.12 ; extra == 'docs'
-  requires_python: '>=3.7'
+  requires_python: '>=3.11'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/certifi-2025.8.3-pyhd8ed1ab_0.conda
   sha256: a1ad5b0a2a242f439608f22a538d2175cac4444b7b3f4e2b8c090ac337aaea40

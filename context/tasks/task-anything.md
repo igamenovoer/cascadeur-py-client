@@ -35,3 +35,13 @@ create a one-off script, that behaves as follows:
 
 create the script in `src\cascadeur_client\inspection/try_pipe_client.py`
 
+# Task 4: implement a synchronous jsonrpc pipe server
+
+- multi-threaded json rpc server (`mt-pipe-server`): `src\cascadeur_client\server\jsonrpc_pipe_server.py`
+
+now implement as synchronous jsonrpc pipe server, such that:
+- the core behavior is just like `mt-pipe-server`, but it is single-threaded, received messages are processed in the one by one in main thread
+- once called the start(), it blocks the caller thread, and it will NOT create threads for clients, just a single thread, receives and processes messages one by one
+- incoming messages are queued (implicitly by system), we do not need to implement an explicit queue
+
+the implemented server should be in `src\cascadeur_client\server\jsonrpc_pipe_server_sync.py`

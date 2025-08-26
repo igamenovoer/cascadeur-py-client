@@ -134,6 +134,7 @@ class JSONRPCPipeServer:
         self.listener: Optional[Listener] = None
         self._shutdown_requested = False
         self._client_threads = []
+        self._shutdown_in_progress = False
         
     def _handle_client(self, conn) -> None:
         """
@@ -199,16 +200,24 @@ class JSONRPCPipeServer:
             """Handle Ctrl+C gracefully."""
             logger.info(f"Received signal {signum}, shutting down...")
             self._shutdown_requested = True
-            # On Windows, create a dummy connection to unblock accept()
-            if os.name == 'nt' and self.listener and not self._shutdown_requested:
-                try:
-                    # Prevent recursive shutdown attempts
-                    if not hasattr(signal_handler, '_shutdown_in_progress'):
-                        signal_handler._shutdown_in_progress = True
+
+            # Close listener to unblock accept() on all platforms
+            try:
+                if self.listener:
+                    self.listener.close()
+            except Exception:
+                pass
+
+            # On Windows, also attempt a dummy connection to ensure accept() is unblocked
+            if os.name == 'nt':
+                # Use an instance-level guard to avoid repeated attempts
+                if not self._shutdown_in_progress:
+                    self._shutdown_in_progress = True
+                    try:
                         dummy = Client(self.address)
                         dummy.close()
-                except:
-                    pass
+                    except Exception:
+                        pass
         
         # Setup signal handlers
         signal.signal(signal.SIGINT, signal_handler)

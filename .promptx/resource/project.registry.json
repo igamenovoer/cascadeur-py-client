@@ -4,8 +4,8 @@
   "metadata": {
     "version": "2.0.0",
     "description": "project 级资源注册表",
-    "createdAt": "2025-08-26T08:33:38.110Z",
-    "updatedAt": "2025-08-26T08:33:38.115Z",
+    "createdAt": "2025-08-26T10:47:03.085Z",
+    "updatedAt": "2025-08-26T10:47:03.089Z",
     "resourceCount": 4
   },
   "resources": [
@@ -17,9 +17,9 @@
       "description": "执行模式，定义具体的行为模式",
       "reference": "@project://.promptx/resource/role/janson-py/execution/ipc-development-workflow.execution.md",
       "metadata": {
-        "createdAt": "2025-08-26T08:33:38.112Z",
-        "updatedAt": "2025-08-26T08:33:38.112Z",
-        "scannedAt": "2025-08-26T08:33:38.112Z",
+        "createdAt": "2025-08-26T10:47:03.087Z",
+        "updatedAt": "2025-08-26T10:47:03.087Z",
+        "scannedAt": "2025-08-26T10:47:03.087Z",
         "path": "role/janson-py/execution/ipc-development-workflow.execution.md"
       }
     },
@@ -31,9 +31,9 @@
       "description": "专业角色，提供特定领域的专业能力",
       "reference": "@project://.promptx/resource/role/janson-py/janson-py.role.md",
       "metadata": {
-        "createdAt": "2025-08-26T08:33:38.112Z",
-        "updatedAt": "2025-08-26T08:33:38.112Z",
-        "scannedAt": "2025-08-26T08:33:38.112Z",
+        "createdAt": "2025-08-26T10:47:03.088Z",
+        "updatedAt": "2025-08-26T10:47:03.088Z",
+        "scannedAt": "2025-08-26T10:47:03.087Z",
         "path": "role/janson-py/janson-py.role.md"
       }
     },
@@ -45,9 +45,9 @@
       "description": "思维模式，指导AI的思考方式",
       "reference": "@project://.promptx/resource/role/janson-py/thought/architectural-reasoning.thought.md",
       "metadata": {
-        "createdAt": "2025-08-26T08:33:38.115Z",
-        "updatedAt": "2025-08-26T08:33:38.115Z",
-        "scannedAt": "2025-08-26T08:33:38.115Z",
+        "createdAt": "2025-08-26T10:47:03.088Z",
+        "updatedAt": "2025-08-26T10:47:03.088Z",
+        "scannedAt": "2025-08-26T10:47:03.088Z",
         "path": "role/janson-py/thought/architectural-reasoning.thought.md"
       }
     },
@@ -59,9 +59,9 @@
       "description": "思维模式，指导AI的思考方式",
       "reference": "@project://.promptx/resource/role/janson-py/thought/concurrency-analysis.thought.md",
       "metadata": {
-        "createdAt": "2025-08-26T08:33:38.115Z",
-        "updatedAt": "2025-08-26T08:33:38.115Z",
-        "scannedAt": "2025-08-26T08:33:38.115Z",
+        "createdAt": "2025-08-26T10:47:03.089Z",
+        "updatedAt": "2025-08-26T10:47:03.089Z",
+        "scannedAt": "2025-08-26T10:47:03.089Z",
         "path": "role/janson-py/thought/concurrency-analysis.thought.md"
       }
     }

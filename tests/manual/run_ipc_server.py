@@ -11,13 +11,14 @@ import sys
 import argparse
 import logging
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 # Add src to path for imports
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
 from cascadeur_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
+from cascadeur_client.server.jsonrpc_pipe_server_sync import SyncJSONRPCPipeServer
 
 
 def format_pipe_address(pipe_name: str) -> str:
@@ -63,6 +64,12 @@ def main() -> None:
     )
     
     parser.add_argument(
+        "--sync",
+        action="store_true",
+        help="Use synchronous single-threaded server instead of multi-threaded server"
+    )
+    
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose debug logging"
@@ -103,16 +110,22 @@ def main() -> None:
     print(f"Platform:        {sys.platform}")
     print(f"OS Type:         {'Windows' if os.name == 'nt' else 'Unix-like'}")
     print(f"Python Version:  {sys.version.split()[0]}")
+    print(f"Server Mode:     {'Synchronous (single-threaded)' if args.sync else 'Multi-threaded'}")
     print(f"Simple Name:     {args.pipe}")
     print(f"Full Address:    {pipe_address}")
     print(f"Log Level:       {logging.getLevelName(log_level)}")
     print("=" * 60)
     
     # Create and start server
-    server = JSONRPCPipeServer(pipe_address)
+    server: Union[SyncJSONRPCPipeServer, JSONRPCPipeServer]
+    if args.sync:
+        server = SyncJSONRPCPipeServer(pipe_address)
+    else:
+        server = JSONRPCPipeServer(pipe_address)
     
-    print(f"\nStarting server on: {pipe_address}")
-    print("Press Ctrl+C to stop the server\n")
+    mode_desc = "synchronous single-threaded" if args.sync else "multi-threaded"
+    print(f"\nStarting {mode_desc} server on: {pipe_address}")
+    print("Press Ctrl+C to stop the server (or send 'quit' RPC method)\n")
     print("-" * 60)
     
     try:

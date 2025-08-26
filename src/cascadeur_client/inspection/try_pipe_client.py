@@ -54,7 +54,7 @@ def setup_logging() -> logging.Logger:
     return logger
 
 # Config
-PIPE_ADDRESS = r'\\.\pipe\mypipe'
+PIPE_ADDRESS = r'\\.\pipe\my-test-pipe'
 log = setup_logging()
 
 def send_msg(conn: Any, msg: str) -> None:
@@ -71,8 +71,9 @@ def recv_msg(conn: Any) -> str:
     message: str = raw[4:4+length].decode('utf-8')
     return message
 
-def rpc_call(method: str, params: Optional[dict] = None) -> Optional[Any]:
+def rpc_call(method: str, params: Optional[dict] = None, pipe_address: Optional[str] = None) -> Optional[Any]:
     """Make a JSON-RPC call."""
+    address = pipe_address or PIPE_ADDRESS
     request = {
         "jsonrpc": "2.0",
         "method": method,
@@ -81,7 +82,7 @@ def rpc_call(method: str, params: Optional[dict] = None) -> Optional[Any]:
     }
     
     try:
-        with Client(PIPE_ADDRESS, authkey=None) as conn:
+        with Client(address, authkey=None) as conn:
             # Send request
             send_msg(conn, json.dumps(request))
             log.debug(f"Sent: {method} with {params}")
@@ -99,7 +100,7 @@ def rpc_call(method: str, params: Optional[dict] = None) -> Optional[Any]:
             return result
             
     except FileNotFoundError:
-        log.error(f"Server not found at {PIPE_ADDRESS}")
+        log.error(f"Server not found at {address}")
         return None
     except Exception as e:
         log.error(f"Failed: {e}")

@@ -13,6 +13,8 @@ import struct
 import signal
 import threading
 import logging
+import atexit
+import weakref
 from typing import Optional, Any
 from multiprocessing.connection import Listener, Client
 from jsonrpcserver import method, dispatch
@@ -35,12 +37,51 @@ if os.name == 'nt':  # Windows
     PIPE_ADDRESS = r'\\.\pipe\my-test-pipe'
 else:  # Unix/Linux
     PIPE_ADDRESS = '/tmp/my-test-pipe.sock'
-    # Clean up any existing socket file
-    if os.path.exists(PIPE_ADDRESS):
-        os.unlink(PIPE_ADDRESS)
 
-# Global server instance for quit command
+# Global server instance for quit command and cleanup
 _server_instance: Optional['JSONRPCPipeServer'] = None
+_active_servers = weakref.WeakSet()
+
+
+def cleanup_pipe(address: str) -> None:
+    """
+    Clean up named pipe or Unix socket.
+    
+    Args:
+        address: The pipe/socket address to clean up
+    """
+    if os.name == 'nt':
+        # Windows named pipes are cleaned up when all handles are closed
+        # But we'll ensure any lingering connections are closed
+        try:
+            # Try to connect and immediately disconnect to clear any stuck state
+            dummy = Client(address)
+            dummy.close()
+        except:
+            pass
+    else:
+        # Unix domain sockets need explicit file removal
+        if os.path.exists(address):
+            try:
+                os.unlink(address)
+                logger.debug(f"Removed Unix socket: {address}")
+            except Exception as e:
+                logger.debug(f"Could not remove socket {address}: {e}")
+
+
+def cleanup_all_pipes() -> None:
+    """Clean up all registered server pipes on exit."""
+    for server in list(_active_servers):
+        try:
+            if hasattr(server, 'address'):
+                cleanup_pipe(server.address)
+                logger.debug(f"Cleaned up pipe: {server.address}")
+        except:
+            pass
+
+
+# Register cleanup on exit
+atexit.register(cleanup_all_pipes)
 
 
 # Define JSON-RPC methods
@@ -184,6 +225,29 @@ class JSONRPCPipeServer:
         self._shutdown_in_progress = False
         # Set global instance for quit command
         _server_instance = self
+        # Register for cleanup
+        _active_servers.add(self)
+        
+    def __del__(self):
+        """Cleanup on garbage collection."""
+        self._cleanup()
+    
+    def _cleanup(self) -> None:
+        """Perform cleanup of pipes and resources."""
+        try:
+            # Close listener if still open
+            if self.listener:
+                try:
+                    self.listener.close()
+                except:
+                    pass
+                self.listener = None
+            
+            # Clean up the pipe/socket
+            cleanup_pipe(self.address)
+            
+        except Exception as e:
+            logger.debug(f"Cleanup error (non-critical): {e}")
         
     def _handle_client(self, conn) -> None:
         """
@@ -238,12 +302,8 @@ class JSONRPCPipeServer:
         """
         Start the JSON-RPC server and listen for connections.
         """
-        # Clean up Unix socket if it exists before starting
-        if os.name != 'nt' and os.path.exists(self.address):
-            try:
-                os.unlink(self.address)
-            except:
-                pass
+        # Clean up any existing pipe/socket before starting
+        cleanup_pipe(self.address)
         
         # Check if we can setup signal handlers
         can_use_signals = is_main_thread()
@@ -325,21 +385,11 @@ class JSONRPCPipeServer:
                     
         except Exception as e:
             logger.error(f"Failed to start server: {e}")
+            self._cleanup()
             raise
         finally:
             self.running = False
-            if self.listener:
-                try:
-                    self.listener.close()
-                except:
-                    pass
-                self.listener = None
-            # Clean up Unix socket if necessary
-            if os.name != 'nt' and os.path.exists(self.address):
-                try:
-                    os.unlink(self.address)
-                except:
-                    pass
+            self._cleanup()
             logger.info("Server shutdown complete")
     
     def stop(self) -> None:
@@ -365,6 +415,9 @@ class JSONRPCPipeServer:
                 dummy.close()
             except Exception:
                 pass
+        
+        # Ensure cleanup
+        self._cleanup()
 
 
 def main():
@@ -392,7 +445,13 @@ def main():
         logger.error(f"Server error: {e}")
         if 'signal only works in main thread' in str(e):
             logger.info("TIP: Server can still be started - it will use the 'quit' command instead of Ctrl+C")
+        # Ensure cleanup on error
+        server._cleanup()
         sys.exit(1)
+    finally:
+        # Final cleanup attempt
+        if server:
+            server._cleanup()
 
 
 if __name__ == "__main__":

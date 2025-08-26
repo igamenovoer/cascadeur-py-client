@@ -12,4 +12,63 @@
     </content>
     <tags>#其他</tags>
   </item>
+  <item id="mem_1756205928495_ozej28xn0" time="2025/08/26 18:58">
+    <content>
+      JSON and YAML Processing Tools:
+      - **jq**: Command-line JSON processor available for parsing, filtering, and transforming JSON data
+      - Example: `jq &#x27;.python.version&#x27; cascadeur_env.json` to extract Python version
+      - Example: `jq &#x27;.modules.available_check | to_entries | map(select(.value == true)) | from_entries&#x27; file.json` to filter available modules
+      - **yq**: YAML processor with similar syntax to jq for YAML files
+      - Example: `yq &#x27;.spec.containers[0].image&#x27; deployment.yaml`
+      - Can also process JSON with `-j` flag
+    
+      These tools are particularly useful for:
+      - Extracting specific fields from complex JSON/YAML structures
+      - Filtering and transforming configuration data
+      - Comparing JSON outputs between different runs
+      - Creating reports from structured data
+      - Pipeline processing with other Unix tools
+    </content>
+    <tags>#其他</tags>
+  </item>
+  <item id="mem_1756206382852_mlda7hzwf" time="2025/08/26 19:06">
+    <content>
+      Cascadeur Python Environment Management:
+    
+      ## Architecture
+      - **Embedded Python 3.11**: No python.exe, runs through cascadeur.exe
+      - **Isolated Runtime**: Flags show isolated:1, ignore_environment:1, no_user_site:1
+      - **No I/O Streams**: stdin/stdout/stderr are null (restricted environment)
+      - **Has csc module**: Cascadeur API available as builtin
+      - **Site-packages**: C:\Users\%USERNAME%\AppData\Local\Cascadeur\Lib\site-packages
+    
+      ## Package Management Strategy
+      Created `cas-installer` pixi environment with Python 3.11 to match Cascadeur&#x27;s version.
+      Scripts in scripts/ directory:
+      - `install_to_cascadeur.py`: Install packages using --target to Cascadeur&#x27;s site-packages
+      - `list_cascadeur_packages.py`: List installed packages in various formats
+    
+      ## Currently Installed Packages in Cascadeur
+      aiohttp, numpy, pydantic, json-rpc, typing_extensions, and others (16 total)
+    
+      ## Usage Pattern
+      ```bash
+      # Activate installer environment
+      pixi shell -e cas-installer
+    
+      # Install package
+      python scripts/install_to_cascadeur.py &lt;package_name&gt;
+    
+      # List packages
+      python scripts/list_cascadeur_packages.py
+      ```
+    
+      ## Key Constraints
+      - Binary compatibility: Must use Python 3.11 compiled extensions
+      - No console I/O in Cascadeur
+      - Environment variables ignored by Cascadeur
+      - Must use external Python to manage packages
+    </content>
+    <tags>#其他</tags>
+  </item>
 </memory>

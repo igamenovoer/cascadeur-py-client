@@ -1,5 +1,5 @@
 {
-  "currentState": "role_activated_with_memory",
+  "currentState": "initialized",
   "stateHistory": [
     {
       "from": "initial",
@@ -19,7 +19,39 @@
       "args": [
         "janson-py"
       ]
+    },
+    {
+      "from": "role_activated_with_memory",
+      "command": "remember",
+      "timestamp": "2025-08-26T10:58:48.490Z",
+      "args": [
+        "janson-py",
+        "JSON and YAML Processing Tools:\n- **jq**: Command-line JSON processor available for parsing, filtering, and transforming JSON data\n  - Example: `jq '.python.version' cascadeur_env.json` to extract Python version\n  - Example: `jq '.modules.available_check | to_entries | map(select(.value == true)) | from_entries' file.json` to filter available modules\n- **yq**: YAML processor with similar syntax to jq for YAML files\n  - Example: `yq '.spec.containers[0].image' deployment.yaml`\n  - Can also process JSON with `-j` flag\n\nThese tools are particularly useful for:\n- Extracting specific fields from complex JSON/YAML structures\n- Filtering and transforming configuration data\n- Comparing JSON outputs between different runs\n- Creating reports from structured data\n- Pipeline processing with other Unix tools",
+        "--tags",
+        "tools json yaml processing"
+      ]
+    },
+    {
+      "from": "memory_saved",
+      "command": "remember",
+      "timestamp": "2025-08-26T11:06:22.850Z",
+      "args": [
+        "janson-py",
+        "Cascadeur Python Environment Management:\n\n## Architecture\n- **Embedded Python 3.11**: No python.exe, runs through cascadeur.exe\n- **Isolated Runtime**: Flags show isolated:1, ignore_environment:1, no_user_site:1\n- **No I/O Streams**: stdin/stdout/stderr are null (restricted environment)\n- **Has csc module**: Cascadeur API available as builtin\n- **Site-packages**: C:\\Users\\%USERNAME%\\AppData\\Local\\Cascadeur\\Lib\\site-packages\n\n## Package Management Strategy\nCreated `cas-installer` pixi environment with Python 3.11 to match Cascadeur's version.\nScripts in scripts/ directory:\n- `install_to_cascadeur.py`: Install packages using --target to Cascadeur's site-packages\n- `list_cascadeur_packages.py`: List installed packages in various formats\n\n## Currently Installed Packages in Cascadeur\naiohttp, numpy, pydantic, json-rpc, typing_extensions, and others (16 total)\n\n## Usage Pattern\n```bash\n# Activate installer environment\npixi shell -e cas-installer\n\n# Install package\npython scripts/install_to_cascadeur.py <package_name>\n\n# List packages  \npython scripts/list_cascadeur_packages.py\n```\n\n## Key Constraints\n- Binary compatibility: Must use Python 3.11 compiled extensions\n- No console I/O in Cascadeur\n- Environment variables ignored by Cascadeur\n- Must use external Python to manage packages",
+        "--tags",
+        "cascadeur python ipc embedded package-management"
+      ]
+    },
+    {
+      "from": "memory_saved",
+      "command": "init",
+      "timestamp": "2025-08-26T12:07:28.721Z",
+      "args": [
+        {
+          "workingDirectory": "D:\\code\\cascadeur-py-client"
+        }
+      ]
     }
   ],
-  "lastUpdated": "2025-08-26T10:47:38.151Z"
+  "lastUpdated": "2025-08-26T12:07:28.746Z"
 }

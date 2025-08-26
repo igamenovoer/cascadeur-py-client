@@ -157,3 +157,6 @@ tmp/
 
 # logs
 /logs/
+
+# serena cache
+.serena/cache/

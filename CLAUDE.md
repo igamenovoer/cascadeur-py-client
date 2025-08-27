@@ -17,35 +17,40 @@ pip install -e ".[dev]"
 ### Code Quality
 ```bash
 # Format code with black
-black src tests scripts examples
+pixi run -e dev black src tests scripts examples
 
 # Sort imports
-isort src tests scripts examples
+pixi run -e dev isort src tests scripts examples
 
-# Lint with flake8
-flake8 src tests scripts examples
+# Lint with ruff (recommended - faster and comprehensive)
+pixi run -e dev ruff check src tests scripts
+pixi run -e dev ruff format src tests scripts
 
-# Type checking
-mypy src
+# Type checking with mypy strict mode
+pixi run -e dev mypy src --strict
 
-# Or using ruff (faster alternative)
-ruff check src tests scripts
-ruff format src tests scripts
+# Check server code specifically
+pixi run -e dev mypy src/cascadeur_py_client/server/ --strict
+pixi run -e dev ruff check src/cascadeur_py_client/server/
 ```
 
 ### Testing
 ```bash
 # Run all automated tests
-pytest tests/auto/
+pixi run -e dev pytest tests/auto/
 
 # Run with coverage report
-pytest tests/auto/ --cov=cascadeur_client --cov-report=term-missing
+pixi run -e dev pytest tests/auto/ --cov=cascadeur_py_client --cov-report=term-missing
 
 # Run specific test file
-pytest tests/auto/test_jsonrpc_pipe.py
+pixi run -e dev pytest tests/auto/test_jsonrpc_pipe.py
 
 # Run a single test
-pytest tests/auto/test_jsonrpc_pipe.py::TestJSONRPCPipe::test_simple_echo
+pixi run -e dev pytest tests/auto/test_jsonrpc_pipe.py::TestJSONRPCPipe::test_simple_echo
+
+# Manual testing of JSON-RPC servers
+pixi run -e dev python tests/manual/run_ipc_server.py  # Start server
+pixi run -e dev python tests/manual/run_ipc_client.py  # Test client
 ```
 
 ### Cascadeur Package Management
@@ -80,16 +85,18 @@ Cascadeur uses an embedded Python 3.11 interpreter with these characteristics:
 ### IPC Architecture
 The project implements a JSON-RPC over named pipes communication system:
 
-#### Server Components (`src/cascadeur_client/server/`)
-- **jsonrpc_pipe_server.py**: Main server running inside Cascadeur, handles RPC requests
-- **jsonrpc_pipe_server_simple.py**: Simplified server for testing and debugging
-- **jsonrpc_pipe_client.py**: Client library for connecting to the server
+#### Server Components (`src/cascadeur_py_client/server/`)
+- **jsonrpc_pipe_server.py**: Threaded server with concurrent client handling
+- **jsonrpc_pipe_server_sync.py**: Single-threaded synchronous server
+- **jsonrpc_pipe_client.py**: Client library for connecting to servers
+- **pipe_utils.py**: Centralized pipe configuration and environment handling
 
 #### Communication Protocol
-- Uses Windows named pipes (`\\.\pipe\cascadeur_jsonrpc`)
-- JSON-RPC 2.0 protocol with base64 encoding for code transmission
-- Supports synchronous and asynchronous execution models
-- Health check endpoint for connection verification
+- Uses named pipes (Windows: `\\.\pipe\name`, Unix: `/tmp/name.sock`)
+- JSON-RPC 2.0 protocol with message length prefixing
+- Configurable pipe names via `CASCADEUR_PYTHON_RPC_PIPE_NAME` environment variable
+- Default pipe name: `cas-pipe` (with OS-specific prefixes)
+- Supports `release` (break loop, keep pipe) and `shutdown` (full termination) commands
 
 ### Package Management System
 Due to Cascadeur's embedded Python limitations:
@@ -137,3 +144,30 @@ Due to Cascadeur's embedded Python limitations:
 - black, isort, ruff: Code formatting and linting
 - mypy: Static type checking
 - pixi: Cross-platform package management (conda + PyPI)
+
+## Important Reminders
+
+### Code Style and Type Safety
+- **Always write strongly typed Python code** - Use type hints for all function parameters and return values
+- **Validate with mypy strict mode** - Run `pixi run -e dev mypy <file> --strict` after making changes
+- **Use absolute imports** - Prefer `from cascadeur_py_client.server import ...` over relative imports
+- **Handle exceptions properly** - Never use bare `except:`, always specify exception types
+
+### Testing JSON-RPC Servers
+```bash
+# Start a server (choose one)
+pixi run -e dev python src/cascadeur_py_client/server/jsonrpc_pipe_server.py       # Threaded version
+pixi run -e dev python src/cascadeur_py_client/server/jsonrpc_pipe_server_sync.py  # Sync version
+
+# Test with client
+pixi run -e dev python src/cascadeur_py_client/server/jsonrpc_pipe_client.py --interactive
+
+# Use custom pipe name via environment
+set CASCADEUR_PYTHON_RPC_PIPE_NAME=my-pipe  # Windows
+export CASCADEUR_PYTHON_RPC_PIPE_NAME=my-pipe  # Linux/macOS
+```
+
+### Temporary Files
+- Place all temporary scripts and test files in the `tmp/` directory
+- Never commit files from `tmp/` directory - it's gitignored
+- Use `tmp/` for experimental code before integrating into main source

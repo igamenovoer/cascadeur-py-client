@@ -1,31 +1,26 @@
 {
-  "currentState": "role_activated_with_memory",
+  "currentState": "initialized",
   "stateHistory": [
     {
       "from": "initial",
       "command": "init",
-      "timestamp": "2025-08-27T02:49:20.137Z",
+      "timestamp": "2025-08-27T05:34:40.789Z",
       "args": [
         {
-          "workingDirectory": "D:\\code\\cascadeur-py-client",
-          "ideType": "claude"
+          "workingDirectory": "D:\\code\\cascadeur-py-client"
         }
       ]
     },
     {
       "from": "initialized",
-      "command": "welcome",
-      "timestamp": "2025-08-27T02:49:35.775Z",
-      "args": []
-    },
-    {
-      "from": "service_discovery",
-      "command": "action",
-      "timestamp": "2025-08-27T02:50:11.532Z",
+      "command": "init",
+      "timestamp": "2025-08-27T08:43:45.948Z",
       "args": [
-        "janson-py"
+        {
+          "workingDirectory": "D:\\code\\cascadeur-py-client"
+        }
       ]
     }
   ],
-  "lastUpdated": "2025-08-27T02:50:11.557Z"
+  "lastUpdated": "2025-08-27T08:43:45.959Z"
 }

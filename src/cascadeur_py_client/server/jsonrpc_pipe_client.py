@@ -25,6 +25,7 @@ Environment Variables:
 import sys
 import json
 import struct
+import logging
 from typing import Optional, Any
 from multiprocessing.connection import Client
 
@@ -42,13 +43,12 @@ except ImportError:
         return json.dumps(notification(method, params))
 
 
-# Use centralized logging from caslogger
-from cascadeur_py_client.caslogger import get_logger
-
 # Import pipe utilities
 from cascadeur_py_client.server.pipe_utils import get_default_pipe_address
 
-logger = get_logger("jsonrpc_pipe_client")
+# Set up logging
+logger = logging.getLogger("jsonrpc_pipe_client")
+logger.setLevel(logging.DEBUG)
 
 # Configure default pipe address based on environment and platform
 PIPE_ADDRESS = get_default_pipe_address()

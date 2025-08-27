@@ -1,26 +1,19 @@
 # Cascadeur Python Client
 
-A pythonic client API and IPC bridge to interface with [Cascadeur](https://cascadeur.com/) animation software.
+Remote Python execution bridge for [Cascadeur](https://cascadeur.com/) animation software.
 
 ## Overview
 
-Cascadeur is a physics-based animation software that allows animators to create realistic character animations. This Python client library provides:
-
-1. **High-level Python API**: A pythonic interface to interact with Cascadeur's native Python API
-2. **JSON-RPC IPC Bridge**: Remote code execution capability for external tools to communicate with Cascadeur's embedded Python environment
-
-The IPC bridge is particularly important because Cascadeur uses an embedded Python interpreter that lacks console access, making it challenging to run interactive scripts or integrate with external development tools.
+This library enables external Python environments to execute code within Cascadeur's embedded Python interpreter through a JSON-RPC bridge over named pipes. This solves the challenge that Cascadeur's Python environment lacks console access, making it difficult to run interactive scripts or integrate with development tools.
 
 ## Features
 
-- **High-level API**: Simplified, pythonic interface over Cascadeur's native Python API
-- **JSON-RPC Server**: Execute Python code remotely in Cascadeur's environment via named pipes
-- **Remote Code Execution**: Run scripts, automation, and tools from external Python environments
-- **Scene Management**: Easy scene creation, loading, and manipulation
-- **Animation Tools**: Programmatic access to Cascadeur's animation tools
-- **Rig Management**: Create and modify character rigs
-- **Asset Management**: Handle mesh data and assets
-- **Node Editor Integration**: Work with Cascadeur's node-based update system
+- **Remote Code Execution**: Execute Python code in Cascadeur from external environments
+- **High-level Client API**: Simple `CascadeurRemoteClient` for easy interaction
+- **JSON-RPC Server**: Robust server implementation with concurrent client support
+- **Error Handling**: Comprehensive error reporting with tracebacks
+- **Binary Data Support**: Handle both JSON and binary data via base64 encoding
+- **Cross-platform**: Works on Windows (named pipes) and Unix (domain sockets)
 
 ## Installation
 
@@ -30,110 +23,93 @@ pip install cascadeur-py-client
 
 ## Quick Start
 
-### Using the Python API
+### 1. Start the Server in Cascadeur
+
+In Cascadeur's Python environment (via a startup script or the Python console if available):
 
 ```python
-import cascadeur_py_client as csc
-
-# Connect to Cascadeur
-client = csc.CascadeurClient()
-
-# Load a scene
-scene = client.load_scene("path/to/scene.casc")
-
-# Get all joints in the scene
-joints = scene.get_joints()
-
-# Move a joint
-joint = joints[0]
-joint.move_to(x=10, y=20, z=30)
-
-# Save the scene
-scene.save("path/to/modified_scene.casc")
-```
-
-### Using the JSON-RPC IPC Bridge
-
-The IPC bridge allows external tools to execute Python code within Cascadeur's embedded environment:
-
-```python
-# In Cascadeur's Python environment, start the server:
 from cascadeur_py_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
-server = JSONRPCPipeServer(pipe_name="cas-pipe")
+server = JSONRPCPipeServer()  # Uses default pipe name
 server.start()
 ```
 
+### 2. Connect from External Python
+
 ```python
-# From external Python environment, connect and execute code:
+from cascadeur_py_client.client import CascadeurRemoteClient
+
+# Create client
+client = CascadeurRemoteClient.from_pipe()  # Auto-detects pipe
+
+# Test connection
+response = client.send_echo("Hello Cascadeur!")
+print(response)  # "Hello Cascadeur!"
+
+# Execute Python code in Cascadeur
+result = client.send_python("""
+import csc
+joints = csc.get_scene().get_joints()
+result = len(joints)
+""")
+
+if result.success:
+    print(f"Number of joints: {result.data}")
+else:
+    print(f"Error: {result.error.message}")
+
+# Execute with arguments
+code = "result = a + b"
+result = client.send_python(code, {"a": 10, "b": 20})
+print(f"Result: {result.data}")  # 30
+```
+
+## API Details
+
+### CascadeurRemoteClient
+
+The high-level client provides a clean interface for remote execution:
+
+```python
+from cascadeur_py_client.client import CascadeurRemoteClient
+
+client = CascadeurRemoteClient.from_pipe()  # or specify pipe name
+result = client.send_python("result = 2 + 2")
+print(result.data)  # 4
+
+# Control commands
+client.send_release()  # Unfreeze Cascadeur GUI
+client.send_shutdown()  # Terminate server
+```
+
+### Low-level JSON-RPC Client
+
+For direct JSON-RPC communication:
+
+```python
 from cascadeur_py_client.server.jsonrpc_pipe_client import JSONRPCPipeClient
 
-# Connect to the server
-client = JSONRPCPipeClient(r"\\.\pipe\cas-pipe")  # Windows
-# client = JSONRPCPipeClient("/tmp/cas-pipe.sock")  # Linux/macOS
-
-# Execute code in Cascadeur's environment
+client = JSONRPCPipeClient()
 response = client.call("exec_code", {
-    "code": """
-import csc
-scene = csc.get_scene()
-result = len(scene.get_joints())
-"""
+    "code": "result = 42",
+    "encoding": None  # or "base64" for binary code
 })
-
-print(f"Number of joints: {response['data']}")
 ```
 
-## JSON-RPC Server Details
+### Security Warning
 
-### Remote Code Execution
+⚠️ **The server executes arbitrary Python code. Only use in trusted environments.**
 
-The `exec_code` method enables remote Python code execution within Cascadeur's embedded environment. This is essential for:
+## Configuration
 
-- **Development and Debugging**: Test and debug scripts without restarting Cascadeur
-- **External Tool Integration**: IDEs and development tools can execute code directly
-- **Automation Pipelines**: CI/CD systems can run automated tests and validations
-- **Interactive Scripting**: REPL-like experience for exploratory programming
+### Named Pipes
 
-#### Security Warning
+- **Windows**: `\\.\pipe\<pipe_name>` (default: `\\.\pipe\cas-pipe`)
+- **Unix/Linux/macOS**: `/tmp/<pipe_name>.sock` (default: `/tmp/cas-pipe.sock`)
 
-⚠️ **The `exec_code` method executes arbitrary Python code. Only use in trusted environments and never expose the named pipe to untrusted sources.**
-
-#### Advanced Usage
-
-```python
-# Execute code with external arguments
-import base64
-import pickle
-
-# Prepare keyword arguments
-kw_args = {"frame_number": 42, "joint_name": "spine_01"}
-kw_args_binary = base64.b64encode(pickle.dumps(kw_args)).decode()
-
-response = client.call("exec_code", {
-    "code": "result = process_frame(frame_number, joint_name)",
-    "kw_binary_args": kw_args_binary
-})
-
-# Handle different response types
-if response["error"]["type"] != 0:
-    print(f"Error: {response['error']['message']}")
-    print(f"Traceback: {response['error']['traceback']}")
-elif response["encoding"] == "base64":
-    # Binary or pickled data
-    import base64, pickle
-    data = pickle.loads(base64.b64decode(response["data"]))
-else:
-    # JSON-compatible data
-    data = response["data"]
+Set custom pipe name via environment variable:
+```bash
+export CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
 ```
-
-### Named Pipe Configuration
-
-The server uses named pipes for IPC:
-- **Windows**: `\\.\pipe\<pipe_name>`
-- **Unix/Linux/macOS**: `/tmp/<pipe_name>.sock`
-
-Pipe names can be configured via the `CASCADEUR_PYTHON_RPC_PIPE_NAME` environment variable.
 
 ## Requirements
 
@@ -144,20 +120,17 @@ Pipe names can be configured via the `CASCADEUR_PYTHON_RPC_PIPE_NAME` environmen
 
 ## Testing
 
-### Manual Testing of JSON-RPC Server
-
 ```bash
-# Start the test server
+# Start a test server (if not in Cascadeur)
 python src/cascadeur_py_client/server/jsonrpc_pipe_server.py
 
-# In another terminal, run the interactive client
-python tests/manual/run_ipc_client.py --pipe cas-pipe --interactive
+# Test with high-level client
+python -c "from cascadeur_py_client.client import CascadeurRemoteClient; 
+client = CascadeurRemoteClient.from_pipe(); 
+print(client.send_echo('test'))"
 
-# Execute code directly
-python tests/manual/run_ipc_client.py --pipe cas-pipe --exec "result = 2 + 2"
-
-# Execute from file
-python tests/manual/run_ipc_client.py --pipe cas-pipe --exec-file script.py
+# Interactive testing
+python src/cascadeur_py_client/server/jsonrpc_pipe_client.py --interactive
 ```
 
 ## Documentation

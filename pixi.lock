@@ -940,7 +940,7 @@ packages:
 - pypi: ./
   name: cascadeur-py-client
   version: 0.1.0
-  sha256: c35219be0926604f542d03fd305878430c7655a3a5a52077ae09e3a380dfaf7d
+  sha256: d882221891e260c37efb68bc145bfb594fd627f7b9550e9e01c2aa4a02850de0
   requires_dist:
   - jsonrpc>=3.0.1,<4
   - aiohttp>=3.12.15,<4
@@ -952,6 +952,7 @@ packages:
   - click
   - platformdirs>=4.3.8,<5
   - loguru>=0.7.3,<0.8
+  - attrs>=25.3.0,<26
   - pytest>=6.0 ; extra == 'dev'
   - pytest-cov>=2.0 ; extra == 'dev'
   - black>=22.0 ; extra == 'dev'

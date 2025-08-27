@@ -36,9 +36,9 @@ if os.name == 'nt':  # Windows
 else:  # Unix/Linux
     PIPE_ADDRESS = '/tmp/my-test-pipe.sock'
 
-# Global server instance for quit command and cleanup
+# Global server instance for quit/release/shutdown commands and cleanup
 _server_instance: Optional['SyncJSONRPCPipeServer'] = None
-_active_servers: weakref.WeakSet = weakref.WeakSet()
+_active_servers: weakref.WeakSet[Any] = weakref.WeakSet()
 
 
 def cleanup_pipe(address: str) -> None:
@@ -129,20 +129,49 @@ def echo(*args: Any, **kwargs: Any) -> Any:
 
 
 @method  
-def quit() -> Any:
+def release() -> Any:
     """
-    Shutdown the server gracefully.
+    Release the server from the main loop but keep the pipe open.
+    The server can be restarted by calling main() again.
+    
+    Returns:
+        Success message indicating server released
+    """
+    global _server_instance
+    if _server_instance:
+        logger.info("Release command received, breaking main loop but keeping pipe open...")
+        _server_instance._release_requested = True
+        return Success("Server released from main loop")
+    else:
+        return Error("No server instance found", code=-32603)
+
+
+@method  
+def shutdown() -> Any:
+    """
+    Shutdown the server completely, closing the pipe.
     
     Returns:
         Success message indicating shutdown initiated
     """
     global _server_instance
     if _server_instance:
-        logger.info("Quit command received, initiating shutdown...")
+        logger.info("Shutdown command received, initiating full shutdown...")
         _server_instance._shutdown_requested = True
         return Success("Server shutdown initiated")
     else:
         return Error("No server instance found", code=-32603)
+
+
+@method  
+def quit() -> Any:
+    """
+    Alias for shutdown command (for backward compatibility).
+    
+    Returns:
+        Success message indicating shutdown initiated
+    """
+    return shutdown()
 
 
 # Message framing helpers
@@ -211,8 +240,9 @@ class SyncJSONRPCPipeServer:
         self.running = False
         self.listener: Optional[Listener] = None
         self._shutdown_requested = False
+        self._release_requested = False
         
-        # Set global instance for quit command
+        # Set global instance for quit/release/shutdown commands
         _server_instance = self
         # Register for cleanup
         _active_servers.add(self)
@@ -223,11 +253,15 @@ class SyncJSONRPCPipeServer:
         """Cleanup on garbage collection."""
         self._cleanup()
     
-    def _cleanup(self) -> None:
-        """Perform cleanup of pipes and resources."""
+    def _cleanup(self, close_listener: bool = True) -> None:
+        """Perform cleanup of pipes and resources.
+        
+        Args:
+            close_listener: If True, close the listener. If False, keep it open.
+        """
         try:
-            # Close listener if still open
-            if self.listener:
+            # Close listener if requested
+            if close_listener and self.listener:
                 try:
                     self.listener.close()
                     logger.debug("Listener closed successfully")
@@ -235,8 +269,9 @@ class SyncJSONRPCPipeServer:
                     logger.debug(f"Error closing listener: {e}")
                 self.listener = None
             
-            # Clean up the pipe/socket
-            cleanup_pipe(self.address)
+            # Clean up the pipe/socket only if listener is closed
+            if close_listener:
+                cleanup_pipe(self.address)
             
         except Exception as e:
             logger.debug(f"Cleanup error (non-critical): {e}")
@@ -257,7 +292,7 @@ class SyncJSONRPCPipeServer:
             logger.info(f"Client connected - handling synchronously (connection_id={connection_id})")
         
             try:
-                while not self._shutdown_requested:
+                while not self._shutdown_requested and not self._release_requested:
                     try:
                         # Receive JSON-RPC request
                         logger.debug(f"Waiting for request from connection {connection_id}")
@@ -284,9 +319,9 @@ class SyncJSONRPCPipeServer:
                         else:
                             logger.info(f"Processed notification #{request_count} (no response required)")
                     
-                        # Check if this was a quit command
-                        if self._shutdown_requested:
-                            logger.info(f"Shutdown requested during request processing (connection {connection_id})")
+                        # Check if this was a quit/shutdown/release command
+                        if self._shutdown_requested or self._release_requested:
+                            logger.info(f"{'Shutdown' if self._shutdown_requested else 'Release'} requested during request processing (connection {connection_id})")
                             break
                             
                     except EOFError:
@@ -294,8 +329,8 @@ class SyncJSONRPCPipeServer:
                         logger.debug(f"Client {connection_id} closed connection normally")
                         break
                     except Exception as e:
-                        if self._shutdown_requested:
-                            logger.debug(f"Error during shutdown for connection {connection_id}: {e}")
+                        if self._shutdown_requested or self._release_requested:
+                            logger.debug(f"Error during {'shutdown' if self._shutdown_requested else 'release'} for connection {connection_id}: {e}")
                             break
                         logger.error(f"Error handling client request from {connection_id}: {e}", exc_info=True)
                         # Send error response
@@ -318,13 +353,21 @@ class SyncJSONRPCPipeServer:
                 duration = time.time() - start_time
                 logger.info(f"Client {connection_id} disconnected after {duration:.2f}s and {request_count} requests")
     
-    def start(self) -> None:
+    def start(self, reuse_listener: bool = False) -> None:
         """
         Start the synchronous JSON-RPC server and listen for connections.
         This method blocks the calling thread and processes clients one by one.
+        
+        Args:
+            reuse_listener: If True and a listener exists, reuse it instead of creating new one.
         """
-        # Clean up any existing pipe/socket before starting
-        cleanup_pipe(self.address)
+        # Reset release flag at start
+        self._release_requested = False
+        
+        # Only clean up if we're not reusing an existing listener
+        if not reuse_listener or not self.listener:
+            # Clean up any existing pipe/socket before starting
+            cleanup_pipe(self.address)
         
         # Check if we can setup signal handlers
         can_use_signals = is_main_thread()
@@ -368,20 +411,26 @@ class SyncJSONRPCPipeServer:
             logger.info("Use the 'quit' JSON-RPC method to stop the server")
         
         try:
-            self.listener = Listener(self.address)
+            # Create listener only if needed
+            if not self.listener:
+                self.listener = Listener(self.address)
+                logger.info(f"Created new listener on {self.address}")
+            else:
+                logger.info(f"Reusing existing listener on {self.address}")
+            
             self.running = True
             logger.info(f"Synchronous JSON-RPC server listening on {self.address}")
             logger.info("Processing clients one at a time in main thread")
             
-            while not self._shutdown_requested:
+            while not self._shutdown_requested and not self._release_requested:
                 try:
                     # Accept connection (this blocks)
                     logger.debug(f"Server ready, waiting for client connection on {self.address}...")
                     conn = self.listener.accept()
                     
-                    if self._shutdown_requested:
+                    if self._shutdown_requested or self._release_requested:
                         conn.close()
-                        logger.debug("Connection closed due to shutdown request")
+                        logger.debug(f"Connection closed due to {'shutdown' if self._shutdown_requested else 'release'} request")
                         break
                     
                     # Handle client synchronously in main thread
@@ -390,30 +439,42 @@ class SyncJSONRPCPipeServer:
                     self._handle_client_sync(conn)
                     
                 except OSError as e:
-                    if self._shutdown_requested:
+                    if self._shutdown_requested or self._release_requested:
                         break
                     logger.error(f"Error accepting connection: {e}")
                 except Exception as e:
-                    if self._shutdown_requested:
+                    if self._shutdown_requested or self._release_requested:
                         break
                     logger.error(f"Error in accept loop: {e}")
                     
         except Exception as e:
             logger.error(f"Failed to start server: {e}")
-            self._cleanup()
+            self._cleanup(close_listener=True)
             raise
         finally:
             self.running = False
-            self._cleanup()
-            logger.info("Server shutdown complete")
+            # Only close listener on shutdown, not on release
+            if self._shutdown_requested:
+                self._cleanup(close_listener=True)
+                logger.info("Server shutdown complete")
+            else:
+                # Release mode - keep listener open
+                logger.info("Server released from main loop (listener kept open)")
     
-    def stop(self) -> None:
+    def stop(self, full_shutdown: bool = True) -> None:
         """
         Stop the synchronous JSON-RPC server.
+        
+        Args:
+            full_shutdown: If True, close everything. If False, just release from loop.
         """
-        self._shutdown_requested = True
+        if full_shutdown:
+            self._shutdown_requested = True
+            logger.info("Server stopping (full shutdown)...")
+        else:
+            self._release_requested = True
+            logger.info("Server releasing from loop...")
         self.running = False
-        logger.info("Server stopping...")
         
         # Close the listener to unblock accept()
         if self.listener:
@@ -432,15 +493,28 @@ class SyncJSONRPCPipeServer:
             except Exception as e:
                 logger.debug(f"Could not send dummy connection in stop(): {e}")
         
-        # Ensure cleanup
-        self._cleanup()
+        # Ensure cleanup (full cleanup only on shutdown)
+        if full_shutdown:
+            self._cleanup(close_listener=True)
+        else:
+            logger.debug("Release mode - keeping listener open")
 
 
 def main() -> None:
     """
     Main entry point for running the synchronous JSON-RPC pipe server.
+    Supports restarting after release command.
     """
-    server = SyncJSONRPCPipeServer()
+    global _server_instance
+    
+    # Check if we have an existing server instance (from release)
+    if _server_instance and _server_instance.listener:
+        server = _server_instance
+        logger.info("Reusing existing server instance after release")
+        reuse_listener = True
+    else:
+        server = SyncJSONRPCPipeServer()
+        reuse_listener = False
     
     try:
         logger.info("=" * 60)
@@ -452,24 +526,29 @@ def main() -> None:
         
         # Check if we're in main thread
         if is_main_thread():
-            logger.info("Press Ctrl+C to stop (or use 'quit' RPC method)")
+            logger.info("Press Ctrl+C to stop (or use 'shutdown'/'release' RPC methods)")
         else:
-            logger.info("Send 'quit' RPC method to stop the server")
+            logger.info("Send 'shutdown' to stop server, 'release' to pause it")
         
-        # This blocks until shutdown
-        server.start()
+        # This blocks until shutdown or release
+        server.start(reuse_listener=reuse_listener)
+        
+        # Check if it was a release (not shutdown)
+        if server._release_requested and not server._shutdown_requested:
+            logger.info("Server released - can be restarted by calling main() again")
+            return  # Exit cleanly without cleanup
         
     except KeyboardInterrupt:
         logger.info("Keyboard interrupt received")
-        server.stop()
+        server.stop(full_shutdown=True)
     except Exception as e:
         logger.error(f"Server error: {e}")
         server._cleanup()
         sys.exit(1)
     finally:
-        # Final cleanup attempt
-        if server:
-            server._cleanup()
+        # Final cleanup attempt (only on shutdown)
+        if server and server._shutdown_requested:
+            server._cleanup(close_listener=True)
 
 
 if __name__ == "__main__":

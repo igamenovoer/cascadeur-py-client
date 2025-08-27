@@ -39,9 +39,12 @@ import atexit
 import weakref
 import time
 import itertools
+import base64
+import pickle
+import traceback
 from dataclasses import dataclass, field
 from queue import Queue, Empty
-from typing import Optional, Any, Union
+from typing import Optional, Any, Union, Dict
 from multiprocessing.connection import Listener, Client
 from jsonrpcserver import method, dispatch
 
@@ -248,6 +251,155 @@ def quit() -> Any:
     """
     # quit is now an alias for shutdown
     return shutdown()
+
+
+@method
+def exec_code(*args: Any, **kwargs: Any) -> Any:
+    """
+    Execute arbitrary Python code with optional keyword arguments.
+    
+    Args:
+        code: Python code string to execute (can be base64 encoded)
+        encoding: Optional encoding type (null for UTF-8 or "base64")
+        kw_binary_args: Optional base64 encoded pickle data containing extra arguments
+        
+    Returns:
+        Dict containing the execution result with data, encoding, and error info
+    """
+    # Extract parameters from args or kwargs
+    if args and len(args) > 0:
+        params = args[0] if isinstance(args[0], dict) else {"code": args[0]}
+    else:
+        params = kwargs
+    
+    # Initialize response structure with error object always present
+    response: Dict[str, Any] = {
+        "data": None,
+        "encoding": None,
+        "error": {
+            "message": "",
+            "traceback": "",
+            "type": 0  # 0 = no error
+        }
+    }
+    
+    try:
+        # Extract and validate code parameter
+        code = params.get("code")
+        if not code:
+            return Error(code=-32602, message="Missing required parameter 'code'")
+        
+        # Handle encoding for code (null for UTF-8, "base64" for base64)
+        encoding = params.get("encoding", None)
+        
+        if encoding == "base64":
+            try:
+                # Decode base64 string to get the actual code
+                code_bytes = base64.b64decode(code)
+                code = code_bytes.decode("utf-8")
+            except Exception as e:
+                response["error"]["message"] = f"Failed to decode base64 code: {str(e)}"
+                response["error"]["type"] = 1
+                response["error"]["traceback"] = traceback.format_exc()
+                return Success(response)
+        elif encoding is not None and encoding != "base64":
+            response["error"]["message"] = f"Unsupported encoding: {encoding}. Use null for UTF-8 or 'base64' for base64 encoding"
+            response["error"]["type"] = 1
+            return Success(response)
+        
+        # Handle kw_binary_args if provided
+        kw_binary_args_encoded = params.get("kw_binary_args")
+        kw_binary_args = {}
+        
+        if kw_binary_args_encoded:
+            try:
+                # Decode base64 and unpickle
+                args_bytes = base64.b64decode(kw_binary_args_encoded)
+                kw_binary_args = pickle.loads(args_bytes)
+                
+                # Ensure it's a dict
+                if not isinstance(kw_binary_args, dict):
+                    response["error"]["message"] = "kw_binary_args must be a dictionary"
+                    response["error"]["type"] = 1
+                    return Success(response)
+                    
+                # Make a copy to safely modify
+                kw_binary_args = dict(kw_binary_args)
+                
+                # Check for reserved 'result' key
+                if "result" in kw_binary_args:
+                    response["error"]["message"] = "'result' is a reserved key in kw_binary_args"
+                    response["error"]["type"] = 1
+                    return Success(response)
+                    
+            except Exception as e:
+                response["error"]["message"] = f"Failed to decode kw_binary_args: {str(e)}"
+                response["error"]["type"] = 1
+                response["error"]["traceback"] = traceback.format_exc()
+                return Success(response)
+        
+        # Execute the code
+        try:
+            # Create a clean globals dict with necessary builtins
+            exec_globals = {"__builtins__": __builtins__}
+            
+            # Merge kw_binary_args into globals so variables are accessible
+            exec_globals.update(kw_binary_args)
+            
+            # Execute code with the merged globals
+            exec(code, exec_globals)
+            
+            # Get result from the execution namespace
+            result = exec_globals.get("result", None)
+            
+            # Process the result
+            if result is None:
+                response["data"] = None
+                response["encoding"] = None
+            elif isinstance(result, bytes):
+                # Encode bytes as base64
+                response["data"] = base64.b64encode(result).decode("utf-8")
+                response["encoding"] = "base64"
+            elif isinstance(result, (str, int, float, bool)):
+                # Simple JSON-serializable types
+                response["data"] = result
+                response["encoding"] = None
+            elif isinstance(result, (dict, list, tuple)):
+                # Try to serialize as JSON
+                try:
+                    # Test if it's JSON serializable by trying to encode it
+                    json.dumps(result)
+                    response["data"] = result
+                    response["encoding"] = None
+                except (TypeError, ValueError):
+                    # Fall back to pickle for non-JSON serializable objects
+                    pickled = pickle.dumps(result)
+                    response["data"] = base64.b64encode(pickled).decode("utf-8")
+                    response["encoding"] = "base64"
+            else:
+                # Complex objects - pickle them
+                try:
+                    pickled = pickle.dumps(result)
+                    response["data"] = base64.b64encode(pickled).decode("utf-8")
+                    response["encoding"] = "base64"
+                except Exception:
+                    # If can't pickle, convert to string representation
+                    response["data"] = str(result)
+                    response["encoding"] = None
+                    
+        except Exception as e:
+            # Execution error
+            response["error"]["message"] = f"{type(e).__name__}: {str(e)}"
+            response["error"]["traceback"] = traceback.format_exc()
+            response["error"]["type"] = 1  # exception
+            
+    except Exception as e:
+        # Unexpected error
+        response["error"]["message"] = f"Unexpected error: {str(e)}"
+        response["error"]["traceback"] = traceback.format_exc()
+        response["error"]["type"] = 1
+        
+    return Success(response)
 
 
 # Helper functions

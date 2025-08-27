@@ -59,10 +59,10 @@ def _get_log_filename() -> str:
     Generate log filename with current date and time.
     
     Returns:
-        Filename in format: log_[YYYYMMDD-HHMMSS].txt
+        Filename in format: log_YYYYMMDD-HHMMSS.txt
     """
     datetime_str = datetime.now().strftime('%Y%m%d-%H%M%S')
-    return f"log_[{datetime_str}].txt"
+    return f"log_{datetime_str}.txt"
 
 
 def _get_default_log_level() -> int:

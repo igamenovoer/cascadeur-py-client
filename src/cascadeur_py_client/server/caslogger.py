@@ -6,6 +6,8 @@ It supports dual output to both console and file, with configurable output direc
 
 Environment Variables:
     CASCADEUR_PYTHON_OUTPUT_DIR: Directory for log files. If not set, uses system temp directory.
+    CASCADEUR_PYTHON_LOG_LEVEL: Default log level (debug, info, warning, error, critical). 
+                                Case insensitive. Defaults to 'info' if not set.
 
 Usage:
     from cascadeur_py_client.server.caslogger import logger
@@ -63,9 +65,53 @@ def _get_log_filename() -> str:
     return f"log_[{datetime_str}].txt"
 
 
+def _get_default_log_level() -> int:
+    """
+    Get the default log level from environment variable CASCADEUR_PYTHON_LOG_LEVEL.
+    
+    Environment variable values (case insensitive):
+        - "debug" or "DEBUG" -> logging.DEBUG
+        - "info" or "INFO" -> logging.INFO
+        - "warning" or "WARNING" or "warn" -> logging.WARNING
+        - "error" or "ERROR" -> logging.ERROR
+        - "critical" or "CRITICAL" -> logging.CRITICAL
+        
+    Returns:
+        Log level integer constant from logging module. 
+        Defaults to logging.INFO if env var is not set or invalid.
+    """
+    env_level = os.environ.get('CASCADEUR_PYTHON_LOG_LEVEL', '').strip()
+    
+    if not env_level:
+        return logging.INFO
+    
+    # Map environment values to logging levels (case insensitive)
+    level_map = {
+        'debug': logging.DEBUG,
+        'info': logging.INFO,
+        'warning': logging.WARNING,
+        'warn': logging.WARNING,  # Common alias
+        'error': logging.ERROR,
+        'critical': logging.CRITICAL,
+        'fatal': logging.CRITICAL,  # Common alias
+    }
+    
+    # Convert to lowercase for case-insensitive comparison
+    normalized_level = env_level.lower()
+    
+    # Return the mapped level or INFO as default
+    level = level_map.get(normalized_level, logging.INFO)
+    
+    # Log if an invalid value was provided
+    if normalized_level not in level_map:
+        print(f"Warning: Invalid log level '{env_level}' in CASCADEUR_PYTHON_LOG_LEVEL. Using INFO.", file=sys.stderr)
+    
+    return level
+
+
 def _setup_logger(
     name: str = "caslogger",
-    level: Union[int, str] = logging.INFO,
+    level: Optional[Union[int, str]] = None,
     console_format: Optional[str] = None,
     file_format: Optional[str] = None,
     max_file_size: int = 10 * 1024 * 1024,  # 10MB default
@@ -76,7 +122,7 @@ def _setup_logger(
     
     Args:
         name: Logger name
-        level: Logging level (default: INFO)
+        level: Logging level (default: from CASCADEUR_PYTHON_LOG_LEVEL env var, or INFO)
         console_format: Format string for console output
         file_format: Format string for file output
         max_file_size: Maximum size of log file before rotation (bytes)
@@ -85,6 +131,13 @@ def _setup_logger(
     Returns:
         Configured logger instance
     """
+    # Use environment variable if level not explicitly provided
+    if level is None:
+        level = _get_default_log_level()
+    elif isinstance(level, str):
+        # Convert string level to logging constant
+        level = getattr(logging, level.upper(), logging.INFO)
+    
     # Create logger
     logger_instance = logging.getLogger(name)
     logger_instance.setLevel(level)

@@ -1,9 +1,32 @@
 """
-JSON-RPC 2.0 Server using Named Pipes
+JSON-RPC 2.0 Server using Named Pipes (Multi-threaded)
 
 This module implements a JSON-RPC 2.0 server that communicates through
 named pipes (Windows) or Unix domain sockets (Linux/macOS) without any
-network/socket APIs.
+network/socket APIs. This version handles multiple clients concurrently
+using threads.
+
+Environment Variables:
+    CASCADEUR_PYTHON_RPC_PIPE_NAME:
+        Sets the default pipe name for the JSON-RPC server to listen on.
+        If not set, defaults to "cas-pipe".
+
+        Usage:
+            # Windows
+            set CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
+            python server.py  # Listens on \\\\.\\pipe\\my-custom-pipe
+
+            # Linux/macOS
+            export CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
+            python server.py  # Listens on /tmp/my-custom-pipe.sock
+
+        Note: You can override this by passing an explicit address to the server constructor.
+
+Commands:
+    echo: Echo back the received message
+    release: Break main loop but keep pipe open (allows server restart)
+    shutdown: Completely shut down server and close pipe
+    quit: Alias for shutdown (backward compatibility)
 """
 
 import os
@@ -14,7 +37,11 @@ import signal
 import threading
 import atexit
 import weakref
-from typing import Optional, Any
+import time
+import itertools
+from dataclasses import dataclass, field
+from queue import Queue, Empty
+from typing import Optional, Any, Union
 from multiprocessing.connection import Listener, Client
 from jsonrpcserver import method, dispatch
 
@@ -28,17 +55,30 @@ except ImportError:
 # Use centralized logging from caslogger
 from cascadeur_py_client.caslogger import get_logger
 
+# Import pipe utilities
+from cascadeur_py_client.server.pipe_utils import get_default_pipe_address
+
 logger = get_logger("jsonrpc_pipe_server")
 
-# Configure pipe address based on platform
-if os.name == "nt":  # Windows
-    PIPE_ADDRESS = r"\\.\pipe\my-test-pipe"
-else:  # Unix/Linux
-    PIPE_ADDRESS = "/tmp/my-test-pipe.sock"
+# Configure default pipe address based on environment and platform
+PIPE_ADDRESS = get_default_pipe_address()
 
 # Global server instance for quit command and cleanup
 _server_instance: Optional["JSONRPCPipeServer"] = None
 _active_servers: weakref.WeakSet[Any] = weakref.WeakSet()
+
+# Sequence counter for request ordering
+_seq_counter = itertools.count()
+
+
+@dataclass(order=True)
+class RPCRequest:
+    """Represents an RPC request in the work queue."""
+    seq: int = field(compare=True)  # Sequence number for ordering
+    raw: str = field(compare=False)  # Raw JSON-RPC request string
+    conn: Any = field(compare=False)  # Connection object
+    id: Optional[Union[str, int]] = field(compare=False, default=None)  # Request ID
+    timestamp: float = field(compare=False, default_factory=time.time)
 
 
 def cleanup_pipe(address: str) -> None:
@@ -102,10 +142,10 @@ def echo(*args: Any, **kwargs: Any) -> Any:
     elif "message" in kwargs:
         message = kwargs["message"]
     else:
-        return Error("Missing required parameter 'message'", code=-32602)
+        return Error(code=-32602, message="Missing required parameter 'message'")
 
     if not isinstance(message, str):
-        return Error("Parameter must be a string", code=-32602)
+        return Error(code=-32602, message="Parameter must be a string")
 
     # Return Success result with the message
     return Success(message)
@@ -149,7 +189,7 @@ def release() -> Any:
 
         return Success("Server released from main loop")
     else:
-        return Error("No server instance found", code=-32603)
+        return Error(code=-32603, message="No server instance found")
 
 
 @method
@@ -194,7 +234,7 @@ def shutdown() -> Any:
 
         return Success("Server shutdown initiated")
     else:
-        return Error("No server instance found", code=-32603)
+        return Error(code=-32603, message="No server instance found")
 
 
 @method
@@ -279,6 +319,7 @@ def recv_message(conn: Any) -> str:
 class JSONRPCPipeServer:
     """
     JSON-RPC 2.0 server that uses named pipes for communication.
+    All RPC method executions happen strictly on the main thread.
     """
 
     def __init__(self, address: Optional[str] = None):
@@ -286,10 +327,10 @@ class JSONRPCPipeServer:
         Initialize the JSON-RPC pipe server.
 
         Args:
-            address: The pipe address. If None, uses platform default.
+            address: The pipe address. If None, uses environment variable or default.
         """
         global _server_instance
-        self.address = address or PIPE_ADDRESS
+        self.address = address if address else get_default_pipe_address()
         self.running = False
         self.listener: Optional[Listener] = None
         self._shutdown_requested = False
@@ -297,6 +338,11 @@ class JSONRPCPipeServer:
         self._client_threads: list[threading.Thread] = []
         self._client_connections: list[Any] = []  # Track active connections
         self._shutdown_in_progress = False
+        
+        # Work queue for serializing RPC requests on main thread
+        # Bounded queue to apply backpressure under load
+        self._work_queue: Queue[RPCRequest] = Queue(maxsize=1024)
+        
         # Set global instance for quit command
         _server_instance = self
         # Register for cleanup
@@ -345,9 +391,10 @@ class JSONRPCPipeServer:
             except Exception:
                 pass
 
-    def _handle_client(self, conn: Any) -> None:
+    def _handle_client_reader(self, conn: Any) -> None:
         """
-        Handle a single client connection.
+        Reader thread for a client connection. Only reads and enqueues messages.
+        Does NOT execute RPC methods - that happens on the main thread.
 
         Args:
             conn: The connection object from multiprocessing.connection
@@ -359,16 +406,26 @@ class JSONRPCPipeServer:
                 try:
                     # Receive JSON-RPC request
                     request_string = recv_message(conn)
-
-                    # Process the request with jsonrpcserver
-                    response_string = dispatch(request_string)
-
-                    # Send response (skip for notifications)
-                    if response_string:
-                        send_message(conn, response_string)
-                        logger.info("Processed request and sent response")
-                    else:
-                        logger.info("Processed notification (no response)")
+                    
+                    # Parse request ID if possible (for debugging/logging)
+                    request_id = None
+                    try:
+                        parsed = json.loads(request_string)
+                        request_id = parsed.get('id')
+                    except Exception:
+                        pass
+                    
+                    # Enqueue the request for main thread processing
+                    # Block if queue is full (backpressure)
+                    request = RPCRequest(
+                        seq=next(_seq_counter),
+                        raw=request_string,
+                        conn=conn,
+                        id=request_id
+                    )
+                    
+                    self._work_queue.put(request, block=True, timeout=30)
+                    logger.debug(f"Enqueued request #{request.seq} (id={request_id})")
 
                 except EOFError:
                     # Client disconnected normally
@@ -377,14 +434,14 @@ class JSONRPCPipeServer:
                 except Exception as e:
                     if self._shutdown_requested or self._release_requested:
                         break
-                    logger.error(f"Error handling client request: {e}")
-                    # Send error response
+                    logger.error(f"Error reading from client: {e}")
+                    # Send error response directly for read errors
                     error_response = json.dumps(
                         {
                             "jsonrpc": "2.0",
                             "error": {
                                 "code": -32603,
-                                "message": f"Internal error: {str(e)}",
+                                "message": f"Read error: {str(e)}",
                             },
                             "id": None,
                         }
@@ -401,7 +458,114 @@ class JSONRPCPipeServer:
                 self._client_connections.remove(conn)
             except Exception:
                 pass
-            logger.info("Client disconnected")
+            logger.info("Client reader thread exited")
+
+    def _accept_loop(self) -> None:
+        """
+        Accept loop that runs in a separate thread.
+        Accepts new connections and starts reader threads for them.
+        """
+        logger.info("Accept thread started")
+        
+        if not self.listener:
+            logger.error("No listener available for accept loop")
+            return
+        
+        while not self._shutdown_requested and not self._release_requested:
+            try:
+                # Accept connection (this blocks)
+                conn = self.listener.accept()
+
+                if self._shutdown_requested or self._release_requested:
+                    conn.close()
+                    break
+
+                logger.info("Client connected")
+
+                # Start a reader thread for this client
+                # Reader only enqueues messages, doesn't execute them
+                client_thread = threading.Thread(
+                    target=self._handle_client_reader, args=(conn,)
+                )
+                client_thread.daemon = True
+                client_thread.start()
+                self._client_threads.append(client_thread)
+
+                # Clean up finished threads
+                self._client_threads = [
+                    t for t in self._client_threads if t.is_alive()
+                ]
+
+            except OSError as e:
+                if self._shutdown_requested or self._release_requested:
+                    break
+                logger.error(f"Error accepting connection: {e}")
+            except Exception as e:
+                if self._shutdown_requested or self._release_requested:
+                    break
+                logger.error(f"Error in accept loop: {e}")
+        
+        logger.info("Accept thread stopped")
+
+    def _dispatch_loop(self) -> None:
+        """
+        Main thread dispatcher loop. Processes queued requests sequentially.
+        All RPC method executions happen here on the main thread.
+        """
+        logger.info("Main thread dispatcher started")
+        
+        while not self._shutdown_requested and not self._release_requested:
+            try:
+                # Get next request from queue (with timeout to check shutdown)
+                request = self._work_queue.get(timeout=0.25)
+                
+                logger.debug(f"Processing request #{request.seq} (id={request.id})")
+                
+                # Process the request with jsonrpcserver
+                # This executes the RPC method on the main thread
+                response_string = dispatch(request.raw)
+                
+                # Send response if not a notification
+                if response_string:
+                    try:
+                        send_message(request.conn, response_string)
+                        logger.info(f"Processed request #{request.seq} and sent response")
+                    except Exception as e:
+                        logger.error(f"Error sending response for request #{request.seq}: {e}")
+                else:
+                    logger.info(f"Processed notification #{request.seq} (no response)")
+                    
+            except Empty:
+                # Queue is empty, continue checking for shutdown
+                continue
+            except Exception as e:
+                logger.error(f"Error in dispatch loop: {e}")
+                # Don't exit the loop on errors, continue processing
+                continue
+        
+        # Drain remaining requests on shutdown (optional)
+        if self._shutdown_requested:
+            logger.info("Draining work queue on shutdown...")
+            while True:
+                try:
+                    request = self._work_queue.get_nowait()
+                    # Send error response for unprocessed requests
+                    error_response = json.dumps({
+                        "jsonrpc": "2.0",
+                        "error": {
+                            "code": -32000,
+                            "message": "Server shutting down"
+                        },
+                        "id": request.id
+                    })
+                    try:
+                        send_message(request.conn, error_response)
+                    except Exception:
+                        pass
+                except Empty:
+                    break
+        
+        logger.info("Main thread dispatcher stopped")
 
     def start(self, reuse_listener: bool = False) -> None:
         """
@@ -470,39 +634,19 @@ class JSONRPCPipeServer:
 
             self.running = True
             logger.info(f"JSON-RPC server listening on {self.address}")
+            logger.info("All RPC methods will execute on the main thread")
 
-            while not self._shutdown_requested and not self._release_requested:
-                try:
-                    # Accept connection (this blocks)
-                    conn = self.listener.accept()
-
-                    if self._shutdown_requested or self._release_requested:
-                        conn.close()
-                        break
-
-                    logger.info("Client connected")
-
-                    # Handle client in a separate thread
-                    client_thread = threading.Thread(
-                        target=self._handle_client, args=(conn,)
-                    )
-                    client_thread.daemon = True
-                    client_thread.start()
-                    self._client_threads.append(client_thread)
-
-                    # Clean up finished threads
-                    self._client_threads = [
-                        t for t in self._client_threads if t.is_alive()
-                    ]
-
-                except OSError as e:
-                    if self._shutdown_requested or self._release_requested:
-                        break
-                    logger.error(f"Error accepting connection: {e}")
-                except Exception as e:
-                    if self._shutdown_requested or self._release_requested:
-                        break
-                    logger.error(f"Error in accept loop: {e}")
+            # Start accept thread to handle incoming connections
+            accept_thread = threading.Thread(target=self._accept_loop)
+            accept_thread.daemon = True
+            accept_thread.start()
+            
+            # Run the main dispatcher loop on the main thread
+            # This ensures all RPC methods execute on the main thread
+            self._dispatch_loop()
+            
+            # Wait for accept thread to finish
+            accept_thread.join(timeout=2.0)
 
         except Exception as e:
             logger.error(f"Failed to start server: {e}")
@@ -526,6 +670,14 @@ class JSONRPCPipeServer:
         self._shutdown_requested = True
         self.running = False
         logger.info("Server stopping...")
+
+        # Clear the work queue by adding a sentinel or draining
+        try:
+            # Try to drain the queue quickly
+            while True:
+                self._work_queue.get_nowait()
+        except Empty:
+            pass
 
         # Close the listener to unblock accept()
         if self.listener:

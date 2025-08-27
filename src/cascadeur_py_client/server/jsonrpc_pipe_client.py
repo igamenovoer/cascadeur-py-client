@@ -4,9 +4,24 @@ JSON-RPC 2.0 Client using Named Pipes
 This module implements a JSON-RPC 2.0 client that communicates through
 named pipes (Windows) or Unix domain sockets (Linux/macOS) without any
 network/socket APIs.
+
+Environment Variables:
+    CASCADEUR_PYTHON_RPC_PIPE_NAME:
+        Sets the default pipe name for connecting to the JSON-RPC server.
+        If not set, defaults to "cas-pipe".
+
+        Usage:
+            # Windows
+            set CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
+            python client.py  # Connects to \\\\.\\pipe\\my-custom-pipe
+
+            # Linux/macOS
+            export CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
+            python client.py  # Connects to /tmp/my-custom-pipe.sock
+
+        Note: You can override this by passing an explicit address to the client constructor.
 """
 
-import os
 import sys
 import json
 import struct
@@ -30,13 +45,13 @@ except ImportError:
 # Use centralized logging from caslogger
 from cascadeur_py_client.caslogger import get_logger
 
+# Import pipe utilities
+from cascadeur_py_client.server.pipe_utils import get_default_pipe_address
+
 logger = get_logger("jsonrpc_pipe_client")
 
-# Configure pipe address based on platform
-if os.name == "nt":  # Windows
-    PIPE_ADDRESS = r"\\.\pipe\my-test-pipe"
-else:  # Unix/Linux
-    PIPE_ADDRESS = "/tmp/my-test-pipe.sock"
+# Configure default pipe address based on environment and platform
+PIPE_ADDRESS = get_default_pipe_address()
 
 
 # Message framing helpers
@@ -98,9 +113,9 @@ class JSONRPCPipeClient:
         Initialize the JSON-RPC pipe client.
 
         Args:
-            address: The pipe address. If None, uses platform default.
+            address: The pipe address. If None, uses environment variable or default.
         """
-        self.address = address or PIPE_ADDRESS
+        self.address = address if address else get_default_pipe_address()
 
     def call(self, method: str, params: Any = None, timeout: float = 10.0) -> Any:
         """

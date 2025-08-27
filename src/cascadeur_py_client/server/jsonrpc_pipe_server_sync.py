@@ -3,6 +3,33 @@ Synchronous JSON-RPC 2.0 Server using Named Pipes
 
 This module implements a single-threaded, synchronous JSON-RPC 2.0 server that
 processes requests one by one in the main thread without creating any additional threads.
+
+Environment Variables:
+    CASCADEUR_PYTHON_RPC_PIPE_NAME:
+        Sets the default pipe name for the JSON-RPC server to listen on.
+        If not set, defaults to "cas-pipe".
+
+        Usage:
+            # Windows
+            set CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
+            python server_sync.py  # Listens on \\\\.\\pipe\\my-custom-pipe
+
+            # Linux/macOS
+            export CASCADEUR_PYTHON_RPC_PIPE_NAME=my-custom-pipe
+            python server_sync.py  # Listens on /tmp/my-custom-pipe.sock
+
+        Note: You can override this by passing an explicit address to the server constructor.
+
+        This synchronous version is ideal for:
+        - Embedded Python environments (like Cascadeur)
+        - Simple request/response patterns
+        - Situations where thread safety is a concern
+
+Commands:
+    echo: Echo back the received message
+    release: Break main loop but keep pipe open (allows server restart)
+    shutdown: Completely shut down server and close pipe
+    quit: Alias for shutdown (backward compatibility)
 """
 
 import os
@@ -29,13 +56,13 @@ except ImportError:
 # Use centralized logging from caslogger
 from cascadeur_py_client.caslogger import get_logger, LogContext
 
+# Import pipe utilities
+from cascadeur_py_client.server.pipe_utils import get_default_pipe_address
+
 logger = get_logger("jsonrpc_pipe_server_sync")
 
-# Configure pipe address based on platform
-if os.name == "nt":  # Windows
-    PIPE_ADDRESS = r"\\.\pipe\my-test-pipe"
-else:  # Unix/Linux
-    PIPE_ADDRESS = "/tmp/my-test-pipe.sock"
+# Configure default pipe address based on environment and platform
+PIPE_ADDRESS = get_default_pipe_address()
 
 # Global server instance for quit/release/shutdown commands and cleanup
 _server_instance: Optional["SyncJSONRPCPipeServer"] = None
@@ -120,10 +147,10 @@ def echo(*args: Any, **kwargs: Any) -> Any:
     elif "message" in kwargs:
         message = kwargs["message"]
     else:
-        return Error("Missing required parameter 'message'", code=-32602)
+        return Error(code=-32602, message="Missing required parameter 'message'")
 
     if not isinstance(message, str):
-        return Error("Parameter must be a string", code=-32602)
+        return Error(code=-32602, message="Parameter must be a string")
 
     # Return Success result with the message
     return Success(message)
@@ -146,7 +173,7 @@ def release() -> Any:
         _server_instance._release_requested = True
         return Success("Server released from main loop")
     else:
-        return Error("No server instance found", code=-32603)
+        return Error(code=-32603, message="No server instance found")
 
 
 @method
@@ -163,7 +190,7 @@ def shutdown() -> Any:
         _server_instance._shutdown_requested = True
         return Success("Server shutdown initiated")
     else:
-        return Error("No server instance found", code=-32603)
+        return Error(code=-32603, message="No server instance found")
 
 
 @method
@@ -238,10 +265,10 @@ class SyncJSONRPCPipeServer:
         Initialize the synchronous JSON-RPC pipe server.
 
         Args:
-            address: The pipe address. If None, uses platform default.
+            address: The pipe address. If None, uses environment variable or default.
         """
         global _server_instance
-        self.address = address or PIPE_ADDRESS
+        self.address = address if address else get_default_pipe_address()
         self.running = False
         self.listener: Optional[Listener] = None
         self._shutdown_requested = False

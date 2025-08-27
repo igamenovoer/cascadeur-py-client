@@ -24,6 +24,20 @@ from typing import Optional, Union, Any
 from logging.handlers import RotatingFileHandler
 
 
+class CascadeurFormatter(logging.Formatter):
+    """Custom formatter that adds sys.executable basename to log records."""
+    
+    def __init__(self, fmt: Optional[str] = None, datefmt: Optional[str] = None):
+        super().__init__(fmt, datefmt)
+        # Cache the executable basename since it won't change during runtime
+        self.executable_basename = Path(sys.executable).name
+    
+    def format(self, record: logging.LogRecord) -> str:
+        # Add the executable basename to the record
+        record.executable = self.executable_basename
+        return super().format(record)
+
+
 def _get_log_directory() -> Path:
     """
     Determine the directory for log files.
@@ -146,17 +160,17 @@ def _setup_logger(
     if logger_instance.handlers:
         return logger_instance
     
-    # Default formats
+    # Default formats - using new Cascadeur format: "time [pid][executable][loglevel]: message"
     if console_format is None:
-        console_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        console_format = '%(asctime)s [%(process)d][%(executable)s][%(levelname)s]: %(message)s'
     
     if file_format is None:
-        file_format = '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(funcName)s() - %(message)s'
+        file_format = '%(asctime)s [%(process)d][%(executable)s][%(levelname)s]: %(message)s'
     
     # Console handler
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(level)
-    console_formatter = logging.Formatter(console_format)
+    console_formatter = CascadeurFormatter(console_format)
     console_handler.setFormatter(console_formatter)
     logger_instance.addHandler(console_handler)
     
@@ -173,7 +187,7 @@ def _setup_logger(
             encoding='utf-8'
         )
         file_handler.setLevel(level)
-        file_formatter = logging.Formatter(file_format)
+        file_formatter = CascadeurFormatter(file_format)
         file_handler.setFormatter(file_formatter)
         logger_instance.addHandler(file_handler)
         

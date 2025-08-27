@@ -56,7 +56,8 @@ def interactive_mode(client: JSONRPCPipeClient) -> None:
     print("  notify <message>  - Send notification (no response)")
     print("  raw <json>        - Send raw JSON-RPC request")
     print("  batch             - Enter batch mode")
-    print("  shutdown          - Send quit command to server")
+    print("  release           - Release server (keeps pipe open)")
+    print("  shutdown          - Shutdown server completely")
     print("  help              - Show this help")
     print("  quit              - Exit the client (local only)")
     print("=" * 60)
@@ -79,14 +80,26 @@ def interactive_mode(client: JSONRPCPipeClient) -> None:
                 print("  notify <message>  - Send notification")
                 print("  raw <json>        - Send raw JSON-RPC")
                 print("  batch             - Batch request mode")
-                print("  shutdown          - Send quit command to server")
+                print("  release           - Release server (keeps pipe open)")
+                print("  shutdown          - Shutdown server completely")
                 print("  quit              - Exit client (local only)")
                 print()
+            
+            elif command.lower() == 'release':
+                print("Sending release command to server...")
+                try:
+                    result = client.release()
+                    print(f"Server response: {result}")
+                    print("Server released from main loop (pipe still open)")
+                    print("You can restart the server by calling main() again")
+                except Exception as e:
+                    print(f"Error sending release command: {e}")
+                    print("The server may not support the release command.")
             
             elif command.lower() == 'shutdown':
                 print("Sending shutdown command to server...")
                 try:
-                    result = client.call("quit", {})
+                    result = client.shutdown()
                     print(f"Server response: {result}")
                     print("Server is shutting down. Client will exit in 2 seconds...")
                     time.sleep(2)
@@ -94,7 +107,7 @@ def interactive_mode(client: JSONRPCPipeClient) -> None:
                     break
                 except Exception as e:
                     print(f"Error sending shutdown command: {e}")
-                    print("The server may not support the quit command or may already be stopped.")
+                    print("The server may not support the shutdown command or may already be stopped.")
             
             elif command.startswith('echo '):
                 message = command[5:]
@@ -206,9 +219,15 @@ def main() -> None:
     )
     
     parser.add_argument(
+        "--release",
+        action="store_true",
+        help="Send release command to pause server (keeps pipe open)"
+    )
+    
+    parser.add_argument(
         "--shutdown",
         action="store_true",
-        help="Send quit command to shutdown the server"
+        help="Send shutdown command to stop server completely"
     )
     
     args = parser.parse_args()
@@ -234,16 +253,28 @@ def main() -> None:
     client = JSONRPCPipeClient(pipe_address)
     
     try:
-        if args.shutdown:
-            # Shutdown mode - send quit command to server
+        if args.release:
+            # Release mode - send release command to server
+            print("\nSending release command to server...")
+            try:
+                result = client.release()
+                print(f"Server response: {result}")
+                print("Server released from main loop successfully.")
+                print("The pipe remains open and server can be restarted.")
+            except Exception as e:
+                print(f"Error: {e}")
+                print("The server may not support the release command.")
+                sys.exit(1)
+        elif args.shutdown:
+            # Shutdown mode - send shutdown command to server
             print("\nSending shutdown command to server...")
             try:
-                result = client.call("quit", {})
+                result = client.shutdown()
                 print(f"Server response: {result}")
                 print("Server is shutting down successfully.")
             except Exception as e:
                 print(f"Error: {e}")
-                print("The server may not support the quit command or may already be stopped.")
+                print("The server may not support the shutdown command or may already be stopped.")
                 sys.exit(1)
         elif args.interactive:
             interactive_mode(client)

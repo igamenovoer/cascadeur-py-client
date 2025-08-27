@@ -10,21 +10,22 @@ import os
 import sys
 import json
 import struct
-from typing import Optional, Any, Dict
+from typing import Optional, Any
 from multiprocessing.connection import Client
 
 # Import jsonrpcclient components
 try:
-    from jsonrpcclient import request_json, notification_json, parse_json, Ok, Error as RPCError
+    from jsonrpcclient import request_json, notification_json, parse_json, Ok
 except ImportError:
     # Fallback if specific functions are not available
     from jsonrpcclient import request, notification, parse_json, Ok
-    
+
     def request_json(method: str, params: Any = None) -> str:
         return json.dumps(request(method, params))
-    
+
     def notification_json(method: str, params: Any = None) -> str:
         return json.dumps(notification(method, params))
+
 
 # Use centralized logging from caslogger
 from cascadeur_py_client.caslogger import get_logger
@@ -32,24 +33,24 @@ from cascadeur_py_client.caslogger import get_logger
 logger = get_logger("jsonrpc_pipe_client")
 
 # Configure pipe address based on platform
-if os.name == 'nt':  # Windows
-    PIPE_ADDRESS = r'\\.\pipe\my-test-pipe'
+if os.name == "nt":  # Windows
+    PIPE_ADDRESS = r"\\.\pipe\my-test-pipe"
 else:  # Unix/Linux
-    PIPE_ADDRESS = '/tmp/my-test-pipe.sock'
+    PIPE_ADDRESS = "/tmp/my-test-pipe.sock"
 
 
 # Message framing helpers
 def send_message(conn: Any, message_string: str) -> None:
     """
     Send a JSON-RPC message with a length prefix for proper framing.
-    
+
     Args:
         conn: The connection object from multiprocessing.connection
         message_string: The JSON-RPC message string to send
     """
-    data = message_string.encode('utf-8')
+    data = message_string.encode("utf-8")
     # Send message with 4-byte length prefix (big-endian)
-    length_prefix = struct.pack('!I', len(data))
+    length_prefix = struct.pack("!I", len(data))
     conn.send_bytes(length_prefix + data)
     logger.debug(f"Sent message: {message_string}")
 
@@ -57,30 +58,32 @@ def send_message(conn: Any, message_string: str) -> None:
 def recv_message(conn: Any) -> str:
     """
     Receive a JSON-RPC message with length prefix.
-    
+
     Args:
         conn: The connection object from multiprocessing.connection
-        
+
     Returns:
         The received JSON-RPC message string
-        
+
     Raises:
         EOFError: If the connection is closed or message is incomplete
     """
     # Receive the complete message
-    blob = conn.recv_bytes()
-    
+    blob: bytes = conn.recv_bytes()
+
     if len(blob) < 4:
         raise EOFError("Message too short to contain length prefix")
-    
+
     # Extract length from first 4 bytes (big-endian)
-    expected_length = struct.unpack('!I', blob[:4])[0]
+    expected_length = struct.unpack("!I", blob[:4])[0]
     actual_data = blob[4:]
-    
+
     if len(actual_data) != expected_length:
-        logger.warning(f"Length mismatch: expected {expected_length}, got {len(actual_data)}")
-    
-    message = actual_data.decode('utf-8')
+        logger.warning(
+            f"Length mismatch: expected {expected_length}, got {len(actual_data)}"
+        )
+
+    message: str = actual_data.decode("utf-8")
     logger.debug(f"Received message: {message}")
     return message
 
@@ -89,28 +92,28 @@ class JSONRPCPipeClient:
     """
     JSON-RPC 2.0 client that uses named pipes for communication.
     """
-    
+
     def __init__(self, address: Optional[str] = None):
         """
         Initialize the JSON-RPC pipe client.
-        
+
         Args:
             address: The pipe address. If None, uses platform default.
         """
         self.address = address or PIPE_ADDRESS
-        
+
     def call(self, method: str, params: Any = None, timeout: float = 10.0) -> Any:
         """
         Make a JSON-RPC call and return the result.
-        
+
         Args:
             method: The RPC method name to call
             params: Parameters for the method (list or dict)
             timeout: Connection timeout in seconds
-            
+
         Returns:
             The result from the RPC call
-            
+
         Raises:
             Exception: If there's an RPC error or connection issue
         """
@@ -120,37 +123,39 @@ class JSONRPCPipeClient:
                 # Create request using jsonrpcclient
                 request_string = request_json(method, params)
                 logger.info(f"Calling method '{method}' with params: {params}")
-                
+
                 # Send request
                 send_message(conn, request_string)
-                
+
                 # Receive and parse response
                 response_string = recv_message(conn)
                 parsed = parse_json(response_string)
-                
+
                 if isinstance(parsed, Ok):
                     logger.info(f"Method '{method}' returned: {parsed.result}")
                     return parsed.result
                 else:
                     # Handle RPC error
                     error_msg = f"RPC Error: {parsed.message} (code: {parsed.code})"
-                    if hasattr(parsed, 'data') and parsed.data:
+                    if hasattr(parsed, "data") and parsed.data:
                         error_msg += f" - {parsed.data}"
                     logger.error(error_msg)
                     raise Exception(error_msg)
-                    
+
         except FileNotFoundError:
-            error_msg = f"Cannot connect to server at {self.address}. Is the server running?"
+            error_msg = (
+                f"Cannot connect to server at {self.address}. Is the server running?"
+            )
             logger.error(error_msg)
             raise ConnectionError(error_msg)
         except Exception as e:
             logger.error(f"Error calling method '{method}': {e}")
             raise
-            
+
     def notify(self, method: str, params: Any = None) -> None:
         """
         Send a notification (no response expected).
-        
+
         Args:
             method: The RPC method name to call
             params: Parameters for the method (list or dict)
@@ -161,70 +166,72 @@ class JSONRPCPipeClient:
                 # Create notification using jsonrpcclient
                 notification_string = notification_json(method, params)
                 logger.info(f"Sending notification '{method}' with params: {params}")
-                
+
                 # Send notification
                 send_message(conn, notification_string)
                 logger.info(f"Notification '{method}' sent successfully")
-                
+
         except FileNotFoundError:
-            error_msg = f"Cannot connect to server at {self.address}. Is the server running?"
+            error_msg = (
+                f"Cannot connect to server at {self.address}. Is the server running?"
+            )
             logger.error(error_msg)
             raise ConnectionError(error_msg)
         except Exception as e:
             logger.error(f"Error sending notification '{method}': {e}")
             raise
-            
+
     def release(self) -> Any:
         """
         Send a release command to the server.
         This breaks the server's main loop but keeps the pipe open.
-        
+
         Returns:
             The result from the RPC call
-            
+
         Raises:
             Exception: If there's an RPC error or connection issue
         """
         logger.info("Sending release command to server")
         return self.call("release")
-    
+
     def shutdown(self) -> Any:
         """
         Send a shutdown command to the server.
         This completely shuts down the server and closes the pipe.
-        
+
         Returns:
             The result from the RPC call
-            
+
         Raises:
             Exception: If there's an RPC error or connection issue
         """
         logger.info("Sending shutdown command to server")
         return self.call("shutdown")
-    
+
     def quit(self) -> Any:
         """
         Alias for shutdown (backward compatibility).
-        
+
         Returns:
             The result from the RPC call
-            
+
         Raises:
             Exception: If there's an RPC error or connection issue
         """
         logger.info("Sending quit command to server (alias for shutdown)")
         return self.call("quit")
-    
+
     def batch_call(self, requests: list[tuple[str, Any]]) -> list[Any]:
         """
         Make multiple JSON-RPC calls in a single batch.
-        
+
         Args:
             requests: List of tuples (method, params) to call
-            
+
         Returns:
             List of results from the RPC calls
-            
+
         Raises:
             Exception: If there's an RPC error or connection issue
         """
@@ -237,20 +244,20 @@ class JSONRPCPipeClient:
                         "jsonrpc": "2.0",
                         "method": method,
                         "params": params,
-                        "id": i + 1
+                        "id": i + 1,
                     }
                     batch_requests.append(req)
-                
+
                 batch_string = json.dumps(batch_requests)
                 logger.info(f"Sending batch request with {len(requests)} calls")
-                
+
                 # Send batch request
                 send_message(conn, batch_string)
-                
+
                 # Receive and parse batch response
                 response_string = recv_message(conn)
                 responses = json.loads(response_string)
-                
+
                 # Extract results
                 results = []
                 for response in responses:
@@ -258,14 +265,16 @@ class JSONRPCPipeClient:
                         results.append(response["result"])
                     elif "error" in response:
                         error = response["error"]
-                        error_msg = f"RPC Error: {error['message']} (code: {error['code']})"
+                        error_msg = (
+                            f"RPC Error: {error['message']} (code: {error['code']})"
+                        )
                         results.append(Exception(error_msg))
                     else:
                         results.append(None)
-                
+
                 logger.info(f"Batch request completed with {len(results)} results")
                 return results
-                
+
         except Exception as e:
             logger.error(f"Error in batch call: {e}")
             raise
@@ -276,11 +285,11 @@ def test_client() -> None:
     Test function to demonstrate client usage.
     """
     client = JSONRPCPipeClient()
-    
+
     print("\n=== JSON-RPC Pipe Client Test ===")
     print(f"Connecting to: {client.address}")
     print()
-    
+
     try:
         # Test echo method
         test_message = "Hello from JSON-RPC client!"
@@ -288,7 +297,7 @@ def test_client() -> None:
         result = client.call("echo", [test_message])
         print(f"Echo result: '{result}'")
         print()
-        
+
         # Test release command
         print("Testing release command (server will pause but pipe stays open)...")
         try:
@@ -297,13 +306,13 @@ def test_client() -> None:
         except Exception as e:
             print(f"Release command error: {e}")
         print()
-        
+
         # Test with different parameter format (as dict)
         print("Testing echo with dict params...")
         result = client.call("echo", {"message": "Testing with dict params"})
         print(f"Echo result: '{result}'")
         print()
-        
+
         # Test invalid method
         print("Testing invalid method (should raise error)...")
         try:
@@ -312,27 +321,27 @@ def test_client() -> None:
         except Exception as e:
             print(f"Expected error: {e}")
         print()
-        
+
         # Test notification
         print("Sending notification (no response expected)...")
         client.notify("log", ["This is a notification"])
         print("Notification sent successfully")
         print()
-        
+
         # Test batch call
         print("Testing batch call...")
         batch_requests = [
             ("echo", ["First"]),
             ("echo", ["Second"]),
-            ("echo", ["Third"])
+            ("echo", ["Third"]),
         ]
         results = client.batch_call(batch_requests)
         for i, result in enumerate(results):
             if isinstance(result, Exception):
-                print(f"  Request {i+1}: Error - {result}")
+                print(f"  Request {i + 1}: Error - {result}")
             else:
-                print(f"  Request {i+1}: Result - '{result}'")
-        
+                print(f"  Request {i + 1}: Result - '{result}'")
+
     except ConnectionError as e:
         print(f"Connection error: {e}")
         print("Make sure the server is running first!")
@@ -345,20 +354,20 @@ def interactive_client() -> None:
     Interactive client for testing the JSON-RPC server.
     """
     client = JSONRPCPipeClient()
-    
+
     print("\n=== JSON-RPC Pipe Client (Interactive Mode) ===")
     print(f"Connected to: {client.address}")
     print("Type 'quit' to exit, 'help' for commands")
     print()
-    
+
     while True:
         try:
             command = input(">> ").strip()
-            
-            if command.lower() == 'quit':
+
+            if command.lower() == "quit":
                 print("Goodbye!")
                 break
-            elif command.lower() == 'help':
+            elif command.lower() == "help":
                 print("Commands:")
                 print("  echo <message>   - Echo a message")
                 print("  notify <message> - Send a notification")
@@ -366,23 +375,23 @@ def interactive_client() -> None:
                 print("  shutdown        - Shutdown server completely")
                 print("  quit            - Exit the client")
                 print("  help            - Show this help")
-            elif command.startswith('echo '):
+            elif command.startswith("echo "):
                 message = command[5:]
                 result = client.call("echo", [message])
                 print(f"Server response: {result}")
-            elif command.startswith('notify '):
+            elif command.startswith("notify "):
                 message = command[7:]
                 client.notify("log", [message])
                 print("Notification sent")
-            elif command.lower() == 'release':
+            elif command.lower() == "release":
                 result = client.release()
                 print(f"Server response: {result}")
-            elif command.lower() == 'shutdown':
+            elif command.lower() == "shutdown":
                 result = client.shutdown()
                 print(f"Server response: {result}")
             else:
                 print("Unknown command. Type 'help' for available commands.")
-                
+
         except KeyboardInterrupt:
             print("\nInterrupted by user")
             break
@@ -394,7 +403,7 @@ def main() -> None:
     """
     Main entry point for the JSON-RPC pipe client.
     """
-    if len(sys.argv) > 1 and sys.argv[1] == '--interactive':
+    if len(sys.argv) > 1 and sys.argv[1] == "--interactive":
         interactive_client()
     else:
         test_client()

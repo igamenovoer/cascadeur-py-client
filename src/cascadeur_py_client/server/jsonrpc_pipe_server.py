@@ -17,6 +17,7 @@ import weakref
 from typing import Optional, Any
 from multiprocessing.connection import Listener, Client
 from jsonrpcserver import method, dispatch
+
 try:
     # Try to import the modern API (version 5.x)
     from jsonrpcserver import Success, Error
@@ -30,31 +31,31 @@ from cascadeur_py_client.caslogger import get_logger
 logger = get_logger("jsonrpc_pipe_server")
 
 # Configure pipe address based on platform
-if os.name == 'nt':  # Windows
-    PIPE_ADDRESS = r'\\.\pipe\my-test-pipe'
+if os.name == "nt":  # Windows
+    PIPE_ADDRESS = r"\\.\pipe\my-test-pipe"
 else:  # Unix/Linux
-    PIPE_ADDRESS = '/tmp/my-test-pipe.sock'
+    PIPE_ADDRESS = "/tmp/my-test-pipe.sock"
 
 # Global server instance for quit command and cleanup
-_server_instance: Optional['JSONRPCPipeServer'] = None
-_active_servers = weakref.WeakSet()
+_server_instance: Optional["JSONRPCPipeServer"] = None
+_active_servers: weakref.WeakSet[Any] = weakref.WeakSet()
 
 
 def cleanup_pipe(address: str) -> None:
     """
     Clean up named pipe or Unix socket.
-    
+
     Args:
         address: The pipe/socket address to clean up
     """
-    if os.name == 'nt':
+    if os.name == "nt":
         # Windows named pipes are cleaned up when all handles are closed
         # But we'll ensure any lingering connections are closed
         try:
             # Try to connect and immediately disconnect to clear any stuck state
             dummy = Client(address)
             dummy.close()
-        except:
+        except Exception:
             pass
     else:
         # Unix domain sockets need explicit file removal
@@ -70,10 +71,10 @@ def cleanup_all_pipes() -> None:
     """Clean up all registered server pipes on exit."""
     for server in list(_active_servers):
         try:
-            if hasattr(server, 'address'):
+            if hasattr(server, "address"):
                 cleanup_pipe(server.address)
                 logger.debug(f"Cleaned up pipe: {server.address}")
-        except:
+        except Exception:
             pass
 
 
@@ -83,14 +84,14 @@ atexit.register(cleanup_all_pipes)
 
 # Define JSON-RPC methods
 @method
-def echo(*args, **kwargs):
+def echo(*args: Any, **kwargs: Any) -> Any:
     """
     Echo method that returns the same string it receives.
     Handles both positional and keyword arguments.
-    
+
     Args:
         message: String to echo back (can be positional or keyword)
-        
+
     Returns:
         The same string that was received wrapped in Success
     """
@@ -98,50 +99,122 @@ def echo(*args, **kwargs):
     if args and len(args) > 0:
         message = args[0]
     # Handle keyword arguments
-    elif 'message' in kwargs:
-        message = kwargs['message']
+    elif "message" in kwargs:
+        message = kwargs["message"]
     else:
         return Error("Missing required parameter 'message'", code=-32602)
-    
+
     if not isinstance(message, str):
         return Error("Parameter must be a string", code=-32602)
-    
+
     # Return Success result with the message
     return Success(message)
 
 
-@method  
-def quit():
+@method
+def release() -> Any:
     """
-    Shutdown the server gracefully.
-    This is an alternative to Ctrl+C for environments where signal handling doesn't work.
-    
+    Release the server from the main loop but keep the pipe open.
+    This allows the server to be restarted by calling main() again.
+
+    Returns:
+        Success message indicating server released
+    """
+    global _server_instance
+    if _server_instance:
+        logger.info(
+            "Release command received, breaking main loop but keeping pipe open..."
+        )
+        _server_instance._release_requested = True
+
+        # Schedule disconnect in a separate thread to allow response to be sent
+        def delayed_release() -> None:
+            import time
+
+            time.sleep(0.5)  # Give time for response to be sent
+            _server_instance._disconnect_all_clients()
+
+            # On Windows, send a dummy connection to unblock accept()
+            if os.name == "nt" and not _server_instance._shutdown_in_progress:
+                _server_instance._shutdown_in_progress = True
+                try:
+                    dummy = Client(_server_instance.address)
+                    dummy.close()
+                except Exception:
+                    pass
+
+        release_thread = threading.Thread(target=delayed_release)
+        release_thread.daemon = True
+        release_thread.start()
+
+        return Success("Server released from main loop")
+    else:
+        return Error("No server instance found", code=-32603)
+
+
+@method
+def shutdown() -> Any:
+    """
+    Shutdown the server completely, closing the pipe.
+
     Returns:
         Success message indicating shutdown initiated
     """
     global _server_instance
     if _server_instance:
-        logger.info("Quit command received, initiating shutdown...")
+        logger.info("Shutdown command received, initiating full shutdown...")
+        _server_instance._shutdown_requested = True
+
         # Schedule shutdown in a separate thread to allow response to be sent
-        def delayed_shutdown():
+        def delayed_shutdown() -> None:
             import time
+
             time.sleep(0.5)  # Give time for response to be sent
-            _server_instance.stop()
-        
+            _server_instance._disconnect_all_clients()
+
+            # Close the listener to unblock accept()
+            if _server_instance.listener:
+                try:
+                    _server_instance.listener.close()
+                except Exception:
+                    pass
+
+            # On Windows, send a dummy connection to unblock accept()
+            if os.name == "nt" and not _server_instance._shutdown_in_progress:
+                _server_instance._shutdown_in_progress = True
+                try:
+                    dummy = Client(_server_instance.address)
+                    dummy.close()
+                except Exception:
+                    pass
+
         shutdown_thread = threading.Thread(target=delayed_shutdown)
         shutdown_thread.daemon = True
         shutdown_thread.start()
-        
+
         return Success("Server shutdown initiated")
     else:
         return Error("No server instance found", code=-32603)
+
+
+@method
+def quit() -> Any:
+    """
+    Shutdown the server gracefully (alias for shutdown).
+    This is an alternative to Ctrl+C for environments where signal handling doesn't work.
+
+    Returns:
+        Success message indicating shutdown initiated
+    """
+    # quit is now an alias for shutdown
+    return shutdown()
 
 
 # Helper functions
 def is_main_thread() -> bool:
     """
     Check if we're running in the main thread of the main interpreter.
-    
+
     Returns:
         True if in main thread and signal handlers can be registered
     """
@@ -150,53 +223,55 @@ def is_main_thread() -> bool:
         return threading.current_thread() is threading.main_thread()
     except AttributeError:
         # Python < 3.4 doesn't have main_thread()
-        return threading.current_thread().name == 'MainThread'
+        return threading.current_thread().name == "MainThread"
 
 
 # Message framing helpers
-def send_message(conn, message_string: str) -> None:
+def send_message(conn: Any, message_string: str) -> None:
     """
     Send a JSON-RPC message with a length prefix for proper framing.
-    
+
     Args:
         conn: The connection object from multiprocessing.connection
         message_string: The JSON-RPC message string to send
     """
     if message_string:
-        data = message_string.encode('utf-8')
+        data = message_string.encode("utf-8")
         # Send message with 4-byte length prefix (big-endian)
-        length_prefix = struct.pack('!I', len(data))
+        length_prefix = struct.pack("!I", len(data))
         conn.send_bytes(length_prefix + data)
         logger.debug(f"Sent message: {message_string}")
 
 
-def recv_message(conn) -> str:
+def recv_message(conn: Any) -> str:
     """
     Receive a JSON-RPC message with length prefix.
-    
+
     Args:
         conn: The connection object from multiprocessing.connection
-        
+
     Returns:
         The received JSON-RPC message string
-        
+
     Raises:
         EOFError: If the connection is closed or message is incomplete
     """
     # Receive the complete message
     blob = conn.recv_bytes()
-    
+
     if len(blob) < 4:
         raise EOFError("Message too short to contain length prefix")
-    
+
     # Extract length from first 4 bytes (big-endian)
-    expected_length = struct.unpack('!I', blob[:4])[0]
+    expected_length = struct.unpack("!I", blob[:4])[0]
     actual_data = blob[4:]
-    
+
     if len(actual_data) != expected_length:
-        logger.warning(f"Length mismatch: expected {expected_length}, got {len(actual_data)}")
-    
-    message = actual_data.decode('utf-8')
+        logger.warning(
+            f"Length mismatch: expected {expected_length}, got {len(actual_data)}"
+        )
+
+    message: str = actual_data.decode("utf-8")
     logger.debug(f"Received message: {message}")
     return message
 
@@ -205,11 +280,11 @@ class JSONRPCPipeServer:
     """
     JSON-RPC 2.0 server that uses named pipes for communication.
     """
-    
+
     def __init__(self, address: Optional[str] = None):
         """
         Initialize the JSON-RPC pipe server.
-        
+
         Args:
             address: The pipe address. If None, uses platform default.
         """
@@ -218,95 +293,138 @@ class JSONRPCPipeServer:
         self.running = False
         self.listener: Optional[Listener] = None
         self._shutdown_requested = False
-        self._client_threads = []
+        self._release_requested = False
+        self._client_threads: list[threading.Thread] = []
+        self._client_connections: list[Any] = []  # Track active connections
         self._shutdown_in_progress = False
         # Set global instance for quit command
         _server_instance = self
         # Register for cleanup
         _active_servers.add(self)
-        
-    def __del__(self):
+
+    def __del__(self) -> None:
         """Cleanup on garbage collection."""
         self._cleanup()
-    
-    def _cleanup(self) -> None:
-        """Perform cleanup of pipes and resources."""
+
+    def _cleanup(self, close_listener: bool = True) -> None:
+        """Perform cleanup of pipes and resources.
+
+        Args:
+            close_listener: If True, close the listener. If False, keep it open.
+        """
         try:
-            # Close listener if still open
-            if self.listener:
+            # Close listener if requested and still open
+            if close_listener and self.listener:
                 try:
                     self.listener.close()
-                except:
+                    logger.debug("Listener closed successfully")
+                except Exception:
                     pass
                 self.listener = None
-            
-            # Clean up the pipe/socket
-            cleanup_pipe(self.address)
-            
+
+            # Clean up the pipe/socket if listener was closed
+            if close_listener:
+                cleanup_pipe(self.address)
+
         except Exception as e:
             logger.debug(f"Cleanup error (non-critical): {e}")
-        
-    def _handle_client(self, conn) -> None:
+
+    def _disconnect_all_clients(self) -> None:
+        """Disconnect all active client connections."""
+        for conn in self._client_connections:
+            try:
+                conn.close()
+            except Exception:
+                pass
+        self._client_connections.clear()
+
+        # Wait briefly for threads to finish
+        for thread in self._client_threads:
+            try:
+                thread.join(timeout=0.1)
+            except Exception:
+                pass
+
+    def _handle_client(self, conn: Any) -> None:
         """
         Handle a single client connection.
-        
+
         Args:
             conn: The connection object from multiprocessing.connection
         """
+        # Track this connection
+        self._client_connections.append(conn)
         try:
-            while not self._shutdown_requested:
+            while not self._shutdown_requested and not self._release_requested:
                 try:
                     # Receive JSON-RPC request
                     request_string = recv_message(conn)
-                    
+
                     # Process the request with jsonrpcserver
                     response_string = dispatch(request_string)
-                    
+
                     # Send response (skip for notifications)
                     if response_string:
                         send_message(conn, response_string)
-                        logger.info(f"Processed request and sent response")
+                        logger.info("Processed request and sent response")
                     else:
                         logger.info("Processed notification (no response)")
-                        
+
                 except EOFError:
                     # Client disconnected normally
                     logger.debug("Client closed connection")
                     break
                 except Exception as e:
-                    if self._shutdown_requested:
+                    if self._shutdown_requested or self._release_requested:
                         break
                     logger.error(f"Error handling client request: {e}")
                     # Send error response
-                    error_response = json.dumps({
-                        "jsonrpc": "2.0",
-                        "error": {
-                            "code": -32603,
-                            "message": f"Internal error: {str(e)}"
-                        },
-                        "id": None
-                    })
+                    error_response = json.dumps(
+                        {
+                            "jsonrpc": "2.0",
+                            "error": {
+                                "code": -32603,
+                                "message": f"Internal error: {str(e)}",
+                            },
+                            "id": None,
+                        }
+                    )
                     try:
                         send_message(conn, error_response)
-                    except:
+                    except Exception:
                         pass
                     break
         finally:
             conn.close()
+            # Remove from active connections
+            try:
+                self._client_connections.remove(conn)
+            except Exception:
+                pass
             logger.info("Client disconnected")
-    
-    def start(self) -> None:
+
+    def start(self, reuse_listener: bool = False) -> None:
         """
         Start the JSON-RPC server and listen for connections.
+
+        Args:
+            reuse_listener: If True and a listener exists, reuse it instead of creating new one.
         """
-        # Clean up any existing pipe/socket before starting
-        cleanup_pipe(self.address)
-        
+        # Reset flags for new run
+        self._shutdown_requested = False
+        self._release_requested = False
+        self._shutdown_in_progress = False
+
+        # Clean up any existing pipe/socket before starting (unless reusing)
+        if not reuse_listener or not self.listener:
+            cleanup_pipe(self.address)
+
         # Check if we can setup signal handlers
         can_use_signals = is_main_thread()
-        
+
         if can_use_signals:
-            def signal_handler(signum, frame):
+
+            def signal_handler(signum: Any, frame: Any) -> None:
                 """Handle Ctrl+C gracefully."""
                 logger.info(f"Received signal {signum}, shutting down...")
                 self._shutdown_requested = True
@@ -319,7 +437,7 @@ class JSONRPCPipeServer:
                     pass
 
                 # On Windows, also attempt a dummy connection to ensure accept() is unblocked
-                if os.name == 'nt':
+                if os.name == "nt":
                     # Use an instance-level guard to avoid repeated attempts
                     if not self._shutdown_in_progress:
                         self._shutdown_in_progress = True
@@ -328,7 +446,7 @@ class JSONRPCPipeServer:
                             dummy.close()
                         except Exception:
                             pass
-            
+
             try:
                 # Setup signal handlers
                 signal.signal(signal.SIGINT, signal_handler)
@@ -337,58 +455,70 @@ class JSONRPCPipeServer:
             except Exception as e:
                 # If signal setup fails, continue without it
                 logger.warning(f"Could not setup signal handlers: {e}")
-                logger.info("Use the 'quit' JSON-RPC method to stop the server")
+                logger.info("Send 'shutdown' to stop server, 'release' to pause it")
                 can_use_signals = False
         else:
             logger.info("Running in non-main thread/interpreter (e.g., Jupyter)")
-            logger.info("Use the 'quit' JSON-RPC method to stop the server")
-        
+            logger.info("Send 'shutdown' to stop server, 'release' to pause it")
+
         try:
-            self.listener = Listener(self.address)
+            if reuse_listener and self.listener:
+                logger.info(f"Reusing existing listener on {self.address}")
+            else:
+                self.listener = Listener(self.address)
+                logger.info(f"Created new listener on {self.address}")
+
             self.running = True
             logger.info(f"JSON-RPC server listening on {self.address}")
-            
-            while not self._shutdown_requested:
+
+            while not self._shutdown_requested and not self._release_requested:
                 try:
                     # Accept connection (this blocks)
                     conn = self.listener.accept()
-                    
-                    if self._shutdown_requested:
+
+                    if self._shutdown_requested or self._release_requested:
                         conn.close()
                         break
-                    
-                    logger.info(f"Client connected")
-                    
+
+                    logger.info("Client connected")
+
                     # Handle client in a separate thread
                     client_thread = threading.Thread(
-                        target=self._handle_client,
-                        args=(conn,)
+                        target=self._handle_client, args=(conn,)
                     )
                     client_thread.daemon = True
                     client_thread.start()
                     self._client_threads.append(client_thread)
-                    
+
                     # Clean up finished threads
-                    self._client_threads = [t for t in self._client_threads if t.is_alive()]
-                    
+                    self._client_threads = [
+                        t for t in self._client_threads if t.is_alive()
+                    ]
+
                 except OSError as e:
-                    if self._shutdown_requested:
+                    if self._shutdown_requested or self._release_requested:
                         break
                     logger.error(f"Error accepting connection: {e}")
                 except Exception as e:
-                    if self._shutdown_requested:
+                    if self._shutdown_requested or self._release_requested:
                         break
                     logger.error(f"Error in accept loop: {e}")
-                    
+
         except Exception as e:
             logger.error(f"Failed to start server: {e}")
             self._cleanup()
             raise
         finally:
             self.running = False
-            self._cleanup()
-            logger.info("Server shutdown complete")
-    
+            # Only close listener if shutdown was requested
+            close_listener = self._shutdown_requested
+            self._cleanup(close_listener=close_listener)
+
+            if self._release_requested:
+                logger.info("Server released from main loop (listener kept open)")
+            else:
+                logger.info("Server shutdown complete")
+
     def stop(self) -> None:
         """
         Stop the JSON-RPC server.
@@ -396,52 +526,63 @@ class JSONRPCPipeServer:
         self._shutdown_requested = True
         self.running = False
         logger.info("Server stopping...")
-        
+
         # Close the listener to unblock accept()
         if self.listener:
             try:
                 self.listener.close()
-            except:
+            except Exception:
                 pass
-        
+
         # On Windows, send a dummy connection to unblock accept() if needed
-        if os.name == 'nt' and not self._shutdown_in_progress:
+        if os.name == "nt" and not self._shutdown_in_progress:
             self._shutdown_in_progress = True
             try:
                 dummy = Client(self.address)
                 dummy.close()
             except Exception:
                 pass
-        
+
         # Ensure cleanup
         self._cleanup()
 
 
-def main():
+def main() -> None:
     """
     Main entry point for running the JSON-RPC pipe server.
     """
-    server = JSONRPCPipeServer()
-    
+    global _server_instance
+
+    # Check if we can reuse an existing server that was released
+    reuse_listener = False
+    if _server_instance and _server_instance.listener:
+        server = _server_instance
+        logger.info("Reusing existing server instance after release")
+        reuse_listener = True
+    else:
+        server = JSONRPCPipeServer()
+
     try:
         logger.info("Starting JSON-RPC Pipe Server...")
         logger.info(f"Platform: {os.name}")
         logger.info(f"Pipe address: {server.address}")
-        
+
         # Check if we're in main thread
         if is_main_thread():
             logger.info("Press Ctrl+C to stop the server (or use 'quit' RPC method)")
         else:
-            logger.info("Send 'quit' RPC method to stop the server")
-            
-        server.start()
+            logger.info("Send 'shutdown' to stop server, 'release' to pause it")
+
+        server.start(reuse_listener=reuse_listener)
     except KeyboardInterrupt:
         logger.info("Keyboard interrupt received")
         server.stop()
     except Exception as e:
         logger.error(f"Server error: {e}")
-        if 'signal only works in main thread' in str(e):
-            logger.info("TIP: Server can still be started - it will use the 'quit' command instead of Ctrl+C")
+        if "signal only works in main thread" in str(e):
+            logger.info(
+                "TIP: Server can still be started - it will use the 'quit' command instead of Ctrl+C"
+            )
         # Ensure cleanup on error
         server._cleanup()
         sys.exit(1)
@@ -453,7 +594,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
 # Uncomment below to auto-start server when imported (e.g., in Jupyter notebooks)
 # th = threading.Thread(target=main)
 # th.start()

@@ -19,7 +19,7 @@ import tempfile
 import argparse
 import subprocess
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 import platformdirs
 
 
@@ -129,13 +129,115 @@ def get_cascadeur_site_packages(cascadeur_path: Path, verbose: bool = True) -> L
     return existing_paths
 
 
+def is_local_package(package_spec: str) -> Tuple[bool, Optional[Path]]:
+    """
+    Check if a package specification refers to a local path.
+    
+    Args:
+        package_spec: Package specification (name or path)
+        
+    Returns:
+        Tuple of (is_local, resolved_path)
+    """
+    # Check for editable install prefix
+    if package_spec.startswith('-e '):
+        package_spec = package_spec[3:].strip()
+    
+    # Common indicators of local paths
+    if package_spec in ['.', '..'] or package_spec.startswith(('./','../', '/', '\\')):
+        path = Path(package_spec).resolve()
+        if path.exists():
+            return True, path
+    
+    # Check if it's an existing path without indicators
+    path = Path(package_spec)
+    if path.exists() and (path.is_dir() or path.suffix in ['.whl', '.tar.gz', '.zip']):
+        return True, path.resolve()
+    
+    return False, None
+
+
+def create_pth_file(
+    project_path: Path,
+    site_packages: Path,
+    package_name: Optional[str] = None
+) -> bool:
+    """
+    Create a .pth file for editable installation.
+    
+    Args:
+        project_path: Path to the project directory
+        site_packages: Path to site-packages directory
+        package_name: Optional package name for the .pth file
+        
+    Returns:
+        True if successful
+    """
+    # Find the source directory (usually 'src' or the project root)
+    src_dirs = []
+    
+    # Check for src layout
+    src_path = project_path / 'src'
+    if src_path.exists() and src_path.is_dir():
+        src_dirs.append(str(src_path.resolve()))
+    
+    # Check for flat layout (packages directly in project root)
+    pyproject = project_path / 'pyproject.toml'
+    setup_py = project_path / 'setup.py'
+    if pyproject.exists() or setup_py.exists():
+        # Add project root for flat layout
+        if not src_dirs:  # Only if src layout wasn't detected
+            src_dirs.append(str(project_path.resolve()))
+    
+    if not src_dirs:
+        print(f"Error: Could not determine source directory for {project_path}")
+        return False
+    
+    # Determine package name if not provided
+    if not package_name:
+        if pyproject.exists():
+            try:
+                import tomllib  # type: ignore
+            except ImportError:
+                try:
+                    import tomli as tomllib  # type: ignore
+                except ImportError:
+                    # Fallback to basic parsing
+                    package_name = project_path.name
+                    tomllib = None  # type: ignore
+            
+            if tomllib is not None:
+                try:
+                    with open(pyproject, 'rb') as f:
+                        data = tomllib.load(f)
+                    package_name = data.get('project', {}).get('name', project_path.name)
+                except:
+                    package_name = project_path.name
+        else:
+            package_name = project_path.name
+    
+    # Create .pth file
+    pth_file = site_packages / f"{package_name}.pth"
+    try:
+        with open(pth_file, 'w') as f:
+            for src_dir in src_dirs:
+                f.write(f"{src_dir}\n")
+        print(f"Created .pth file: {pth_file}")
+        print(f"  Pointing to: {', '.join(src_dirs)}")
+        return True
+    except Exception as e:
+        print(f"Error creating .pth file: {e}")
+        return False
+
+
 def install_packages(
     packages: List[str],
     cascadeur_path: Path,
     upgrade: bool = False,
     force_reinstall: bool = False,
     no_deps: bool = False,
-    requirements: Optional[Path] = None
+    requirements: Optional[Path] = None,
+    editable: bool = False
 ) -> bool:
     """
     Install packages into Cascadeur's Python environment.
@@ -173,40 +275,157 @@ def install_packages(
         return False
     
     success = True
-    for package in packages:
-        print(f"Installing {package}...")
+    for package_spec in packages:
+        # Check if package is editable (starts with -e)
+        is_editable = editable or package_spec.startswith('-e ')
+        if package_spec.startswith('-e '):
+            package_spec = package_spec[3:].strip()
         
-        # Build pip install command
-        cmd = [
-            sys.executable, '-m', 'pip', 'install',
-            '--target', str(target),
-            '--no-user',
-            '--disable-pip-version-check',
-        ]
+        # Check if this is a local package
+        is_local, local_path = is_local_package(package_spec)
         
-        if upgrade:
-            cmd.append('--upgrade')
+        if is_local and is_editable:
+            # Handle editable installation with .pth file
+            print(f"Installing {local_path} in editable mode...")
+            
+            # First, install dependencies only
+            if not no_deps:
+                print("Installing dependencies...")
+                cmd = [
+                    sys.executable, '-m', 'pip', 'install',
+                    '--target', str(target),
+                    '--no-user',
+                    '--disable-pip-version-check',
+                    '--only-deps',  # This might not work with all pip versions
+                ]
+                cmd.append(str(local_path))
+                
+                # Try installing dependencies
+                try:
+                    # First attempt with --only-deps (if supported)
+                    result = subprocess.run(
+                        cmd,
+                        capture_output=True,
+                        text=True,
+                        check=False  # Don't raise on error
+                    )
+                    
+                    if result.returncode != 0 and '--only-deps' in result.stderr:
+                        # --only-deps not supported, try alternative approach
+                        # Read dependencies from pyproject.toml or setup.py
+                        if local_path:
+                            pyproject = local_path / 'pyproject.toml'
+                            if pyproject.exists():
+                                print("Installing dependencies from pyproject.toml...")
+                                try:
+                                    import tomllib  # type: ignore
+                                except ImportError:
+                                    try:
+                                        import tomli as tomllib  # type: ignore
+                                    except ImportError:
+                                        print("Warning: Could not read pyproject.toml dependencies")
+                                        tomllib = None  # type: ignore
+                                
+                                if tomllib:
+                                    try:
+                                        with open(pyproject, 'rb') as f:
+                                            data = tomllib.load(f)
+                                        deps = data.get('project', {}).get('dependencies', [])
+                                        if deps:
+                                            for dep in deps:
+                                                dep_cmd = [
+                                                    sys.executable, '-m', 'pip', 'install',
+                                                    '--target', str(target),
+                                                    '--no-user',
+                                                    '--disable-pip-version-check',
+                                                    dep
+                                                ]
+                                                subprocess.run(dep_cmd, capture_output=True, text=True)
+                                    except Exception as e:
+                                        print(f"Warning: Could not install dependencies: {e}")
+                        else:
+                            print("Warning: local_path is None, skipping dependency installation")
+                except subprocess.CalledProcessError as e:
+                    print(f"Warning: Could not install dependencies: {e.stderr}")
+            
+            # Create .pth file for editable install
+            if local_path and not create_pth_file(local_path, target):
+                success = False
+            elif local_path:
+                print(f"Successfully installed {local_path} (editable)")
         
-        if force_reinstall:
-            cmd.append('--force-reinstall')
+        elif is_local and local_path:
+            # Regular local package installation
+            print(f"Installing {local_path}...")
+            
+            # Build pip install command for local package
+            cmd = [
+                sys.executable, '-m', 'pip', 'install',
+                '--target', str(target),
+                '--no-user',
+                '--disable-pip-version-check',
+            ]
+            
+            if upgrade:
+                cmd.append('--upgrade')
+            
+            if force_reinstall:
+                cmd.append('--force-reinstall')
+            
+            if no_deps:
+                cmd.append('--no-deps')
+            
+            cmd.append(str(local_path))
+            
+            try:
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                print(result.stdout)
+                print(f"Successfully installed {local_path}")
+            except subprocess.CalledProcessError as e:
+                print(f"Error installing {local_path}:")
+                print(e.stderr)
+                success = False
         
-        if no_deps:
-            cmd.append('--no-deps')
-        
-        cmd.append(package)
-        
-        try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                check=True
-            )
-            print(result.stdout)
-        except subprocess.CalledProcessError as e:
-            print(f"Error installing {package}:")
-            print(e.stderr)
-            success = False
+        else:
+            # Regular PyPI package installation
+            print(f"Installing {package_spec}...")
+            
+            # Build pip install command
+            cmd = [
+                sys.executable, '-m', 'pip', 'install',
+                '--target', str(target),
+                '--no-user',
+                '--disable-pip-version-check',
+            ]
+            
+            if upgrade:
+                cmd.append('--upgrade')
+            
+            if force_reinstall:
+                cmd.append('--force-reinstall')
+            
+            if no_deps:
+                cmd.append('--no-deps')
+            
+            cmd.append(package_spec)
+            
+            try:
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                print(result.stdout)
+            except subprocess.CalledProcessError as e:
+                print(f"Error installing {package_spec}:")
+                print(e.stderr)
+                success = False
     
     return success
 
@@ -237,8 +456,33 @@ def uninstall_packages(
     
     success = True
     for package in packages:
+        # Check if this is a path (for uninstalling local packages)
+        is_local, local_path = is_local_package(package)
+        if is_local and local_path:
+            # For local packages, try to determine the package name
+            pyproject = local_path / 'pyproject.toml'
+            if pyproject.exists():
+                try:
+                    import tomllib  # type: ignore
+                except ImportError:
+                    try:
+                        import tomli as tomllib  # type: ignore
+                    except ImportError:
+                        tomllib = None  # type: ignore
+                
+                if tomllib:
+                    try:
+                        with open(pyproject, 'rb') as f:
+                            data = tomllib.load(f)
+                        package = data.get('project', {}).get('name', local_path.name)
+                    except:
+                        package = local_path.name
+                else:
+                    package = local_path.name
+            else:
+                package = local_path.name
         # Find package directories
-        package_dirs = []
+        package_dirs: List[Path] = []
         dist_info_pattern = f"{package}*.dist-info"
         egg_info_pattern = f"{package}*.egg-info"
         
@@ -257,21 +501,27 @@ def uninstall_packages(
             if normalized_dir.exists():
                 package_dirs.append(normalized_dir)
         
-        if not package_dirs:
+        # Also check for .pth files (editable installs)
+        pth_files = list(target.glob(f"{package}*.pth"))
+        pth_files.extend(list(target.glob(f"{normalized_package}*.pth")))
+        
+        if not package_dirs and not pth_files:
             print(f"Package '{package}' is not installed")
             continue
         
         # Confirm uninstall
         if not yes:
-            print(f"Found the following directories for '{package}':")
+            print(f"Found the following items for '{package}':")
             for d in package_dirs:
                 print(f"  - {d}")
+            for pth in pth_files:
+                print(f"  - {pth} (.pth file for editable install)")
             response = input(f"Uninstall '{package}'? [y/N] ")
             if response.lower() != 'y':
                 print(f"Skipping {package}")
                 continue
         
-        # Remove package directories
+        # Remove package directories and .pth files
         print(f"Uninstalling {package}...")
         for d in package_dirs:
             try:
@@ -282,6 +532,15 @@ def uninstall_packages(
                 print(f"  Removed {d}")
             except Exception as e:
                 print(f"  Error removing {d}: {e}")
+                success = False
+        
+        # Remove .pth files
+        for pth_file in pth_files:
+            try:
+                pth_file.unlink()
+                print(f"  Removed {pth_file} (editable install)")
+            except Exception as e:
+                print(f"  Error removing {pth_file}: {e}")
                 success = False
     
     return success
@@ -337,7 +596,7 @@ def list_installed_packages(cascadeur_path: Path, verbose: bool = True) -> Dict[
     return packages
 
 
-def cmd_install(args) -> int:
+def cmd_install(args: argparse.Namespace) -> int:
     """Handle install command."""
     cascadeur_path = args.cascadeur_path or find_cascadeur_path()
     if not cascadeur_path:
@@ -353,13 +612,14 @@ def cmd_install(args) -> int:
         upgrade=args.upgrade,
         force_reinstall=args.force_reinstall,
         no_deps=args.no_deps,
-        requirements=args.requirements
+        requirements=args.requirements,
+        editable=args.editable
     )
     
     return 0 if success else 1
 
 
-def cmd_uninstall(args) -> int:
+def cmd_uninstall(args: argparse.Namespace) -> int:
     """Handle uninstall command."""
     cascadeur_path = args.cascadeur_path or find_cascadeur_path()
     if not cascadeur_path:
@@ -378,7 +638,7 @@ def cmd_uninstall(args) -> int:
     return 0 if success else 1
 
 
-def cmd_list(args) -> int:
+def cmd_list(args: argparse.Namespace) -> int:
     """Handle list command."""
     cascadeur_path = args.cascadeur_path or find_cascadeur_path()
     if not cascadeur_path:
@@ -411,7 +671,7 @@ def cmd_list(args) -> int:
     return 0
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(
         prog='pip_for_cascadeur',
         description='Pip-like package manager for Cascadeur\'s embedded Python'
@@ -432,7 +692,12 @@ def main():
     install_parser.add_argument(
         'packages',
         nargs='+',
-        help='Package(s) to install (e.g., requests, numpy==1.24.0)'
+        help='Package(s) to install (e.g., requests, numpy==1.24.0, . , /path/to/project)'
+    )
+    install_parser.add_argument(
+        '-e', '--editable',
+        action='store_true',
+        help='Install packages in editable/development mode (for local packages)'
     )
     install_parser.add_argument(
         '-U', '--upgrade',

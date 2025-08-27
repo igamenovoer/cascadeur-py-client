@@ -18,8 +18,8 @@ from multiprocessing import Process
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
-from cascadeur_client.server.jsonrpc_pipe_client import JSONRPCPipeClient
-from cascadeur_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
+from cascadeur_py_client.server.jsonrpc_pipe_client import JSONRPCPipeClient
+from cascadeur_py_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
 
 
 class TestJSONRPCPipe:
@@ -33,7 +33,7 @@ class TestJSONRPCPipe:
     def setup_class(cls) -> None:
         """Setup test class - starts the server process."""
         # Path to server script
-        server_script: Path = project_root / "src" / "cascadeur_client" / "server" / "jsonrpc_pipe_server.py"
+        server_script: Path = project_root / "src" / "cascadeur_py_client" / "server" / "jsonrpc_pipe_server.py"
         
         # Start server in subprocess using pixi
         cmd: List[str] = ["pixi", "run", "-e", "dev", "python", str(server_script)]

@@ -12,7 +12,7 @@
 ### Option 1: Using Async Server (Recommended)
 ```python
 # In Cascadeur's Python console
-from cascadeur_client.server import health_exec_server_aio as aio_srv
+from cascadeur_py_client.server import health_exec_server_aio as aio_srv
 
 # If no event loop is running (typical in Cascadeur)
 handle = aio_srv.start_in_thread()
@@ -25,7 +25,7 @@ handle = aio_srv.start_in_thread()
 ### Option 2: Using Threaded Server
 ```python
 # In Cascadeur's Python console
-from cascadeur_client.server import health_exec_server_threaded as threaded_srv
+from cascadeur_py_client.server import health_exec_server_threaded as threaded_srv
 
 server = threaded_srv.HealthExecServer(port=31005)
 server.start()

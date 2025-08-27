@@ -6,7 +6,7 @@ Usage:
   pixi run python examples/test_threaded_server.py --raw '{"jsonrpc":"2.0","id":99,"method":"health"}'
 
 Ensure the server is running in Cascadeur first, e.g. inside Cascadeur Python:
-    from cascadeur_client.server import health_exec_server_threaded as hst
+    from cascadeur_py_client.server import health_exec_server_threaded as hst
     srv = hst.start_server(port=31015)
 """
 from __future__ import annotations

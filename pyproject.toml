@@ -83,7 +83,7 @@ testpaths = ["tests/auto"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-v --cov=cascadeur_client --cov-report=term-missing"
+addopts = "-v --cov=cascadeur_py_client --cov-report=term-missing"
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]

@@ -940,7 +940,7 @@ packages:
 - pypi: ./
   name: cascadeur-py-client
   version: 0.1.0
-  sha256: 61b80718058680bca216d110ec6d90ea827ec0a75f9d769bef10b5d4353f098a
+  sha256: c35219be0926604f542d03fd305878430c7655a3a5a52077ae09e3a380dfaf7d
   requires_dist:
   - jsonrpc>=3.0.1,<4
   - aiohttp>=3.12.15,<4

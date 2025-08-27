@@ -17,8 +17,8 @@ from typing import Optional, Union
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
-from cascadeur_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
-from cascadeur_client.server.jsonrpc_pipe_server_sync import SyncJSONRPCPipeServer
+from cascadeur_py_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
+from cascadeur_py_client.server.jsonrpc_pipe_server_sync import SyncJSONRPCPipeServer
 
 
 def format_pipe_address(pipe_name: str) -> str:

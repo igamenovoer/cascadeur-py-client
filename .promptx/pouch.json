@@ -4,7 +4,7 @@
     {
       "from": "initial",
       "command": "init",
-      "timestamp": "2025-08-26T14:52:00.259Z",
+      "timestamp": "2025-08-27T02:49:20.137Z",
       "args": [
         {
           "workingDirectory": "D:\\code\\cascadeur-py-client",
@@ -14,12 +14,18 @@
     },
     {
       "from": "initialized",
+      "command": "welcome",
+      "timestamp": "2025-08-27T02:49:35.775Z",
+      "args": []
+    },
+    {
+      "from": "service_discovery",
       "command": "action",
-      "timestamp": "2025-08-26T14:52:19.261Z",
+      "timestamp": "2025-08-27T02:50:11.532Z",
       "args": [
         "janson-py"
       ]
     }
   ],
-  "lastUpdated": "2025-08-26T14:52:19.285Z"
+  "lastUpdated": "2025-08-27T02:50:11.557Z"
 }

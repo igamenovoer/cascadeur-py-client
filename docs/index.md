@@ -5,7 +5,7 @@ Welcome to the Cascadeur Python Client documentation!
 ## Quick Start
 
 `python
-import cascadeur_client as csc
+import cascadeur_py_client as csc
 
 # Connect to Cascadeur
 client = csc.CascadeurClient()

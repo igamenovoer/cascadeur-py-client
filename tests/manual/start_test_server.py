@@ -17,7 +17,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
-from cascadeur_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
+from cascadeur_py_client.server.jsonrpc_pipe_server import JSONRPCPipeServer
 
 
 def generate_unique_pipe_name() -> str:

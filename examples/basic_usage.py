@@ -2,7 +2,7 @@
 Example: Basic scene manipulation with Cascadeur Python Client.
 """
 
-import cascadeur_client as csc
+import cascadeur_py_client as csc
 
 
 def main():

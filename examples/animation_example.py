@@ -2,7 +2,7 @@
 Example: Working with animation layers and keyframes.
 """
 
-import cascadeur_client as csc
+import cascadeur_py_client as csc
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     
     # Create a new animation layer if none exist
     if not layers:
-        from cascadeur_client.animation import AnimationLayer
+        from cascadeur_py_client.animation import AnimationLayer
         layer = AnimationLayer("transform_layer")
         layers = [layer]
     else:
@@ -54,7 +54,7 @@ def main():
         print(f"Frame {frame}: position = ({x}, {y}, {z})")
     
     # Work with timeline
-    from cascadeur_client.animation import Timeline
+    from cascadeur_py_client.animation import Timeline
     timeline = Timeline()
     timeline.set_frame_range(1, 60)
     timeline.goto_frame(30)

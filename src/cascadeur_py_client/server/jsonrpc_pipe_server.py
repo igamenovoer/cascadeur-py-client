@@ -12,7 +12,6 @@ import json
 import struct
 import signal
 import threading
-import logging
 import atexit
 import weakref
 from typing import Optional, Any
@@ -25,12 +24,10 @@ except ImportError:
     # Fallback for older versions that use result module
     from jsonrpcserver.result import Success, Error
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Use centralized logging from caslogger
+from cascadeur_py_client.server.caslogger import get_logger
+
+logger = get_logger("jsonrpc_pipe_server")
 
 # Configure pipe address based on platform
 if os.name == 'nt':  # Windows

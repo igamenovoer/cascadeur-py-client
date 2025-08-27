@@ -10,7 +10,7 @@ Stop with Ctrl+C.
 from __future__ import annotations
 
 import asyncio
-from cascadeur_client.server import health_exec_server_aio as aio
+from cascadeur_py_client.server import health_exec_server_aio as aio
 
 PORT = 31333
 

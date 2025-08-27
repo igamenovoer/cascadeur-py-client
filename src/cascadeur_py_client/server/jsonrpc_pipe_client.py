@@ -10,7 +10,6 @@ import os
 import sys
 import json
 import struct
-import logging
 from typing import Optional, Any, Dict
 from multiprocessing.connection import Client
 
@@ -27,12 +26,10 @@ except ImportError:
     def notification_json(method, params=None):
         return json.dumps(notification(method, params))
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Use centralized logging from caslogger
+from cascadeur_py_client.server.caslogger import get_logger
+
+logger = get_logger("jsonrpc_pipe_client")
 
 # Configure pipe address based on platform
 if os.name == 'nt':  # Windows

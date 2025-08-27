@@ -26,7 +26,7 @@ except ImportError:
     from jsonrpcserver.result import Success, Error
 
 # Use centralized logging from caslogger
-from cascadeur_py_client.server.caslogger import get_logger, LogContext
+from cascadeur_py_client.caslogger import get_logger, LogContext
 
 logger = get_logger("jsonrpc_pipe_server_sync")
 

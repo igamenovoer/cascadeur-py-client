@@ -27,7 +27,7 @@ except ImportError:
         return json.dumps(notification(method, params))
 
 # Use centralized logging from caslogger
-from cascadeur_py_client.server.caslogger import get_logger
+from cascadeur_py_client.caslogger import get_logger
 
 logger = get_logger("jsonrpc_pipe_client")
 

@@ -10,7 +10,7 @@ Environment Variables:
                                 Case insensitive. Defaults to 'info' if not set.
 
 Usage:
-    from cascadeur_py_client.server.caslogger import logger
+    from cascadeur_py_client.caslogger import logger
     logger.info("Message")
 """
 

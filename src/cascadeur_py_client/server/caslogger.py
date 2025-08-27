@@ -54,13 +54,13 @@ def _get_log_directory() -> Path:
 
 def _get_log_filename() -> str:
     """
-    Generate log filename with current date.
+    Generate log filename with current date and time.
     
     Returns:
-        Filename in format: log_YYYY-MM-DD.txt
+        Filename in format: log_[YYYYMMDD-HHMMSS].txt
     """
-    date_str = datetime.now().strftime('%Y-%m-%d')
-    return f"log_{date_str}.txt"
+    datetime_str = datetime.now().strftime('%Y%m%d-%H%M%S')
+    return f"log_[{datetime_str}].txt"
 
 
 def _setup_logger(

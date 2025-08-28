@@ -1,0 +1,36 @@
+{
+  "generated": "2025-08-28 23:43:15",
+  "stats": {
+    "total_urls": 0,
+    "scraped": 2,
+    "skipped": 0,
+    "failed": 0,
+    "errors": 0
+  },
+  "modules": {
+    "csc.html": [
+      [
+        "csc.md",
+        ""
+      ]
+    ],
+    "csc": [
+      [
+        "_generate\\csc.Guid.md",
+        ""
+      ]
+    ]
+  },
+  "files": [
+    {
+      "path": "csc.md",
+      "title": "",
+      "module": "csc.html"
+    },
+    {
+      "path": "_generate\\csc.Guid.md",
+      "title": "",
+      "module": "csc"
+    }
+  ]
+}

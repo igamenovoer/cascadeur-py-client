@@ -18,3 +18,13 @@ Implementation details:
 - `jsonrpc-client` creates connections on demand, so no need to manage connection state in `CascadeurRemoteClient`.
 - provide access to the underlying `jsonrpc-client` instance via a property named `rpc_client`.
 - `jsonrpc-client` should be created in the constructor of `CascadeurRemoteClient`, and closed in a `close()` method of `CascadeurRemoteClient`.
+
+## Task 2: scrape the official python API documentation
+
+- cascadeur official python API documentation (`cas-doc`): `https://cascadeur.com/python-api/`
+
+we want to scrape the `cas-doc` website to get the API documentation in markdown, and save it to `cascadeur-docs/python`, such that:
+- the directory structure in `cascadeur-docs/python` should follow the structure of the website.
+- each markdown file should contain the essential information of the corresponding API
+- we will use `firecrawl` to do the scraping, use its python API to implement the scraper.
+- crawling scripts should be placed in `cascadeur-docs/scripts`

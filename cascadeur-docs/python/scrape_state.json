@@ -1,0 +1,68 @@
+{
+  "completed": {
+    "https://cascadeur.com/python-api/_generate/csc.math.basic_transform_from_triangle.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.math.euler_angles_to_quaternion_x_y_z.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.Guid.html": {
+      "skipped": true,
+      "path": "D:\\code\\cascadeur-py-client\\cascadeur-docs\\python\\_generate\\csc.Guid.md"
+    },
+    "https://cascadeur.com/python-api/_generate/csc.model.BehaviourViewer.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/csc.html": {
+      "skipped": true,
+      "path": "D:\\code\\cascadeur-py-client\\cascadeur-docs\\python\\csc.md"
+    },
+    "https://cascadeur.com/python-api/_generate/csc.math.project_point_on_basic_line.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.math.Rotation.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.math.transform_point.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.math.Quaternion.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.math.inverse_transform_point.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.DirectionValue.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.Version.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.view.AnimationBoundary.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.domain.SceneUpdater.html": {
+      "success": true,
+      "title": ""
+    },
+    "https://cascadeur.com/python-api/_generate/csc.view.DialogManager.html": {
+      "success": true,
+      "title": ""
+    }
+  },
+  "failed": {},
+  "config": {
+    "base_url": "https://cascadeur.com/python-api/"
+  }
+}

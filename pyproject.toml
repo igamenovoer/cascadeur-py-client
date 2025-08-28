@@ -34,7 +34,7 @@ dependencies = [
     "pydantic>=2.11.7,<3",
     "html2text>=2025.4.15,<2026",
     "jsonrpcclient>=4.0.3,<5",
-    "jsonrpcserver>=5.0.9,<6", "click", "platformdirs>=4.3.8,<5", "loguru>=0.7.3,<0.8", "attrs>=25.3.0,<26",
+    "jsonrpcserver>=5.0.9,<6", "click", "platformdirs>=4.3.8,<5", "loguru>=0.7.3,<0.8", "attrs>=25.3.0,<26", "emoji>=2.14.1,<3",
 ]
 
 [project.optional-dependencies]
@@ -122,4 +122,4 @@ cas-install = { cmd = "python scripts/install_to_cascadeur.py", depends-on = [] 
 cas-list = "python scripts/list_cascadeur_packages.py"
 
 [dependency-groups]
-dev = ["sphobjinv>=2.3.1.3,<3", "bs4>=0.0.2,<0.0.3", "playwright>=1.54.0,<2", "scrapy>=2.13.3,<3", "ruff>=0.12.10,<0.13", "ipykernel>=6.30.1,<7"]
+dev = ["sphobjinv>=2.3.1.3,<3", "bs4>=0.0.2,<0.0.3", "playwright>=1.54.0,<2", "scrapy>=2.13.3,<3", "ruff>=0.12.10,<0.13", "ipykernel>=6.30.1,<7", "firecrawl>=3.4.0,<4", "llm-anygate>=1.0.4,<2", "firecrawl-py>=3.4.0,<4"]

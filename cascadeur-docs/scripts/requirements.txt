@@ -1,0 +1,4 @@
+# Requirements for Cascadeur API Documentation Scraping
+# Install with: pip install -r requirements.txt
+
+firecrawl-py>=0.0.16

@@ -1,0 +1,26 @@
+# Untitled
+
+Source: https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html
+
+# csc.view.ViewportDomain [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html\#csc-view-viewportdomain "Permalink to this heading")
+
+_class_ csc.view.ViewportDomain [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain "Permalink to this definition")
+
+Domain Viewport class
+
+\_\_init\_\_( _\*args_, _\*\*kwargs_) [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.__init__ "Permalink to this definition")
+
+Methods
+
+|     |     |
+| --- | --- |
+| [`__init__`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.__init__ "csc.view.ViewportDomain.__init__")(\*args, \*\*kwargs) |  |
+| [`camera`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.camera "csc.view.ViewportDomain.camera")(self) |  |
+| [`camera_struct`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.camera_struct "csc.view.ViewportDomain.camera_struct")(self) |  |
+| [`id`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.id "csc.view.ViewportDomain.id")(self) |  |
+| [`is_main`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.is_main "csc.view.ViewportDomain.is_main")(self) |  |
+| [`mode_visualizers`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.mode_visualizers "csc.view.ViewportDomain.mode_visualizers")(self) |  |
+| [`set_camera_struct`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.set_camera_struct "csc.view.ViewportDomain.set_camera_struct")(self, camera\_struct) |  |
+| [`set_mode_visualizers`](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain.set_mode_visualizers "csc.view.ViewportDomain.set_mode_visualizers")(self, mode) |  |
+
+\_\_annotations\_\_ _={}_ [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.__annotations__ "Permalink to this definition")\_\_init\_\_( _\*args_, _\*\*kwargs_) [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#id0 "Permalink to this definition")\_\_module\_\_ _='csc.view'_ [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.__module__ "Permalink to this definition")camera( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_)→[object](https://docs.python.org/3/library/functions.html#object "(in Python v3.13)") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.camera "Permalink to this definition")camera\_struct( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_)→[csc.view.SphericalCameraStruct](https://cascadeur.com/python-api/csc.html#csc.view.SphericalCameraStruct "csc.view.SphericalCameraStruct") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.camera_struct "Permalink to this definition")id( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_)→[csc.Guid](https://cascadeur.com/python-api/csc.html#csc.Guid "csc.Guid") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.id "Permalink to this definition")is\_main( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_)→[bool](https://docs.python.org/3/library/functions.html#bool "(in Python v3.13)") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.is_main "Permalink to this definition")mode\_visualizers( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_)→[csc.view.ViewportMode](https://cascadeur.com/python-api/csc.html#csc.view.ViewportMode "csc.view.ViewportMode") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.mode_visualizers "Permalink to this definition")set\_camera\_struct( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_, _camera\_struct:[csc.view.SphericalCameraStruct](https://cascadeur.com/python-api/csc.html#csc.view.SphericalCameraStruct "csc.view.SphericalCameraStruct")_)→[None](https://docs.python.org/3/library/constants.html#None "(in Python v3.13)") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.set_camera_struct "Permalink to this definition")set\_mode\_visualizers( _self:[csc.view.ViewportDomain](https://cascadeur.com/python-api/csc.html#csc.view.ViewportDomain "csc.view.ViewportDomain")_, _mode:[csc.view.ViewportMode](https://cascadeur.com/python-api/csc.html#csc.view.ViewportMode "csc.view.ViewportMode")_)→[None](https://docs.python.org/3/library/constants.html#None "(in Python v3.13)") [¶](https://cascadeur.com/python-api/_generate/csc.view.ViewportDomain.html#csc.view.ViewportDomain.set_mode_visualizers "Permalink to this definition")

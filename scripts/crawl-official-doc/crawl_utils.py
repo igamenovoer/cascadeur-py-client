@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 """
-Crawl Cascadeur Python API documentation using Firecrawl Python SDK
-- Supports configurable output directory via CLI/env
-- Robustly saves all successful pages to markdown
+Shared utilities for Cascadeur documentation crawling.
+
+Provides:
+- DEFAULT_OUTPUT_DIR
+- sanitize_filename
+- resolve_output_dir
+- extract_pages
+- extract_markdown_and_meta
+- infer_filename_from_page
+- save_results
 """
 
+import json
 import os
 import re
-import json
-import argparse
-from typing import Any, Dict, List, Optional, Tuple, Union
-
-# FirecrawlApp is imported lazily inside crawl_cascadeur_docs() to allow offline tests without the SDK
+from typing import Any, Dict, List, Optional, Tuple
 
 
 DEFAULT_OUTPUT_DIR = "cascadeur-docs/python/_generate/firecrawl"
@@ -46,7 +50,7 @@ def resolve_output_dir(cli_dir: Optional[str]) -> str:
 
 def extract_pages(crawl_result: Any) -> List[Dict[str, Any]]:
     """
-    Normalize various possible Firecrawl SDK result shapes into a list of page dicts.
+    Normalize various possible result shapes into a list of page dicts.
     Known shapes:
     - List[Dict]: direct list of pages
     - Dict with key 'data': might be List[Dict] or Dict with 'pages'
@@ -115,7 +119,6 @@ def infer_filename_from_page(idx: int, page: Dict[str, Any]) -> str:
     Build a stable filename for a page using title or URL path fallback.
     """
     # Prefer title
-    title = None
     meta = page.get("metadata") or {}
     title = meta.get("title")
 
@@ -156,7 +159,7 @@ def save_results(output_dir: str, crawl_result: Any, pages: List[Dict[str, Any]]
             skipped += 1
             continue
 
-        # Ensure extracted meta takes precedence over any original page['metadata']
+        # Ensure extracted meta takes precedence
         filename = infer_filename_from_page(i, {**page, "metadata": meta})
         fullpath = os.path.join(output_dir, filename)
 
@@ -171,105 +174,3 @@ def save_results(output_dir: str, crawl_result: Any, pages: List[Dict[str, Any]]
         saved += 1
 
     return saved, skipped
-
-
-def crawl_cascadeur_docs(output_dir: Optional[str] = None) -> Optional[Any]:
-    """Crawl the Cascadeur Python API documentation and save results."""
-    # Initialize Firecrawl (you'll need your API key)
-    api_key = os.getenv("FIRECRAWL_API_KEY")
-    if not api_key:
-        print("Please set FIRECRAWL_API_KEY environment variable")
-        return None
-
-    resolved_dir = resolve_output_dir(output_dir)
- 
-    try:
-        from firecrawl import FirecrawlApp
-    except Exception:
-        print("Please install firecrawl-py (pixi run -e dev pip install firecrawl-py) or ensure it's available in your dev environment")
-        return None
- 
-    app = FirecrawlApp(api_key=api_key)
-
-    # Crawl configuration
-    crawl_params = {
-        "crawlerOptions": {
-            "includes": ["**/python-api/**"],  # Only crawl Python API docs
-            "excludes": ["**/search**", "**/genindex**"],  # Skip search and index pages
-            "limit": 20,  # Limit number of pages
-            "allowBackwardCrawling": False,
-            "allowExternalContentLinks": False,
-        },
-        "pageOptions": {
-            "includeHtml": False,
-            "includeRawHtml": False,
-            "onlyMainContent": True,
-            "waitFor": 1000,
-            "screenshot": False,
-            "fullPageScreenshot": False,
-        },
-    }
-
-    print("Starting crawl of Cascadeur Python API documentation...")
-
-    try:
-        # Start the crawl (handle SDK variants across versions)
-        crawl_fn = getattr(app, "crawl_url", None) or getattr(app, "crawl", None)
-        if not callable(crawl_fn):
-            raise AttributeError("FirecrawlApp does not expose crawl_url or crawl method")
-        try:
-            # Preferred: pass options as 'params' kwarg
-            crawl_result: Any = crawl_fn(
-                "https://cascadeur.com/python-api/",
-                params=crawl_params,
-            )  # type: ignore[attr-defined]
-        except TypeError:
-            try:
-                # Fallback A: pass options as 2nd positional argument
-                crawl_result = crawl_fn(
-                    "https://cascadeur.com/python-api/",
-                    crawl_params,
-                )  # type: ignore[misc]
-            except TypeError:
-                # Fallback B: flatten kwargs for older/newer SDKs
-                crawl_result = crawl_fn(
-                    "https://cascadeur.com/python-api/",
-                    **crawl_params,
-                )  # type: ignore[arg-type]
-
-        # Normalize pages
-        pages = extract_pages(crawl_result)
-        print(f"Crawl completed! Found {len(pages)} page items (raw shape saved)")
-
-        # Save results
-        saved, skipped = save_results(resolved_dir, crawl_result, pages)
-
-        print(f"\nSummary:")
-        print(f"- Output directory: {resolved_dir}")
-        print(f"- Total items: {len(pages)}")
-        print(f"- Saved markdown: {saved}")
-        print(f"- Skipped (no markdown): {skipped}")
-        print(f"\nAll files saved to: {resolved_dir}/")
-
-        return crawl_result
-
-    except Exception as e:
-        print(f"Error during crawl: {e}")
-        return None
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Crawl Cascadeur Python API docs with Firecrawl SDK")
-    parser.add_argument(
-        "-o",
-        "--output-dir",
-        dest="output_dir",
-        default=None,
-        help=f"Directory to save results (default precedence: --output-dir | CRAWL_OUTPUT_DIR | FIRECRAWL_OUTPUT_DIR | {DEFAULT_OUTPUT_DIR})",
-    )
-    args = parser.parse_args()
-    crawl_cascadeur_docs(args.output_dir)
-
-
-if __name__ == "__main__":
-    main()

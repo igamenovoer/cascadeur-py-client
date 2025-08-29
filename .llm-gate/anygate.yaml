@@ -1,0 +1,8 @@
+# AnyGate Configuration
+# This file stores the configuration used when creating this proxy project
+# It will be used by 'llm-anygate-cli start' for default values
+
+project:
+  model_config: null  # Using default configuration
+  port: 4567
+  master_key: "sk-dummy"

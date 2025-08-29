@@ -69,13 +69,20 @@ pip install firecrawl-py
 
 ### 📋 Usage:
 ```bash
-python crawl_cascadeur_docs.py
+# Default output: cascadeur-docs/python/_generate/firecrawl
+python scripts/crawl-official-doc/crawl_cascadeur_docs.py
+
+# Custom output via CLI
+python scripts/crawl-official-doc/crawl_cascadeur_docs.py -o cascadeur-docs/python/_generate/firecrawl
+
+# Or via env (takes precedence over CLI)
+CRAWL_OUTPUT_DIR=cascadeur-docs/python/_generate/firecrawl python scripts/crawl-official-doc/crawl_cascadeur_docs.py
 ```
 
 ### 📁 Output:
-- `cascadeur_docs_crawled/crawl_results.json` - Complete JSON results
-- `cascadeur_docs_crawled/01_page_name.md` - Individual markdown files
-
+- `cascadeur-docs/python/_generate/firecrawl/crawl_results.json` - Complete JSON results
+- `cascadeur-docs/python/_generate/firecrawl/01_page_name.md` - Individual markdown files
+- Override directory with `-o` or env `CRAWL_OUTPUT_DIR`/`FIRECRAWL_OUTPUT_DIR`
 ---
 
 ## 🌐 Method 3: Direct API Calls
@@ -90,7 +97,17 @@ export FIRECRAWL_API_KEY=your_key_here
 
 ### 📋 Usage:
 ```bash
-python firecrawl_direct_api.py
+# Crawl all docs (default output)
+python scripts/crawl-official-doc/firecrawl_direct_api.py -m crawl
+
+# Custom output dir via CLI
+python scripts/crawl-official-doc/firecrawl_direct_api.py -m crawl -o cascadeur-docs/python/_generate/firecrawl
+
+# Or via env (takes precedence over CLI)
+CRAWL_OUTPUT_DIR=cascadeur-docs/python/_generate/firecrawl python scripts/crawl-official-doc/firecrawl_direct_api.py -m crawl
+
+# Scrape single page only
+python scripts/crawl-official-doc/firecrawl_direct_api.py -m scrape -o cascadeur-docs/python/_generate/firecrawl
 ```
 
 ### 🎛️ Options:

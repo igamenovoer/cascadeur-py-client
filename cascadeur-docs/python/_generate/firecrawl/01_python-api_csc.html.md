@@ -1,8 +1,7 @@
----
-title: 
-source: https://cascadeur.com/python-api/csc.html
-scraped: 2025-08-28 23:43:15
----
+# Untitled
+
+Source: https://cascadeur.com/python-api/csc.html
+
 # CSC [¶](https://cascadeur.com/python-api/csc.html\#module-csc "Permalink to this heading")
 
 ## csc The main Cascadeur python module. [¶](https://cascadeur.com/python-api/csc.html\#csc-the-main-cascadeur-python-module "Permalink to this heading")

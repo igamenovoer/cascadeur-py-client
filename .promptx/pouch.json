@@ -1,58 +1,53 @@
 {
-  "currentState": "role_activated_with_memory",
+  "currentState": "initialized",
   "stateHistory": [
     {
       "from": "initial",
       "command": "init",
-      "timestamp": "2025-08-28T14:19:14.349Z",
+      "timestamp": "2025-08-29T14:33:00.303Z",
       "args": [
         {
-          "workingDirectory": "D:\\code\\cascadeur-py-client",
-          "ideType": "claude"
+          "workingDirectory": "d:/code/cascadeur-py-client",
+          "ideType": "vscode"
         }
       ]
     },
     {
       "from": "initialized",
+      "command": "init",
+      "timestamp": "2025-08-29T14:34:14.254Z",
+      "args": [
+        {
+          "workingDirectory": "d:/code/cascadeur-py-client",
+          "ideType": "cursor"
+        }
+      ]
+    },
+    {
+      "from": "initialized",
+      "command": "welcome",
+      "timestamp": "2025-08-29T14:34:29.700Z",
+      "args": []
+    },
+    {
+      "from": "service_discovery",
       "command": "action",
-      "timestamp": "2025-08-28T14:20:41.125Z",
+      "timestamp": "2025-08-29T14:38:36.952Z",
       "args": [
         "nuwa"
       ]
     },
     {
       "from": "role_activated_with_memory",
-      "command": "welcome",
-      "timestamp": "2025-08-28T14:25:17.726Z",
-      "args": []
-    },
-    {
-      "from": "service_discovery",
-      "command": "action",
-      "timestamp": "2025-08-28T14:25:51.574Z",
-      "args": [
-        "python-web-ai-scraper"
-      ]
-    },
-    {
-      "from": "role_activated_with_memory",
       "command": "init",
-      "timestamp": "2025-08-28T14:25:56.839Z",
+      "timestamp": "2025-08-29T14:41:10.866Z",
       "args": [
         {
-          "workingDirectory": "D:\\code\\cascadeur-py-client",
-          "ideType": "claude"
+          "workingDirectory": "d:/code/cascadeur-py-client",
+          "ideType": "cursor"
         }
-      ]
-    },
-    {
-      "from": "initialized",
-      "command": "action",
-      "timestamp": "2025-08-28T14:26:02.319Z",
-      "args": [
-        "python-web-ai-scraper"
       ]
     }
   ],
-  "lastUpdated": "2025-08-28T14:26:02.357Z"
+  "lastUpdated": "2025-08-29T14:41:10.907Z"
 }

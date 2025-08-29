@@ -21,21 +21,6 @@ model_list:
       <<: *common_litellm
       model: openai/gpt-4o
 
-  # Add Gemini models with proper routing (no forced response format)
-  - model_name: gemini-2.5-pro
-    litellm_params:
-      <<: *common_litellm
-      model: openai/gpt-5-2025-08-07
-      max_tokens: 10000
-      response_format:
-        type: json_schema
-
-  - model_name: gemini-2.5-flash
-    litellm_params:
-      <<: *common_litellm
-      model: openai/gpt-4o
-      max_tokens: 10000
-
 # Proxy settings (keep purely format/runtime flags here; avoid UI to skip DB usage)
 litellm_settings:
   # Disable admin UI -> avoids DB-backed pages / migrations
@@ -49,10 +34,8 @@ litellm_settings:
   # Additional logging and error suppression settings
   set_verbose: false  # Disable verbose debug logs
   suppress_debug_info: true  # Suppress debug information
-  disable_failure_callbacks: true  # Disable failure logging callbacks
-  disable_success_callbacks: true  # Disable success logging callbacks
+
   # Gemini CLI specific settings
-  json_logs: false  # Disable JSON logging format
   callbacks: []  # Explicitly disable all callbacks
   enable_json_schema_validation: false  # Disable JSON schema validation that may interfere
   # Handle JSON requests dynamically

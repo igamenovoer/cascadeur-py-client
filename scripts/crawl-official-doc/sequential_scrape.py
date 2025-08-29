@@ -1,10 +1,24 @@
 #!/usr/bin/env python3
 """
-Sequential crawler: scrape Cascadeur Python API docs page-by-page with Firecrawl /scrape
+Sequential crawler: scrape web documentation page-by-page with Firecrawl /scrape
 - Strictly sequential, no parallel requests
 - Rate limit: --rate pages/minute (default 5 => 12s between requests)
 - Discovers links by fetching HTML and extracting hrefs
 - Saves all successful pages to a single, configurable output directory
+- Configurable target URL and path filtering via --start-url and --base-path
+
+Examples:
+  # Scrape Cascadeur Python API docs (default)
+  python sequential_scrape.py -o output_dir
+
+  # Scrape a different documentation site
+  python sequential_scrape.py --start-url https://docs.python.org/3/ --base-path /3/ -o python_docs
+
+  # Scrape with custom path filtering
+  python sequential_scrape.py --start-url https://example.com/docs/api/ --base-path /docs/ -o api_docs
+
+  # Scrape with higher rate limit
+  python sequential_scrape.py --start-url https://site.com/guides/ --rate 10 -o guides
 """
 
 import argparse
@@ -12,7 +26,7 @@ import json
 import os
 import re
 import time
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -65,10 +79,10 @@ def normalize_url(u: str, base: str) -> Optional[str]:
         return None
 
 
-def match_includes_excludes(u: str) -> bool:
+def match_includes_excludes(u: str, base_path: str = "/python-api/") -> bool:
     """Basic filter similar to previous includes/excludes."""
-    # Includes
-    if "/python-api/" not in u:
+    # Includes - check if URL contains the base path
+    if base_path not in u:
         return False
     # Excludes
     exclude_substrings = ["/search", "/genindex", "/_static", "/_images", "/_sources"]
@@ -77,7 +91,7 @@ def match_includes_excludes(u: str) -> bool:
     return True
 
 
-def extract_links_from_html(html: str, base: str) -> List[str]:
+def extract_links_from_html(html: str, base: str, base_path: str = "/python-api/") -> List[str]:
     """Extract hrefs from HTML using a simple regex and normalize."""
     hrefs: List[str] = []
     # Find href="..."; also consider single quotes
@@ -85,16 +99,23 @@ def extract_links_from_html(html: str, base: str) -> List[str]:
         n = normalize_url(m, base)
         if not n:
             continue
-        if match_includes_excludes(n):
+        if match_includes_excludes(n, base_path):
             hrefs.append(n)
     return hrefs
 
 
-def discover_urls(start_url: str, max_pages: int) -> List[str]:
+def discover_urls(start_url: str, max_pages: int, base_path: Optional[str] = None) -> List[str]:
     """
     BFS-like discovery starting from start_url, limited by max_pages.
-    We fetch HTML (not Firecrawl) to find links; everything stays under /python-api/.
+    We fetch HTML (not Firecrawl) to find links; everything stays under the configured base path.
     """
+    # Extract base path from start_url if not provided
+    if base_path is None:
+        parsed = urlparse(start_url)
+        base_path = parsed.path.rstrip('/')
+        if not base_path:
+            base_path = "/"
+    
     queue: List[str] = [start_url]
     seen: Set[str] = set(queue)
     result: List[str] = []
@@ -110,7 +131,7 @@ def discover_urls(start_url: str, max_pages: int) -> List[str]:
         try:
             resp = session.get(current, timeout=20)
             resp.raise_for_status()
-            links = extract_links_from_html(resp.text, current)
+            links = extract_links_from_html(resp.text, current, base_path)
             for link in links:
                 if link not in seen:
                     seen.add(link)
@@ -192,6 +213,7 @@ def run_sequential(
     limit: int,
     rate: float,
     resume: bool = True,
+    base_path: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Sequential scraping:
@@ -205,8 +227,16 @@ def run_sequential(
         raise SystemExit("FIRECRAWL_API_KEY not found in environment")
 
     print("🔎 Discovering URLs...")
-    urls = discover_urls(start_url, max_pages=limit)
-    print(f"🧭 Discovered {len(urls)} URLs under /python-api/")
+    urls = discover_urls(start_url, max_pages=limit, base_path=base_path)
+    
+    # Get the actual base path for display
+    if base_path is None:
+        parsed = urlparse(start_url)
+        display_path = parsed.path.rstrip('/') if parsed.path.rstrip('/') else "/"
+    else:
+        display_path = base_path
+    
+    print(f"🧭 Discovered {len(urls)} URLs under {display_path}")
 
     # Rate limiting
     delay_sec = max(12.0, 60.0 / max(1.0, rate))  # Ensure at least 12s for 5/min or stricter
@@ -283,7 +313,7 @@ def run_sequential(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Sequential Firecrawl scraper for Cascadeur Python API docs")
+    parser = argparse.ArgumentParser(description="Sequential Firecrawl scraper for web documentation")
     parser.add_argument(
         "-o",
         "--output-dir",
@@ -295,6 +325,11 @@ def main():
         "--start-url",
         default=BASE_URL,
         help=f"Start URL for discovery (default: {BASE_URL})",
+    )
+    parser.add_argument(
+        "--base-path",
+        default=None,
+        help="Base path to filter URLs (e.g., '/python-api/', '/docs/'). If not provided, will be inferred from start-url path",
     )
     parser.add_argument(
         "--limit",
@@ -322,6 +357,7 @@ def main():
         limit=args.limit,
         rate=args.rate,
         resume=(not args.no_resume),
+        base_path=args.base_path,
     )
 
 

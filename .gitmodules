@@ -5,6 +5,12 @@
 [submodule "context/refcode/jsonrpcclient"]
 	path = context/refcode/jsonrpcclient
 	url = https://github.com/explodinglabs/jsonrpcclient.git
+	branch = main
 [submodule "context/refcode/jsonrpcserver"]
 	path = context/refcode/jsonrpcserver
 	url = https://github.com/explodinglabs/jsonrpcserver.git
+	branch = main
+[submodule ".quick-tools"]
+	path = .quick-tools
+	url = git@github.com:igamenovoer/quick-tools.git
+	branch = main

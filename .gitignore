@@ -128,6 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# ruff cache
+.ruff_cache/
+
 # IDE
 .vscode/
 .idea/
@@ -160,3 +163,7 @@ tmp/
 
 # serena cache
 .serena/cache/
+
+# ignore large model files in data/smplx except readme
+data/smplx/*
+!data/smplx/README.md

@@ -14,3 +14,7 @@
 	path = .quick-tools
 	url = git@github.com:igamenovoer/quick-tools.git
 	branch = main
+[submodule "context/refcode/smplx"]
+	path = context/refcode/smplx
+	url = https://github.com/vchoutas/smplx.git
+	branch = main
